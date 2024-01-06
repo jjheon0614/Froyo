@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    tools:context=".DetailForm">
+
+    <ImageButton
+        android:id="@+id/backFromDetail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/chevron_left"
+        android:layout_margin="20dp"
+        android:background="@color/background"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Make Profile"
+        android:textStyle="bold"
+        android:textSize="40sp"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="30dp"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="100dp">
+
+        <ImageView
+            android:id="@+id/profile_image"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginTop="20dp"
+            android:layout_gravity="center_horizontal"
+            android:src="@drawable/person"
+            android:scaleType="centerCrop"
+            android:background="@drawable/circle_shape"
+            android:onClick="onProfileImageClick" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Id"/>
+
+        <EditText
+            android:id="@+id/detailId"
+            android:layout_width="350dp"
+            android:layout_height="wrap_content"
+            android:hint="Id"
+            android:background="@color/white"
+            android:padding="10sp"
+            android:layout_marginBottom="20dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="email"/>
+
+        <EditText
+            android:id="@+id/detailEmail"
+            android:layout_width="350dp"
+            android:layout_height="wrap_content"
+            android:hint="email"
+            android:background="@color/white"
+            android:padding="10sp"
+            android:layout_marginBottom="20dp"
+            android:enabled="false"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Password"/>
+
+        <EditText
+            android:id="@+id/detailPassword"
+            android:layout_width="350dp"
+            android:layout_height="wrap_content"
+            android:hint="Password"
+            android:background="@color/white"
+            android:padding="10sp"
+            android:layout_marginBottom="20dp"
+            android:enabled="false"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Description"/>
+
+        <EditText
+            android:id="@+id/detailDescription"
+            android:layout_width="350dp"
+            android:layout_height="wrap_content"
+            android:hint="Description"
+            android:background="@color/white"
+            android:padding="10sp"
+            android:layout_marginBottom="20dp"/>
+
+        <Button
+            android:id="@+id/createUser"
+            android:layout_width="350dp"
+            android:layout_height="wrap_content"
+            android:text="@string/create_string"
+            android:backgroundTint="@color/black"/>
+
+
+
+    </LinearLayout>
+
+
+</RelativeLayout>

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "68401063970",
+    "project_id": "assignment3-login-e1207",
+    "storage_bucket": "assignment3-login-e1207.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:68401063970:android:5efbb2ac6dc670d35b827b",
+        "android_client_info": {
+          "package_name": "com.example.froyo"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDy823ea09z6LwUqezRJHg9d0TQHEjmyOA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

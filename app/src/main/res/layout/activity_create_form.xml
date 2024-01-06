@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".CreateForm"
+    android:background="@color/background">
+
+    <ImageButton
+        android:id="@+id/backFromCreate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/chevron_left"
+        android:layout_margin="20dp"
+        android:background="@color/background"/>
+    
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:gravity="center_horizontal">
+        
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/create_string"
+            android:textStyle="bold"
+            android:textSize="40sp"
+            android:layout_marginBottom="40dp"/>
+
+        
+        <EditText
+            android:id="@+id/emailText"
+            android:layout_width="350dp"
+            android:layout_height="wrap_content"
+            android:hint="Email address"
+            android:background="@color/white"
+            android:padding="10sp"
+            android:layout_marginBottom="10dp"/>
+
+        <EditText
+            android:id="@+id/passwordText"
+            android:layout_width="350dp"
+            android:layout_height="wrap_content"
+            android:hint="Password"
+            android:background="@color/white"
+            android:padding="10sp"
+            android:layout_marginBottom="10dp"/>
+
+        <EditText
+            android:id="@+id/passwordConfirmText"
+            android:layout_width="350dp"
+            android:layout_height="wrap_content"
+            android:hint="Confirm Password"
+            android:background="@color/white"
+            android:padding="10sp"
+            android:layout_marginBottom="30dp"/>
+
+        <Button
+            android:id="@+id/create"
+            android:layout_width="350dp"
+            android:layout_height="wrap_content"
+            android:text="@string/create_string"
+            android:backgroundTint="@color/black"/>
+
+        
+    </LinearLayout>
+
+
+
+
+</RelativeLayout>

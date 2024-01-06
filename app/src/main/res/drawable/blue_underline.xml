@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- This is the main white background of your shape -->
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="@color/blue"/>
+        </shape>
+    </item>
+
+    <!-- This item is the blue bottom border line -->
+    <item
+        android:left="-2dp"
+        android:right="-2dp"
+        android:top="-2dp"
+        android:bottom="2dp">
+        <shape android:shape="rectangle">
+            <solid android:color="@color/white"/>
+        </shape>
+    </item>
+</layer-list>
