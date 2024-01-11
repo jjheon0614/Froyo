@@ -92,4 +92,49 @@
         android:layout_marginTop="100dp"
         android:paddingVertical="10dp"
         android:background="@color/listColor"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal"
+        android:background="@color/white"
+        android:weightSum="4"
+        android:gravity="center">
+
+        <ImageButton
+            android:id="@+id/goToPost"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/navigation_home"
+            android:layout_weight="1"
+            android:background="@color/white"/>
+
+
+        <ImageButton
+            android:id="@+id/goToPosting"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/navigation_add"
+            android:layout_weight="1"
+            android:background="@color/white"/>
+
+
+        <ImageButton
+            android:id="@+id/goToChat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/navigation_blue_chat"
+            android:layout_weight="1"
+            android:background="@color/white"/>
+
+        <ImageButton
+            android:id="@+id/goToProfile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/person"
+            android:layout_weight="1"
+            android:background="@color/white"/>
+
+    </LinearLayout>
 </RelativeLayout>

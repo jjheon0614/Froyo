@@ -7,6 +7,14 @@
     tools:context=".MainActivity"
     android:background="@color/background">
 
+    <ImageView
+        android:layout_width="400dp"
+        android:layout_height="400dp"
+        android:src="@drawable/logo_no_background"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"/>
+
 
 
     <LinearLayout
@@ -43,14 +51,15 @@
 
         </LinearLayout>
 
-        <Button
+        <android.widget.Button
             android:id="@+id/createBtn"
             android:layout_width="350dp"
             android:layout_height="wrap_content"
             android:text="@string/create_string"
             android:textColor="@color/black"
             android:layout_marginBottom="10dp"
-            android:backgroundTint="@color/white" />
+            android:textAllCaps="false"
+            android:background="@drawable/button_stroke"/>
 
         <Button
             android:id="@+id/loginBtn"

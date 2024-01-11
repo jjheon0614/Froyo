@@ -388,42 +388,42 @@ public class ChatRoomActivity extends AppCompatActivity {
         emoji1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                sendMessage("https://firebasestorage.googleapis.com/v0/b/android-chat-1de43.appspot.com/o/like.gif?alt=media&token=54da5e68-c505-4e68-9161-f6d86ecbfecd");
+                sendMessage("https://firebasestorage.googleapis.com/v0/b/assignment3-login-e1207.appspot.com/o/emoji%2Flike.gif?alt=media&token=4c431904-6391-4806-83f3-3481a1d90bb6");
                 emojiDialog.dismiss();
             }
         });
         emoji2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                sendMessage("https://firebasestorage.googleapis.com/v0/b/android-chat-1de43.appspot.com/o/heart.gif?alt=media&token=041eb00e-722b-4dc4-b1ed-7d2821765f56");
+                sendMessage("https://firebasestorage.googleapis.com/v0/b/assignment3-login-e1207.appspot.com/o/emoji%2Fheart.gif?alt=media&token=d850ded9-e2d1-4270-9ba4-19338fabbef5");
                 emojiDialog.dismiss();
             }
         });
         emoji3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                sendMessage("https://firebasestorage.googleapis.com/v0/b/android-chat-1de43.appspot.com/o/happy.gif?alt=media&token=862c7e07-3a9f-4562-a258-f27418165233");
+                sendMessage("https://firebasestorage.googleapis.com/v0/b/assignment3-login-e1207.appspot.com/o/emoji%2Fhappy.gif?alt=media&token=8a7d93e2-a0c5-4f25-a65c-91e97dec4724");
                 emojiDialog.dismiss();
             }
         });
         emoji4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                sendMessage("https://firebasestorage.googleapis.com/v0/b/android-chat-1de43.appspot.com/o/sad.gif?alt=media&token=d84eb29c-17c7-4f04-a2d3-841428b94913");
+                sendMessage("https://firebasestorage.googleapis.com/v0/b/assignment3-login-e1207.appspot.com/o/emoji%2Fsad.gif?alt=media&token=6a25a03a-7487-4a29-84d7-db8933e1fd27");
                 emojiDialog.dismiss();
             }
         });
         emoji5.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                sendMessage("https://firebasestorage.googleapis.com/v0/b/android-chat-1de43.appspot.com/o/laugh.gif?alt=media&token=e63cf2e0-ebae-4b31-9592-938c6b1fe3c8");
+                sendMessage("https://firebasestorage.googleapis.com/v0/b/assignment3-login-e1207.appspot.com/o/emoji%2Flaugh.gif?alt=media&token=6a41866e-32a5-426e-b7b2-acd2b53e4521");
                 emojiDialog.dismiss();
             }
         });
         emoji6.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                sendMessage("https://firebasestorage.googleapis.com/v0/b/android-chat-1de43.appspot.com/o/angry.gif?alt=media&token=83d00de0-7ef7-48b5-8106-11dc6f99cf69");
+                sendMessage("https://firebasestorage.googleapis.com/v0/b/assignment3-login-e1207.appspot.com/o/emoji%2Fangry.gif?alt=media&token=4d8a6635-5f02-4313-912e-05580027440e");
                 emojiDialog.dismiss();
             }
         });
@@ -461,7 +461,6 @@ public class ChatRoomActivity extends AppCompatActivity {
                     .addOnFailureListener(e -> {
                         Toast.makeText(ChatRoomActivity.this, "Image upload failed", Toast.LENGTH_SHORT).show();
                     });
-            Toast.makeText(ChatRoomActivity.this, "test", Toast.LENGTH_SHORT).show();
         }
     }
 }

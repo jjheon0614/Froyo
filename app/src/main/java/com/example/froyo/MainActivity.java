@@ -12,7 +12,7 @@ import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
-    private Button createBtn;
+    private android.widget.Button createBtn;
     private Button loginBtn;
 
     @Override
@@ -20,7 +20,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        createBtn = (Button) findViewById(R.id.createBtn);
+        createBtn = findViewById(R.id.createBtn);
         createBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

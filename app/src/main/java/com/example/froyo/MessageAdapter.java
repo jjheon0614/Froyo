@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
@@ -44,7 +45,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageH
         if(!arrayList.get(position).isMine){
             holder.userId.setText(arrayList.get(position).id);
 
-            if(arrayList.get(position).message.contains("https://firebasestorage.googleapis.com/v0/b/android-chat-1de43.appspot.com/o/")){
+            if(arrayList.get(position).message.contains("https://firebasestorage.googleapis.com/v0/b/assignment3-login-e1207.appspot.com/o")){
                 holder.message.setVisibility(View.GONE);
                 holder.image.setVisibility(View.VISIBLE);
                 holder.box.setBackgroundResource(R.color.chatRoomColor);
@@ -80,7 +81,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageH
 
             holder.box.setLayoutParams(layoutParams);
 
-            if(arrayList.get(position).message.contains("https://firebasestorage.googleapis.com/v0/b/android-chat-1de43.appspot.com/o/")){
+            if(arrayList.get(position).message.contains("https://firebasestorage.googleapis.com/v0/b/assignment3-login-e1207.appspot.com/o")){
                 holder.message.setVisibility(View.GONE);
                 holder.image.setVisibility(View.VISIBLE);
                 holder.box.setBackgroundResource(R.color.chatRoomColor);

@@ -10,6 +10,7 @@ import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -43,6 +44,7 @@ public class ProfileActivity extends AppCompatActivity {
     private Button imageBtn, saveBtn;
     private Uri selectedImageUri;
     private LinearLayout editLinear;
+    private ImageButton goToPost, goToPosting, goToChat;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -125,6 +127,21 @@ public class ProfileActivity extends AppCompatActivity {
                 startActivityForResult(intent, REQUEST_CODE_PICK_IMAGE); // Make sure to define this constant in your class
             }
         });
+
+        goToChat = findViewById(R.id.goToChat);
+        goToChat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ProfileActivity.this, ChatListActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                String username = userId.getText().toString();
+                intent.putExtra("userId", username);
+                intent.putExtra("email", email);
+                startActivity(intent);
+                finish();
+            }
+        });
+
 
         saveBtn = (Button) findViewById(R.id.saveBtn);
         saveBtn.setOnClickListener(new View.OnClickListener() {
@@ -290,9 +307,9 @@ public class ProfileActivity extends AppCompatActivity {
 
                             userId.setText(username);
                             userDescription.setText(description);
-                            userPosts.setText(posts + "\nFeeds");
-                            userFollowers.setText(followers + "\nFollowers");
-                            userFollowing.setText(following + "\nFollowing");
+                            userPosts.setText(posts + "\nposts");
+                            userFollowers.setText(followers + "\nfollowers");
+                            userFollowing.setText(following + "\nfollowing");
                             editId.setText(username);
                             editDescription.setText(description);
 

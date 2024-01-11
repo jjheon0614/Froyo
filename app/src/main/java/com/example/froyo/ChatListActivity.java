@@ -12,7 +12,9 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -32,7 +34,7 @@ import java.util.Map;
 
 public class ChatListActivity extends AppCompatActivity {
 
-    private String userID = "LemonJul";
+    private String userID, email;
     private Boolean isSearch = false;
     SimpleDateFormat mFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
     private RecyclerView chatRoomList;
@@ -40,6 +42,7 @@ public class ChatListActivity extends AppCompatActivity {
     private RecyclerView.LayoutManager layoutManager;
     private ArrayList<ChatRoom> chatRoomArrayList;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private ImageButton goToPost, goToPosting, goToProfile;
 
 
     @Override
@@ -52,7 +55,25 @@ public class ChatListActivity extends AppCompatActivity {
         layoutManager = new LinearLayoutManager(this);
         chatRoomList.setLayoutManager(layoutManager);
         chatRoomArrayList = new ArrayList();
+        // get intent
+        Intent i = getIntent();
+        userID = i.getStringExtra("userId");
+        email = i.getStringExtra("email");
         getData();
+
+
+
+        goToProfile = findViewById(R.id.goToProfile);
+        goToProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ChatListActivity.this, ProfileActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent.putExtra("email", email);
+                startActivity(intent);
+                finish();
+            }
+        });
     }
 
     private void getData(){
@@ -63,52 +84,83 @@ public class ChatListActivity extends AppCompatActivity {
                     @Override
                     public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
                         if (error != null) {
-                            Log.e("MainActivity", "Error getting documents", error);
                             return;
                         }
                         chatRoomArrayList.clear();
                         for (QueryDocumentSnapshot document : value) {
                             Map<String, Object> dataMap = document.getData();
-
-                            // Get the users list
-                            List<Map<String, Number>> usersList = (List<Map<String, Number>>) dataMap.get("users");
-                            // Get the chat room ID
-                            String chatID = (String) dataMap.get("chatID");
-                            List<Map<String, List<String>>> currentMessageList = (List<Map<String, List<String>>>) dataMap.get(chatID);
-                            // Get the message List
-                            int numMessage = currentMessageList.size();
-                            //Get the number of people in a chat room
-                            int peopleNum = usersList.size();
-                            List<String> users = new ArrayList<>();
-                            List<Number> checks = new ArrayList<>();
-
-                            for(Map<String, Number> user : usersList){
-                                Collection<String> keys = user.keySet();
-                                users.addAll(new ArrayList<>(keys));
-
-                                Collection<Number> values = user.values();
-                                checks.addAll(new ArrayList<>(values));
+                            if(dataMap == null){
                             }
+                            else{
+                                // Get the users list
+                                List<Map<String, Number>> usersList = (List<Map<String, Number>>) dataMap.get("users");
+                                // Get the chat room ID
+                                String chatID = (String) dataMap.get("chatID");
+                                List<Map<String, List<String>>> currentMessageList = (List<Map<String, List<String>>>) dataMap.get(chatID);
+                                // Get the message List
+                                int numMessage = currentMessageList.size();
+                                //Get the number of people in a chat room
+                                int peopleNum = usersList.size();
+                                List<String> users = new ArrayList<>();
+                                List<Number> checks = new ArrayList<>();
 
-                            // Get the values for making a low of chatRoomList
-                            if(users.contains(userID)){
-                                int myIdx = users.indexOf(userID);
-                                int checkedMessage = checks.get(myIdx).intValue();
-                                int nonCheckedMessage = numMessage - checkedMessage;
-                                String chatRoomTitle;
-                                if(users.size() == 2){
-                                    users.remove(userID);
-                                    chatRoomTitle = users.get(0);
-                                }
-                                else{
-                                    // Get the title of chat room
-                                    chatRoomTitle = (String) dataMap.get("title");
+                                for(Map<String, Number> user : usersList){
+                                    Collection<String> keys = user.keySet();
+                                    users.addAll(new ArrayList<>(keys));
+
+                                    Collection<Number> values = user.values();
+                                    checks.addAll(new ArrayList<>(values));
                                 }
 
-                                if(isSearch){
-                                    EditText search_edit = findViewById(R.id.search_edit);
-                                    String searchText = search_edit.getText().toString();
-                                    if(users.contains(searchText) || chatRoomTitle.contains(searchText)){
+                                // Get the values for making a low of chatRoomList
+                                if(users.contains(userID)){
+                                    int myIdx = users.indexOf(userID);
+                                    int checkedMessage = checks.get(myIdx).intValue();
+                                    int nonCheckedMessage = numMessage - checkedMessage;
+                                    String chatRoomTitle;
+                                    if(users.size() == 2){
+                                        users.remove(userID);
+                                        chatRoomTitle = users.get(0);
+                                    }
+                                    else{
+                                        // Get the title of chat room
+                                        chatRoomTitle = (String) dataMap.get("title");
+                                    }
+
+                                    if(isSearch){
+                                        EditText search_edit = findViewById(R.id.search_edit);
+                                        String searchText = search_edit.getText().toString();
+                                        if(users.contains(searchText) || chatRoomTitle.contains(searchText)){
+                                            // Find the last Message of the chatting room
+                                            String lastMessage = "";
+                                            String lastTime = "";
+                                            if (currentMessageList != null && !currentMessageList.isEmpty()) {
+                                                Map<String, List<String>> lastMessageMap = currentMessageList.get(currentMessageList.size() - 1);
+                                                // Get the values in map in array
+                                                Collection<List<String>> values = lastMessageMap.values();
+                                                for (List<String> valueList : values) {
+                                                    String[] array = valueList.toArray(new String[1]);
+                                                    // Get the last value of valuesArray (Get the last message, Get the last time)
+                                                    if(array[0].contains("https://firebasestorage.googleapis.com/v0/b/assignment3-login-e1207.appspot.com/o/emoji%")){
+                                                        lastMessage = "Emoji";
+                                                    }
+                                                    else if(array[0].contains("https://firebasestorage.googleapis.com/v0/b/assignment3-login-e1207.appspot.com/o/images%")){
+                                                        lastMessage = "Image";
+                                                    }
+                                                    else{
+                                                        lastMessage = array[0];
+                                                    }
+                                                    lastTime = array[1];
+                                                }
+                                            } else {
+                                                lastMessage = "No Message";
+                                            }
+                                            // Adding chat room to array list
+                                            chatRoomArrayList.add(new ChatRoom(chatRoomTitle, lastMessage, chatID, peopleNum,
+                                                    nonCheckedMessage, lastTime));
+                                        }
+                                    }
+                                    else{
                                         // Find the last Message of the chatting room
                                         String lastMessage = "";
                                         String lastTime = "";
@@ -119,8 +171,11 @@ public class ChatListActivity extends AppCompatActivity {
                                             for (List<String> valueList : values) {
                                                 String[] array = valueList.toArray(new String[1]);
                                                 // Get the last value of valuesArray (Get the last message, Get the last time)
-                                                if(array[0].contains("https://firebasestorage.googleapis.com/v0/b/android-chat-1de43.appspot.com/o/")){
+                                                if(array[0].contains("https://firebasestorage.googleapis.com/v0/b/assignment3-login-e1207.appspot.com/o/emoji%")){
                                                     lastMessage = "Emoji";
+                                                }
+                                                else if(array[0].contains("https://firebasestorage.googleapis.com/v0/b/assignment3-login-e1207.appspot.com/o/images%")){
+                                                    lastMessage = "Image";
                                                 }
                                                 else{
                                                     lastMessage = array[0];
@@ -135,33 +190,9 @@ public class ChatListActivity extends AppCompatActivity {
                                                 nonCheckedMessage, lastTime));
                                     }
                                 }
-                                else{
-                                    // Find the last Message of the chatting room
-                                    String lastMessage = "";
-                                    String lastTime = "";
-                                    if (currentMessageList != null && !currentMessageList.isEmpty()) {
-                                        Map<String, List<String>> lastMessageMap = currentMessageList.get(currentMessageList.size() - 1);
-                                        // Get the values in map in array
-                                        Collection<List<String>> values = lastMessageMap.values();
-                                        for (List<String> valueList : values) {
-                                            String[] array = valueList.toArray(new String[1]);
-                                            // Get the last value of valuesArray (Get the last message, Get the last time)
-                                            if(array[0].contains("https://firebasestorage.googleapis.com/v0/b/android-chat-1de43.appspot.com/o/")){
-                                                lastMessage = "Emoji";
-                                            }
-                                            else{
-                                                lastMessage = array[0];
-                                            }
-                                            lastTime = array[1];
-                                        }
-                                    } else {
-                                        lastMessage = "No Message";
-                                    }
-                                    // Adding chat room to array list
-                                    chatRoomArrayList.add(new ChatRoom(chatRoomTitle, lastMessage, chatID, peopleNum,
-                                            nonCheckedMessage, lastTime));
-                                }
                             }
+
+
                         }
                         sortChatRoom();
                         adapter.notifyDataSetChanged();
