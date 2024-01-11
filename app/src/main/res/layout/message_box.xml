@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:id="@+id/box"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginLeft="20dp"
+        android:layout_marginVertical="20px"
+        android:padding="10dp"
+        android:background="@drawable/message_partner_background">
+
+        <TextView
+            android:id="@+id/userId"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:text="ID"
+            android:textSize="16dp"
+            android:textStyle="bold"
+            android:textColor="@color/pIdColor"/>
+
+        <TextView
+            android:id="@+id/message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:text="message"
+            android:textSize="16dp" />
+
+        <ImageView
+            android:id="@+id/image"
+            android:layout_width="280dp"
+            android:layout_height="280dp"
+            android:paddingVertical="10dp"
+            android:layout_marginVertical="5dp"
+            android:background="@drawable/emoji_background"
+            android:visibility="gone"/>
+
+        <TextView
+            android:id="@+id/time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="235dp"
+            android:text="12:00"
+            android:textSize="16dp"/>
+    </LinearLayout>
+</LinearLayout>

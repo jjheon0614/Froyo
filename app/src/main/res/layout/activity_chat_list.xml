@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ChatListActivity">
+
+    <LinearLayout
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:orientation="horizontal"
+        android:background="@color/mainColor">
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="40dp"
+            android:gravity="center"
+            android:text="Messages"
+            android:textColor="@color/white"
+            android:textSize="40sp" />
+
+        <ImageButton
+            android:id="@+id/showSearchBar_button"
+            android:layout_width="40dp"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:layout_marginLeft="110dp"
+            android:src="@drawable/search_icon"
+            android:background="@color/mainColor"
+            android:onClick="showSearchBar"
+            />
+
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/searchBar"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:orientation="horizontal"
+        android:background="@color/mainColor"
+        android:visibility="gone">
+
+        <ImageButton
+            android:id="@+id/search_button"
+            android:layout_width="40dp"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:src="@drawable/search_icon"
+            android:background="@color/mainColor"
+            android:onClick="search"/>
+
+        <EditText
+            android:id="@+id/search_edit"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_weight="1"
+            android:layout_gravity="center"
+            android:paddingHorizontal="10dp"
+            android:ems="10"
+            android:inputType="text"
+            android:hint="Search"
+            android:background="@drawable/search_bar"/>
+
+        <android.widget.Button
+            android:id="@+id/cancel_button"
+            android:layout_width="30dp"
+            android:layout_height="40dp"
+            android:layout_weight="1"
+            android:layout_gravity="center"
+            android:layout_marginHorizontal="10dp"
+            android:text="CANCEL"
+            android:textColor="@color/white"
+            android:background="@drawable/chat_list_row"
+            android:backgroundTint="@color/notiColor"
+            android:onClick="cancelSearch"/>
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/chatRoomList"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="100dp"
+        android:paddingVertical="10dp"
+        android:background="@color/listColor"/>
+</RelativeLayout>

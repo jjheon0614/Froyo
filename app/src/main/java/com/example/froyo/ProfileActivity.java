@@ -34,8 +34,6 @@ public class ProfileActivity extends AppCompatActivity {
 
     private static final int REQUEST_CODE_PICK_IMAGE = 1;
 
-
-
     private ImageView userImage, editImage;
     private TextView userId, userDescription, userPosts, userFollowers, userFollowing;
     private EditText editId, editDescription;

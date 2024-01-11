@@ -4,4 +4,11 @@
     <color name="white">#FFFFFFFF</color>
     <color name="blue">#4C9EEB</color>
     <color name="background">#F7FAF8</color>
+    <color name="mainColor">#2b4574</color>
+    <color name="listColor">#f7faf8</color>
+    <color name="listRowColor">#e3edf7</color>
+    <color name="notiColor">#2e81ec</color>
+    <color name="pMessageBoxColor">#fcd6d5</color>
+    <color name="pIdColor">#b75700</color>
+    <color name="chatRoomColor">#d7e3ff</color>
 </resources>
