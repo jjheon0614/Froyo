@@ -23,15 +23,18 @@ public class Post {
         this.comments = comments;
     }
 
-    public Post(){
-        this.id = "";
-        this.userEmail = "";
-        this.images = new ArrayList<>();
-        this.majorTag = "";
-        this.hashTag = new ArrayList<>();
-        this.content = "";
-        this.likes = 0;
-        this.comments = new ArrayList<>();
+//    public Post(){
+//        this.id = "";
+//        this.userEmail = "";
+//        this.images = new ArrayList<>();
+//        this.majorTag = "";
+//        this.hashTag = new ArrayList<>();
+//        this.content = "";
+//        this.likes = 0;
+//        this.comments = new ArrayList<>();
+//    }
+    public Post() {
+        // Required empty public constructor for Firestore
     }
 
     public String getId() {

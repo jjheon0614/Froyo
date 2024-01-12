@@ -149,78 +149,96 @@ public class NewPostForm extends AppCompatActivity {
         });
 
 //         Set click listener for the "Submit Post" button
-        buttonSubmitPost.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Assuming you've already obtained the updated data
-                // and the Uri of the selected image:
-                String postContent = editTextPostContent.getText().toString();
-                String majorTag = selectedMajorTag;
+            buttonSubmitPost.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // Assuming you've already obtained the updated data
+                    // and the Uri of the selected image:
+                    String postContent = editTextPostContent.getText().toString();
+                    String majorTag = selectedMajorTag;
 
-                // Iterate through the hashtagContainer to get hashtag values
-                ArrayList<String> hashtags = new ArrayList<>();
-                int childCount = hashtagContainer.getChildCount();
-                for (int i = 0; i < childCount; i++) {
-                    View childView = hashtagContainer.getChildAt(i);
-                    if (childView instanceof LinearLayout) {
-                        LinearLayout hashtagLayout = (LinearLayout) childView;
-                        if (hashtagLayout.getChildCount() == 2) {
-                            View hashtagChildView = hashtagLayout.getChildAt(0);
-                            if (hashtagChildView instanceof EditText) {
-                                String hashtag = ((EditText) hashtagChildView).getText().toString().trim();
-                                if (!hashtag.isEmpty()) {
-                                    hashtags.add(hashtag);
+                    // Iterate through the hashtagContainer to get hashtag values
+                    ArrayList<String> hashtags = new ArrayList<>();
+                    int childCount = hashtagContainer.getChildCount();
+                    for (int i = 0; i < childCount; i++) {
+                        View childView = hashtagContainer.getChildAt(i);
+                        if (childView instanceof LinearLayout) {
+                            LinearLayout hashtagLayout = (LinearLayout) childView;
+                            if (hashtagLayout.getChildCount() == 2) {
+                                View hashtagChildView = hashtagLayout.getChildAt(0);
+                                if (hashtagChildView instanceof EditText) {
+                                    String hashtag = ((EditText) hashtagChildView).getText().toString().trim();
+                                    if (!hashtag.isEmpty()) {
+                                        hashtags.add(hashtag);
+                                    }
                                 }
                             }
                         }
                     }
+
+                    if (selectedImageUri != null) {
+
+                        uploadNewImage(selectedImageUri, email);
+                    }
+
+                    // Create a new Post object with the obtained data
+                    Post newPost = new Post(
+                            // You need to provide appropriate values for these parameters
+                            "postId",
+                            email,
+                            new ArrayList<>(),  // Placeholder for imagesUrl, modify as needed
+                            majorTag,
+                            hashtags,
+                            postContent,
+                            0,  // Placeholder for likes, modify as needed
+                            new ArrayList<>()  // Placeholder for comments, modify as needed
+                    );
+
+                    FirebaseFirestore db = FirebaseFirestore.getInstance();
+                    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+                    if (user != null) {
+                        // Use the user's UID as the document ID for the post
+                        db.collection("posts")
+                                .add(newPost)
+                                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                                    @Override
+                                    public void onSuccess(DocumentReference documentReference) {
+                                        // The post was added successfully
+                                        currentPostDocument = documentReference.getId();
+                                        // Update the id field of the newPost object with the Firestore document ID
+                                        newPost.setId(currentPostDocument);
+
+                                        // Now update the 'id' field in Firestore
+                                        documentReference.update("id", currentPostDocument)
+                                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                    @Override
+                                                    public void onSuccess(Void aVoid) {
+                                                        // Handle success
+                                                        Toast.makeText(getApplicationContext(), "Post added with ID: " + currentPostDocument, Toast.LENGTH_SHORT).show();
+                                                    }
+                                                })
+                                                .addOnFailureListener(new OnFailureListener() {
+                                                    @Override
+                                                    public void onFailure(@NonNull Exception e) {
+                                                        // Handle errors here
+                                                        Toast.makeText(getApplicationContext(), "Failed to update post ID in Firestore", Toast.LENGTH_SHORT).show();
+                                                    }
+                                                });
+                                    }
+                                })
+                                .addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        // Handle errors here
+                                        Toast.makeText(getApplicationContext(), "Post FAILED: ", Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+
+                    }
                 }
-
-                if (selectedImageUri != null) {
-
-                    uploadNewImage(selectedImageUri, email);
-                }
-
-                // Create a new Post object with the obtained data
-                Post newPost = new Post(
-                        // You need to provide appropriate values for these parameters
-                        "postId",
-                        email,
-                        new ArrayList<>(),  // Placeholder for imagesUrl, modify as needed
-                        majorTag,
-                        hashtags,
-                        postContent,
-                        0,  // Placeholder for likes, modify as needed
-                        new ArrayList<>()  // Placeholder for comments, modify as needed
-                );
-
-                FirebaseFirestore db = FirebaseFirestore.getInstance();
-                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-
-                if (user != null) {
-                    // Use the user's UID as the document ID for the post
-                    db.collection("posts")
-                            .add(newPost)
-                            .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                                @Override
-                                public void onSuccess(DocumentReference documentReference) {
-                                    // The post was added successfully
-                                    currentPostDocument = documentReference.getId();
-                                    Toast.makeText(getApplicationContext(), "Post added with ID: " + documentReference.getId(), Toast.LENGTH_SHORT).show();
-                                }
-                            })
-                            .addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    // Handle errors here
-                                    Toast.makeText(getApplicationContext(), "Post FAILED: ", Toast.LENGTH_SHORT).show();
-                                }
-                            });
-
-                }
-            }
-        });
-    }
+            });
+        }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
