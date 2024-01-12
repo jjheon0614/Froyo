@@ -1,0 +1,130 @@
+<!-- res/layout/activity_create_post.xml -->
+
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".NewPostForm">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="16dp">
+
+        <EditText
+            android:id="@+id/editTextPostContent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Write your post content..."
+            android:inputType="textMultiLine"
+            android:minLines="3"
+            android:gravity="top"
+            android:layout_marginBottom="16dp"/>
+
+        <ImageView
+            android:id="@+id/imageViewPostPreview"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_below="@id/editTextPostContent"
+            android:scaleType="centerCrop"
+            android:layout_marginBottom="16dp"/>
+
+        <Button
+            android:id="@+id/buttonAddImage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/imageViewPostPreview"
+            android:text="Add Image"
+            android:layout_marginBottom="16dp"/>
+
+        <!-- Label for Major Tag -->
+        <TextView
+            android:id="@+id/textViewMajorTag"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Major Tag"
+            android:layout_below="@id/buttonAddImage"
+            android:layout_marginTop="16dp"/>
+
+        <!-- Dropdown for Major Tag -->
+        <Spinner
+            android:id="@+id/spinnerMajorTag"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/textViewMajorTag"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="16dp"/>
+
+        <!-- Button for adding hashtags -->
+        <Button
+            android:id="@+id/buttonAddHashtag"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/spinnerMajorTag"
+            android:text="Add Hashtag"
+            android:layout_marginTop="16dp"/>
+
+        <!-- Container for dynamically adding hashtag fields -->
+        <LinearLayout
+            android:id="@+id/hashtagContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_below="@id/buttonAddHashtag"
+            android:layout_marginTop="16dp"/>
+
+        <Button
+            android:id="@+id/buttonSubmitPost"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/hashtagContainer"
+            android:text="Submit Post"/>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal"
+        android:background="@color/white"
+        android:weightSum="4"
+        android:gravity="center">
+
+        <ImageButton
+            android:id="@+id/goToPost"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/navigation_home"
+            android:layout_weight="1"
+            android:background="@color/white"/>
+
+
+        <ImageButton
+            android:id="@+id/goToPosting"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/navgation_blue_add"
+            android:layout_weight="1"
+            android:background="@color/white"/>
+
+
+        <ImageButton
+            android:id="@+id/goToChat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/navigation_chat"
+            android:layout_weight="1"
+            android:background="@color/white"/>
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/goToProfile"
+            android:src="@drawable/person"
+            android:layout_weight="1"
+            android:background="@color/white"/>
+
+    </LinearLayout>
+</RelativeLayout>
