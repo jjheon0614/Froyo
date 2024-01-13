@@ -10,7 +10,9 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
@@ -19,6 +21,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.ArrayAdapter;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
@@ -41,10 +44,12 @@ import java.util.UUID;
 
 public class NewPostForm extends AppCompatActivity {
     private static final int REQUEST_CODE_PICK_IMAGE = 1;
+    private TextView tvUsername;
     private String userID, email;
     private EditText editTextPostContent;
     private ImageView imageViewPostPreview;
-    private Button buttonAddImage, buttonAddHashtag, buttonSubmitPost;
+    private ImageButton buttonAddImage, buttonAddHashtag;
+    private Button buttonSubmitPost;
     private Spinner spinnerMajorTag;
     private LinearLayout hashtagContainer;
     private Uri selectedImageUri;
@@ -62,13 +67,17 @@ public class NewPostForm extends AppCompatActivity {
         email = i.getStringExtra("email");
 
         // Initialize components
-        editTextPostContent = findViewById(R.id.editTextPostContent);
-        imageViewPostPreview = findViewById(R.id.imageViewPostPreview);
-        buttonAddImage = findViewById(R.id.buttonAddImage);
-        buttonAddHashtag = findViewById(R.id.buttonAddHashtag);
-        buttonSubmitPost = findViewById(R.id.buttonSubmitPost);
+        tvUsername = findViewById(R.id.tvUsername);
+        editTextPostContent = findViewById(R.id.etContent);
+        imageViewPostPreview = findViewById(R.id.ivPreview);
+        buttonAddImage = findViewById(R.id.ibUploadImages);
+        buttonAddHashtag = findViewById(R.id.btAddHashtag);
+        buttonSubmitPost = findViewById(R.id.btPost);
         spinnerMajorTag = findViewById(R.id.spinnerMajorTag);
-        hashtagContainer = findViewById(R.id.hashtagContainer);
+        hashtagContainer = findViewById(R.id.llHashtagContainer);
+
+        // Set the username text
+        tvUsername.setText(userID);
 
         goToProfile = findViewById(R.id.goToProfile);
         goToProfile.setOnClickListener(new View.OnClickListener() {
@@ -240,17 +249,27 @@ public class NewPostForm extends AppCompatActivity {
         LinearLayout hashtagLayout = new LinearLayout(this);
         hashtagLayout.setLayoutParams(new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.VERTICAL
         ));
+        hashtagLayout.setGravity(Gravity.CENTER);
+
+        ImageView ivHashtag = new ImageView(this);
+        ivHashtag.setImageResource(R.drawable.hashtag);
+        ivHashtag.setLayoutParams(new LinearLayout.LayoutParams(40, 40));
+        ivHashtag.setRight(10);
 
         // Create a new EditText for the hashtag
         EditText hashtagEditText = new EditText(this);
         hashtagEditText.setLayoutParams(new LinearLayout.LayoutParams(
-                0, // Set width to 0 to allow weight to work
-                LinearLayout.LayoutParams.WRAP_CONTENT,
-                1.0f // Set weight to 1 to take available space
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                4.0f // Set weight to 1 to take available space
         ));
-        hashtagEditText.setHint("Enter Hashtag");
+        hashtagEditText.setHint("Hashtag");
+        hashtagEditText.setBackgroundResource(R.drawable.rounded_rectangle);
+        hashtagEditText.setPadding(10,10,10,10);
+        hashtagEditText.setEms(12);
 
         // Create a new delete button (ImageButton with "X" icon)
         ImageButton deleteButton = new ImageButton(this);
@@ -269,6 +288,7 @@ public class NewPostForm extends AppCompatActivity {
         });
 
         // Add the EditText and delete button to the LinearLayout
+        hashtagLayout.addView(ivHashtag);
         hashtagLayout.addView(hashtagEditText);
         hashtagLayout.addView(deleteButton);
 

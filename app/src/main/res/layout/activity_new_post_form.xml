@@ -1,130 +1,257 @@
-<!-- res/layout/activity_create_post.xml -->
-
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/clFrame"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".NewPostForm">
+    android:orientation="vertical"
+    android:background="#ADE2FF">
 
-    <RelativeLayout
+    <TextView
+        android:id="@+id/tvTitle"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="16dp">
+        android:layout_height="wrap_content"
+        android:background="#2C4575"
+        android:padding="20dp"
+        android:text="New post"
+        android:textColor="@color/white"
+        android:textSize="26sp"
+        android:textStyle="bold" />
 
-        <EditText
-            android:id="@+id/editTextPostContent"
+        <ScrollView
+            android:id="@+id/svNewPost"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Write your post content..."
-            android:inputType="textMultiLine"
-            android:minLines="3"
-            android:gravity="top"
-            android:layout_marginBottom="16dp"/>
+            android:layout_below="@id/tvTitle"
+            android:layout_above="@id/llNavBar"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
 
-        <ImageView
-            android:id="@+id/imageViewPostPreview"
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:layout_below="@id/editTextPostContent"
-            android:scaleType="centerCrop"
-            android:layout_marginBottom="16dp"/>
+            <LinearLayout
+                android:id="@+id/llContent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="20dp">
 
-        <Button
-            android:id="@+id/buttonAddImage"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_below="@id/imageViewPostPreview"
-            android:text="Add Image"
-            android:layout_marginBottom="16dp"/>
+                <LinearLayout
+                    android:id="@+id/llAccountBanner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:gravity="center|start"
+                    android:orientation="horizontal">
 
-        <!-- Label for Major Tag -->
-        <TextView
-            android:id="@+id/textViewMajorTag"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Major Tag"
-            android:layout_below="@id/buttonAddImage"
-            android:layout_marginTop="16dp"/>
+                    <ImageView
+                        android:id="@+id/ivProfilePic"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/account_circle" />
 
-        <!-- Dropdown for Major Tag -->
-        <Spinner
-            android:id="@+id/spinnerMajorTag"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/textViewMajorTag"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="16dp"/>
+                    <TextView
+                        android:id="@+id/tvUsername"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="10dp"
+                        android:text="Username"
+                        android:textSize="20sp" />
 
-        <!-- Button for adding hashtags -->
-        <Button
-            android:id="@+id/buttonAddHashtag"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/spinnerMajorTag"
-            android:text="Add Hashtag"
-            android:layout_marginTop="16dp"/>
+                </LinearLayout>
 
-        <!-- Container for dynamically adding hashtag fields -->
+                <ScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_weight="1"
+                    android:fillViewport="true">
+
+                    <EditText
+                        android:id="@+id/etContent"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@drawable/rounded_rectangle"
+                        android:gravity="top"
+                        android:hint="Add your post content here, what’s on your mind FROYO?"
+                        android:inputType="textMultiLine"
+                        android:maxLines="10"
+                        android:padding="20dp"
+                        android:scrollbars="vertical" />
+                </ScrollView>
+
+                <LinearLayout
+                    android:id="@+id/llEducation"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/imgLibraryIcon"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_marginRight="10dp"
+                        android:src="@drawable/book" />
+
+                    <Spinner
+                        android:id="@+id/spinnerMajorTag"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="4"
+                        android:background="@drawable/rounded_rectangle"
+                        android:padding="10dp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/llHashtag"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/imgHashtag"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_marginRight="10dp"
+                        android:src="@drawable/hashtag" />
+
+                    <EditText
+                        android:id="@+id/etHashtag"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="4"
+                        android:background="@drawable/rounded_rectangle"
+                        android:ems="12"
+                        android:hint="Hashtag"
+                        android:inputType="text"
+                        android:padding="10dp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/llHashtagContainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:layout_marginBottom="16dp">
+
+                    <ImageButton
+                        android:id="@+id/btAddHashtag"
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:background="@drawable/rounded_rectangle"
+                        android:padding="10dp"
+                        android:src="@drawable/add_circle" />
+
+                    <TextView
+                        android:id="@+id/tvHashtag"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="Add Hashtag"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/ivPreview"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:layout_below="@id/tvHashtag"
+                    android:background="@drawable/rounded_rectangle"
+                    android:scaleType="centerCrop"
+                    android:layout_marginBottom="16dp"/>
+
+                <ImageButton
+                    android:id="@+id/ibUploadImages"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:background="@drawable/rounded_rectangle"
+                    android:padding="10dp"
+                    android:src="@drawable/add_circle" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="Add images"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="right"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/btPost"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Post"
+                        android:textSize="16sp"
+                        app:cornerRadius="0dp" />
+                </LinearLayout>
+            </LinearLayout>
+        </ScrollView>
+
         <LinearLayout
-            android:id="@+id/hashtagContainer"
+            android:id="@+id/llNavBar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_below="@id/buttonAddHashtag"
-            android:layout_marginTop="16dp"/>
+            android:layout_height="50dp"
+            android:layout_alignParentBottom="true"
+            android:orientation="horizontal"
+            android:background="@color/white"
+            android:weightSum="4"
+            android:gravity="center">
 
-        <Button
-            android:id="@+id/buttonSubmitPost"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/hashtagContainer"
-            android:text="Submit Post"/>
-    </RelativeLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_alignParentBottom="true"
-        android:orientation="horizontal"
-        android:background="@color/white"
-        android:weightSum="4"
-        android:gravity="center">
-
-        <ImageButton
-            android:id="@+id/goToPost"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/navigation_home"
-            android:layout_weight="1"
-            android:background="@color/white"/>
+            <ImageButton
+                android:id="@+id/goToPost"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/navigation_home"
+                android:layout_weight="1"
+                android:background="@color/white"/>
 
 
-        <ImageButton
-            android:id="@+id/goToPosting"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/navgation_blue_add"
-            android:layout_weight="1"
-            android:background="@color/white"/>
+            <ImageButton
+                android:id="@+id/goToPosting"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/navigation_add"
+                android:layout_weight="1"
+                android:background="@color/white"/>
 
 
-        <ImageButton
-            android:id="@+id/goToChat"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/navigation_chat"
-            android:layout_weight="1"
-            android:background="@color/white"/>
+            <ImageButton
+                android:id="@+id/goToChat"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/navigation_blue_chat"
+                android:layout_weight="1"
+                android:background="@color/white"/>
 
-        <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/goToProfile"
-            android:src="@drawable/person"
-            android:layout_weight="1"
-            android:background="@color/white"/>
-
-    </LinearLayout>
+            <ImageButton
+                android:id="@+id/goToProfile"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/person"
+                android:layout_weight="1"
+                android:background="@color/white"/>
+        </LinearLayout>
 </RelativeLayout>
+
