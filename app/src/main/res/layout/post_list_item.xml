@@ -66,27 +66,66 @@
                     android:layout_below="@+id/postImage"
                     android:layout_marginVertical="10dp"/>
 
-                <!-- Add more TextViews for Address, and other details as needed -->
-
-                <ImageView
-                    android:id="@+id/likeIcon"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
+                <!-- Like Button Section -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_below="@+id/postContent"
-                    android:layout_alignParentRight="true"
                     android:layout_marginTop="5dp"
-                    android:layout_marginRight="289dp"
-                    android:src="@drawable/ic_like" />
+                    android:orientation="horizontal">
 
-                <ImageView
-                    android:id="@+id/commentIcon"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:layout_below="@+id/postContent"
-                    android:layout_marginTop="9dp"
-                    android:layout_marginRight="-237dp"
-                    android:layout_toLeftOf="@+id/likeIcon"
-                    android:src="@drawable/ic_comment" />
+                    <!-- Like Button Section -->
+                    <RelativeLayout
+                        android:id="@+id/likeSection"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginRight="5dp">
+
+                        <ImageView
+                            android:id="@+id/likeButton"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:src="@drawable/ic_like"
+                            android:layout_centerHorizontal="true"/>
+
+                        <TextView
+                            android:id="@+id/likeCount"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="0"
+                            android:layout_toRightOf="@+id/likeButton"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="5dp"/>
+                    </RelativeLayout>
+
+                    <!-- Comment Button Section -->
+                    <RelativeLayout
+                        android:id="@+id/commentSection"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginLeft="5dp">
+
+                        <ImageView
+                            android:id="@+id/commentButton"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:src="@drawable/ic_comment"
+                            android:layout_centerHorizontal="true"/>
+
+                        <TextView
+                            android:id="@+id/commentCount"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="0"
+                            android:layout_toRightOf="@+id/commentButton"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="5dp"/>
+                    </RelativeLayout>
+
+                </LinearLayout>
+
 
             </RelativeLayout>
         </androidx.cardview.widget.CardView>
