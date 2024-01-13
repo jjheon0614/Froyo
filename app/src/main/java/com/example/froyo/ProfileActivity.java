@@ -128,6 +128,9 @@ public class ProfileActivity extends AppCompatActivity {
             }
         });
 
+
+
+        goToPost = findViewById(R.id.goToPost);
         goToChat = findViewById(R.id.goToChat);
         goToChat.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -141,6 +144,21 @@ public class ProfileActivity extends AppCompatActivity {
                 finish();
             }
         });
+
+        goToPosting = findViewById(R.id.goToPosting);
+        goToPosting.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ProfileActivity.this, NewPostForm.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                String username = userId.getText().toString();
+                intent.putExtra("userId", username);
+                intent.putExtra("email", email);
+                startActivity(intent);
+                finish();
+            }
+        });
+
 
 
         saveBtn = (Button) findViewById(R.id.saveBtn);
