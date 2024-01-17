@@ -12,7 +12,20 @@
           "package_name": "com.example.froyo"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "68401063970-muuf70r8v18bojulubem2o3oj2g3fhef.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.froyo",
+            "certificate_hash": "bbd605e0b25d0e254ac3557ae1cf49fbdc9ce7ba"
+          }
+        },
+        {
+          "client_id": "68401063970-m142rb32l44g8s5i60ld055vrcdch89m.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyDy823ea09z6LwUqezRJHg9d0TQHEjmyOA"
@@ -20,7 +33,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "68401063970-m142rb32l44g8s5i60ld055vrcdch89m.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }
