@@ -43,6 +43,17 @@ public class PostListViewAdapter extends RecyclerView.Adapter<PostListViewAdapte
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         // String NameString = foodPlaces.get(position).getName() + " - " + foodPlaces.get(position).getCategory();
 
+        ArrayList<String> postHashtags = posts.get(position).getHashTag();
+
+        // Convert the list of hashtags into a formatted string
+        StringBuilder hashtagsStringBuilder = new StringBuilder();
+        for (String hashtag : postHashtags) {
+            hashtagsStringBuilder.append("#").append(hashtag).append(" ");
+        }
+
+        // Set the formatted hashtags string to the TextView
+        holder.hashtags.setText(hashtagsStringBuilder.toString());
+        holder.majorTag.setText(posts.get(position).getMajorTag());
         holder.profileName.setText(posts.get(position).getId());
         holder.postContent.setText(posts.get(position).getContent());
         ArrayList<String> images = posts.get(position).getImages();
@@ -137,7 +148,7 @@ public class PostListViewAdapter extends RecyclerView.Adapter<PostListViewAdapte
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{
-        private TextView profileName, postContent, likeCount, commentCount;
+        private TextView profileName, postContent, likeCount, commentCount, hashtags, majorTag;
         // private ImageView profileImage;
         private ImageView postImage, likeButton, commentButton;
         private CardView postsParent;
@@ -152,7 +163,8 @@ public class PostListViewAdapter extends RecyclerView.Adapter<PostListViewAdapte
             postsParent = itemView.findViewById(R.id.postsParent);
             likeButton = itemView.findViewById(R.id.likeButton);
             commentButton = itemView.findViewById(R.id.commentButton);
-
+            hashtags = itemView.findViewById(R.id.hashtags);
+            majorTag = itemView.findViewById(R.id.majorTag);
         }
     }
 }
