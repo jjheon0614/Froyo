@@ -1,6 +1,7 @@
 package com.example.froyo;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -43,7 +44,8 @@ public class PostListViewAdapter extends RecyclerView.Adapter<PostListViewAdapte
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         // String NameString = foodPlaces.get(position).getName() + " - " + foodPlaces.get(position).getCategory();
 
-        holder.profileName.setText(posts.get(position).getId());
+        //holder.profileName.setText(posts.get(position).getId());
+        holder.profileName.setText(posts.get(position).getUserEmail());
         holder.postContent.setText(posts.get(position).getContent());
         ArrayList<String> images = posts.get(position).getImages();
         Glide.with(context).asBitmap().load(images.get(0)).into(holder.postImage);
@@ -55,6 +57,19 @@ public class PostListViewAdapter extends RecyclerView.Adapter<PostListViewAdapte
             @Override
             public void onClick(View v) {
                 Toast.makeText(context, posts.get(holder.getAdapterPosition()).getId() , Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        // Set the OnClickListener for the profileName TextView
+        holder.profileName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, ProfileInfoActivity.class);
+                // Put extra data if needed, e.g., the user email or ID
+                intent.putExtra("userEmail", posts.get(position).getUserEmail());
+                // You can add more data to intent if required
+
+                context.startActivity(intent);
             }
         });
 

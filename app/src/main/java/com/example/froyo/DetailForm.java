@@ -37,6 +37,7 @@ import com.google.firebase.storage.UploadTask;
 
 import org.w3c.dom.Text;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -127,6 +128,10 @@ public class DetailForm extends AppCompatActivity {
                                             user.put("posts", 0);
                                             user.put("following", 0);
                                             user.put("followers", 0);
+                                            user.put("postsArr", new ArrayList<Map<String, Object>>());
+                                            user.put("followingArr", new ArrayList<String>());   // Empty list for following user IDs
+                                            user.put("followersArr", new ArrayList<String>());   // Empty list for follower IDs
+
 
 
                                             // Add a new document with a generated ID
@@ -181,6 +186,10 @@ public class DetailForm extends AppCompatActivity {
                         user.put("posts", 0); // Default number of posts
                         user.put("following", 0); // Default number of following
                         user.put("followers", 0); // Default number of followers
+                        user.put("postsArr", new ArrayList<String>());       // Empty list for post IDs
+                        user.put("followingArr", new ArrayList<String>());   // Empty list for following user IDs
+                        user.put("followersArr", new ArrayList<String>());   // Empty list for follower IDs
+
 
                         // Update the Firestore document with a merge option
                         db.collection("users").document(firebaseUser.getUid())

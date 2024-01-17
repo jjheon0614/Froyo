@@ -6,8 +6,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.ImageButton;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -25,6 +28,8 @@ public class PostActivity extends AppCompatActivity {
     private RecyclerView postRecView;
     private ArrayList<Post> postsArrayList = new ArrayList<>();
     private PostListViewAdapter adapter;
+    private ImageButton goToPosting, goToChat, goToProfile;
+    private String userID, email;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +38,10 @@ public class PostActivity extends AppCompatActivity {
 
         // Initialize RecyclerView and Adapter
         postRecView = findViewById(R.id.postRecView);
+
+        Intent i = getIntent();
+        userID = i.getStringExtra("userId");
+        email = i.getStringExtra("email");
 
         if (postRecView != null) {
             adapter = new PostListViewAdapter(this);
@@ -44,6 +53,47 @@ public class PostActivity extends AppCompatActivity {
         } else {
             Log.e("PostActivity", "RecyclerView is null");
         }
+
+
+
+        goToProfile = findViewById(R.id.goToProfile);
+        goToProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(PostActivity.this, ProfileActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent.putExtra("userId", userID);
+                intent.putExtra("email", email);
+                startActivity(intent);
+                finish();
+            }
+        });
+
+
+        goToChat = findViewById(R.id.goToChat);
+        goToChat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(PostActivity.this, ChatListActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent.putExtra("email", email);
+                startActivity(intent);
+                finish();
+            }
+        });
+
+        goToPosting = findViewById(R.id.goToPosting);
+        goToPosting.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(PostActivity.this, NewPostForm.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent.putExtra("userId", userID);
+                intent.putExtra("email", email);
+                startActivity(intent);
+                finish();
+            }
+        });
     }
 
     private void getData() {
@@ -105,7 +155,8 @@ public class PostActivity extends AppCompatActivity {
                         // Parse Firestore document data into a Post object
                         Post post = new Post();
                         post.setId((String) dataMap.get("id"));
-                        post.setUserEmail((String) dataMap.get("username"));
+//                        post.setUserEmail((String) dataMap.get("username"));
+                        post.setUserEmail((String) dataMap.get("userEmail"));
                         post.setMajorTag((String) dataMap.get("majorTag"));
                         post.setContent((String) dataMap.get("content"));
                         post.setImages((ArrayList<String>) dataMap.get("images"));
