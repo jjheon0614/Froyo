@@ -19,6 +19,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
@@ -64,9 +66,14 @@ public class PostListViewAdapter extends RecyclerView.Adapter<PostListViewAdapte
         holder.profileName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                 Intent intent = new Intent(context, ProfileInfoActivity.class);
                 // Put extra data if needed, e.g., the user email or ID
                 intent.putExtra("userEmail", posts.get(position).getUserEmail());
+                if (user != null) {
+                    String email = user.getEmail();
+                    intent.putExtra("email", email);
+                }
                 // You can add more data to intent if required
 
                 context.startActivity(intent);
