@@ -41,18 +41,22 @@ public class PostListViewAdapter extends RecyclerView.Adapter<PostListViewAdapte
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        // String NameString = foodPlaces.get(position).getName() + " - " + foodPlaces.get(position).getCategory();
-
         ArrayList<String> postHashtags = posts.get(position).getHashTag();
 
-        // Convert the list of hashtags into a formatted string
-        StringBuilder hashtagsStringBuilder = new StringBuilder();
-        for (String hashtag : postHashtags) {
-            hashtagsStringBuilder.append("#").append(hashtag).append(" ");
+        // Check if postHashtags is null or empty
+        if (postHashtags == null || postHashtags.isEmpty()) {
+            // If null or empty, create a list containing a single empty string
+            postHashtags = new ArrayList<>();
+            postHashtags.add("");
+        } else {
+            // Convert the list of hashtags into a formatted string
+            StringBuilder hashtagsStringBuilder = new StringBuilder();
+            for (String hashtag : postHashtags) {
+                hashtagsStringBuilder.append("#").append(hashtag).append(" ");
+            }
+            holder.hashtags.setText(hashtagsStringBuilder.toString());
         }
 
-        // Set the formatted hashtags string to the TextView
-        holder.hashtags.setText(hashtagsStringBuilder.toString());
         holder.majorTag.setText(posts.get(position).getMajorTag());
         holder.profileName.setText(posts.get(position).getId());
         holder.postContent.setText(posts.get(position).getContent());
@@ -85,10 +89,6 @@ public class PostListViewAdapter extends RecyclerView.Adapter<PostListViewAdapte
                 showCommentDialogFragment(posts.get(holder.getAdapterPosition()).getId());
             }
         });
-
-
-
-
     }
 
     @Override
@@ -158,7 +158,6 @@ public class PostListViewAdapter extends RecyclerView.Adapter<PostListViewAdapte
             postContent = itemView.findViewById(R.id.postContent);
             likeCount = itemView.findViewById(R.id.likeCount);
             commentCount = itemView.findViewById(R.id.commentCount);
-            // profilpostContenteImage = itemView.findViewById(R.id.profileImage);
             postImage = itemView.findViewById((R.id.postImage));
             postsParent = itemView.findViewById(R.id.postsParent);
             likeButton = itemView.findViewById(R.id.likeButton);
