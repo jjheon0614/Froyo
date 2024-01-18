@@ -236,7 +236,7 @@ public class AddChatActivity extends AppCompatActivity {
         data.put("chatID", documentId); // Create field: chatID
         List<Map<String, List<String>>> messageList = new ArrayList<>();
         data.put(documentId, messageList);
-        if(people.size() > 2){
+        if(people.size() > 1){
             data.put("title", title);
         }
         List<Map<String, Integer>> userList = new ArrayList<>();
