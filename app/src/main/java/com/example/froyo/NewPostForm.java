@@ -29,6 +29,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
@@ -39,6 +40,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -181,6 +183,7 @@ public class NewPostForm extends AppCompatActivity {
                     // and the Uri of the selected image:
                     String postContent = editTextPostContent.getText().toString();
                     String majorTag = selectedMajorTag;
+                    Date currentDate = new Date();
 
                     // Iterate through the hashtagContainer to get hashtag values
                     ArrayList<String> hashtags = new ArrayList<>();
@@ -217,12 +220,13 @@ public class NewPostForm extends AppCompatActivity {
                             // You need to provide appropriate values for these parameters
                             "postId",
                             email,
-                            new ArrayList<>(),  // Placeholder for imagesUrl, modify as needed
+                            new ArrayList<>(),
                             majorTag,
                             hashtags,
                             postContent,
-                            0,  // Placeholder for likes, modify as needed
-                            new ArrayList<>()  // Placeholder for comments, modify as needed
+                            0,
+                            new ArrayList<>(),
+                            new Timestamp(currentDate)
                     );
 
                     FirebaseFirestore db = FirebaseFirestore.getInstance();

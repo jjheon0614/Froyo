@@ -14,6 +14,7 @@ import android.widget.ImageButton;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
@@ -21,6 +22,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Map;
 
 public class PostActivity extends AppCompatActivity {
@@ -161,6 +163,13 @@ public class PostActivity extends AppCompatActivity {
                         post.setHashTag((ArrayList<String>) dataMap.get("hashTag"));
                         post.setLikes(((Long) dataMap.get("likes")).intValue());
                         post.setComments((ArrayList<String>) dataMap.get("comments"));
+
+                        // Retrieve and set the date field
+                        Timestamp timestamp = (Timestamp) dataMap.get("date");
+                        if (timestamp != null) {
+                            post.setDate(timestamp);
+                        }
+
 
                         // Add the Post object to the list
                         postsArrayList.add(post);

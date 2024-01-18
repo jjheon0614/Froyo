@@ -1,6 +1,9 @@
 package com.example.froyo;
 
+import com.google.firebase.Timestamp;
+
 import java.util.ArrayList;
+import java.util.Date;
 
 public class Post {
     private String id;
@@ -11,8 +14,9 @@ public class Post {
     private String content;
     private int likes;
     private ArrayList<String> comments;
+    private Timestamp date;
 
-    public Post(String id, String userEmail, ArrayList<String> imagesUrl, String majorTag, ArrayList<String> hashTag, String content, int likes, ArrayList<String> comments) {
+    public Post(String id, String userEmail, ArrayList<String> imagesUrl, String majorTag, ArrayList<String> hashTag, String content, int likes, ArrayList<String> comments,  Timestamp date) {
         this.id = id;
         this.userEmail = userEmail;
         this.images = imagesUrl;
@@ -21,6 +25,7 @@ public class Post {
         this.content = content;
         this.likes = likes;
         this.comments = comments;
+        this.date = date;
     }
 
 //    public Post(){
@@ -99,5 +104,13 @@ public class Post {
 
     public void setComments(ArrayList<String> comments) {
         this.comments = comments;
+    }
+
+    public Timestamp getDate() {
+        return date;
+    }
+
+    public void setDate(Timestamp date) {
+        this.date = date;
     }
 }
