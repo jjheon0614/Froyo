@@ -35,6 +35,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.WriteBatch;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 public class ProfileInfoActivity extends AppCompatActivity {
@@ -66,9 +67,9 @@ public class ProfileInfoActivity extends AppCompatActivity {
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(ProfileInfoActivity.this, PostActivity.class);
-                intent.putExtra("backFromInfo", "true");
-                setResult(RESULT_OK, intent);
+//                Intent intent = new Intent(ProfileInfoActivity.this, PostActivity.class);
+//                intent.putExtra("backFromInfo", "true");
+//                setResult(RESULT_OK, intent);
                 finish();
             }
         });
@@ -79,48 +80,56 @@ public class ProfileInfoActivity extends AppCompatActivity {
             public void onClick(View v) {
                 FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-// Query for the user being followed
-                db.collection("users").whereEqualTo("email", userEmail).limit(1).get().addOnSuccessListener(queryDocumentSnapshots -> {
-                    if (!queryDocumentSnapshots.isEmpty()) {
-                        DocumentSnapshot followedUserSnapshot = queryDocumentSnapshots.getDocuments().get(0);
-                        DocumentReference followedUserDoc = followedUserSnapshot.getReference();
+                // Query for the current user
+                db.collection("users").whereEqualTo("email", email).limit(1).get().addOnSuccessListener(queryDocumentSnapshotsCurrentUser -> {
+                    if (!queryDocumentSnapshotsCurrentUser.isEmpty()) {
+                        DocumentSnapshot currentUserSnapshot = queryDocumentSnapshotsCurrentUser.getDocuments().get(0);
+                        DocumentReference currentUserDoc = currentUserSnapshot.getReference();
+                        List<String> currentFollowingArr = (List<String>) currentUserSnapshot.get("followingArr");
 
-                        // Query for the current user
-                        db.collection("users").whereEqualTo("email", email).limit(1).get().addOnSuccessListener(queryDocumentSnapshotsCurrentUser -> {
-                            if (!queryDocumentSnapshotsCurrentUser.isEmpty()) {
-                                DocumentSnapshot currentUserSnapshot = queryDocumentSnapshotsCurrentUser.getDocuments().get(0);
-                                DocumentReference currentUserDoc = currentUserSnapshot.getReference();
+                        // Check if already following
+                        boolean isAlreadyFollowing = currentFollowingArr != null && currentFollowingArr.contains(userEmail);
+
+                        // Query for the user being followed/unfollowed
+                        db.collection("users").whereEqualTo("email", userEmail).limit(1).get().addOnSuccessListener(queryDocumentSnapshotsFollowedUser -> {
+                            if (!queryDocumentSnapshotsFollowedUser.isEmpty()) {
+                                DocumentSnapshot followedUserSnapshot = queryDocumentSnapshotsFollowedUser.getDocuments().get(0);
+                                DocumentReference followedUserDoc = followedUserSnapshot.getReference();
 
                                 // Start a batch write operation
                                 WriteBatch batch = db.batch();
 
-                                // Increment 'followers' count and add 'email' to 'followersArr' for the followed user
-                                batch.update(followedUserDoc, "followers", FieldValue.increment(1));
-                                batch.update(followedUserDoc, "followersArr", FieldValue.arrayUnion(email));
-
-                                // Increment 'following' count and add 'userEmail' to 'followingArr' for the current user
-                                batch.update(currentUserDoc, "following", FieldValue.increment(1));
-                                batch.update(currentUserDoc, "followingArr", FieldValue.arrayUnion(userEmail));
+                                if (isAlreadyFollowing) {
+                                    // Unfollow
+                                    batch.update(followedUserDoc, "followers", FieldValue.increment(-1));
+                                    batch.update(followedUserDoc, "followersArr", FieldValue.arrayRemove(email));
+                                    batch.update(currentUserDoc, "following", FieldValue.increment(-1));
+                                    batch.update(currentUserDoc, "followingArr", FieldValue.arrayRemove(userEmail));
+                                    followUser.setText("Follow");
+                                } else {
+                                    // Follow
+                                    batch.update(followedUserDoc, "followers", FieldValue.increment(1));
+                                    batch.update(followedUserDoc, "followersArr", FieldValue.arrayUnion(email));
+                                    batch.update(currentUserDoc, "following", FieldValue.increment(1));
+                                    batch.update(currentUserDoc, "followingArr", FieldValue.arrayUnion(userEmail));
+                                    followUser.setText("Following");
+                                }
 
                                 // Commit the batch write
                                 batch.commit().addOnCompleteListener(task -> {
                                     if (task.isSuccessful()) {
                                         // Successfully updated followers/following
-                                        followUser.setText("Following");
                                         fetchUserData(userEmail);
-                                        Toast.makeText(ProfileInfoActivity.this, "Successfully followed!", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(ProfileInfoActivity.this, isAlreadyFollowing ? "Successfully unfollowed!" : "Successfully followed!", Toast.LENGTH_SHORT).show();
                                     } else {
                                         // Failed to update followers/following
-                                        Toast.makeText(ProfileInfoActivity.this, "Failed to follow. Please try again.", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(ProfileInfoActivity.this, "Failed to update. Please try again.", Toast.LENGTH_SHORT).show();
                                     }
                                 });
                             }
                         });
                     }
-                }).addOnFailureListener(e -> {
-                    // Handle errors for the followed user query
                 });
-
             }
         });
 
@@ -132,6 +141,13 @@ public class ProfileInfoActivity extends AppCompatActivity {
         userPosts = findViewById(R.id.userPostsInfo);
         userFollowers = findViewById(R.id.userFollowersInfo);
         userFollowing = findViewById(R.id.userFollowingInfo);
+
+        userFollowers.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(ProfileInfoActivity.this, "hello", Toast.LENGTH_SHORT).show();
+            }
+        });
 
         fetchUserData(userEmail);
 
@@ -193,10 +209,10 @@ public class ProfileInfoActivity extends AppCompatActivity {
     }
 
 
-    private void fetchUserData(String email) {
+    private void fetchUserData(String emailUser) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         db.collection("users")
-                .whereEqualTo("email", email)
+                .whereEqualTo("email", emailUser)
                 .get()
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
@@ -204,6 +220,14 @@ public class ProfileInfoActivity extends AppCompatActivity {
                         if (!queryDocumentSnapshots.isEmpty()) {
                             // Assuming email is unique and only one document is returned
                             DocumentSnapshot documentSnapshot = queryDocumentSnapshots.getDocuments().get(0);
+                            List<String> currentFollowersArr = (List<String>) documentSnapshot.get("followersArr");
+
+                            // Check if already following
+                            boolean isAlreadyFollowing = currentFollowersArr != null && currentFollowersArr.contains(email);
+                            if (isAlreadyFollowing) {
+                                followUser.setText("Following");
+                            }
+
 
                             // Parse data and set to views
                             username = documentSnapshot.getString("username");

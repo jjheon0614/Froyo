@@ -164,7 +164,8 @@
             android:hint="Username"
             android:background="@color/white"
             android:padding="10sp"
-            android:layout_marginBottom="20dp"/>
+            android:layout_marginBottom="20dp"
+            android:enabled="false"/>
 
         <TextView
             android:layout_width="wrap_content"
