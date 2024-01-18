@@ -61,7 +61,7 @@ public class PostListViewAdapter extends RecyclerView.Adapter<PostListViewAdapte
         }
 
         holder.majorTag.setText(posts.get(position).getMajorTag());
-        holder.profileName.setText(posts.get(position).getId());
+        //holder.profileName.setText(posts.get(position).getId());
         //holder.profileName.setText(posts.get(position).getId());
         holder.profileName.setText(posts.get(position).getUserEmail());
         holder.postContent.setText(posts.get(position).getContent());
