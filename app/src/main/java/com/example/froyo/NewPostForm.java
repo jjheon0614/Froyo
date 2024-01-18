@@ -28,16 +28,20 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.Transaction;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -239,6 +243,23 @@ public class NewPostForm extends AppCompatActivity {
                                                     public void onSuccess(Void aVoid) {
                                                         // Handle success
                                                         Toast.makeText(getApplicationContext(), "Post added with ID: " + currentPostDocument, Toast.LENGTH_SHORT).show();
+
+
+                                                        DocumentReference userDocRef = db.collection("users").document(user.getUid());
+
+                                                        // Increment the user's posts count
+                                                        userDocRef.update("posts", FieldValue.increment(1));
+
+                                                        // Prepare the map to be added to the postsArr
+                                                        Map<String, Object> postEntry = new HashMap<>();
+                                                        postEntry.put("postId", currentPostDocument);
+                                                        postEntry.put("timestamp", new Timestamp(new Date()));
+
+                                                        // Add the new post map to the postsArr
+                                                        userDocRef.update("postsArr", FieldValue.arrayUnion(postEntry))
+                                                                .addOnSuccessListener(aVoid1 -> Toast.makeText(getApplicationContext(), "User posts updated with ID: " + currentPostDocument, Toast.LENGTH_SHORT).show())
+                                                                .addOnFailureListener(e -> Toast.makeText(getApplicationContext(), "Failed to update user posts", Toast.LENGTH_SHORT).show());
+
                                                     }
                                                 })
                                                 .addOnFailureListener(new OnFailureListener() {

@@ -26,22 +26,35 @@ import java.util.Map;
 public class PostActivity extends AppCompatActivity {
 
     private RecyclerView postRecView;
-    private String userID, email;
     private ArrayList<Post> postsArrayList = new ArrayList<>();
     private PostListViewAdapter adapter;
-    private ImageButton goToProfile, goToPosting, goToChat;
+    private ImageButton goToPosting, goToChat, goToProfile;
+    private String userID, email;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post);
-        // get intent
+
+        // Initialize RecyclerView and Adapter
+        postRecView = findViewById(R.id.postRecView);
+
         Intent i = getIntent();
         userID = i.getStringExtra("userId");
         email = i.getStringExtra("email");
 
-        // Initialize RecyclerView and Adapter
-        postRecView = findViewById(R.id.postRecView);
+        if (postRecView != null) {
+            adapter = new PostListViewAdapter(this);
+            postRecView.setAdapter(adapter);
+            postRecView.setLayoutManager(new LinearLayoutManager(this));
+
+            // Fetch data from Firestore
+            getData1();
+        } else {
+            Log.e("PostActivity", "RecyclerView is null");
+        }
+
+
 
         goToProfile = findViewById(R.id.goToProfile);
         goToProfile.setOnClickListener(new View.OnClickListener() {
@@ -49,11 +62,13 @@ public class PostActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(PostActivity.this, ProfileActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent.putExtra("userId", userID);
                 intent.putExtra("email", email);
                 startActivity(intent);
                 finish();
             }
         });
+
 
         goToChat = findViewById(R.id.goToChat);
         goToChat.setOnClickListener(new View.OnClickListener() {
@@ -61,8 +76,6 @@ public class PostActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(PostActivity.this, ChatListActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                String username = userID;
-                intent.putExtra("userId", username);
                 intent.putExtra("email", email);
                 startActivity(intent);
                 finish();
@@ -75,24 +88,12 @@ public class PostActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(PostActivity.this, NewPostForm.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                String username = userID;
-                intent.putExtra("userId", username);
+                intent.putExtra("userId", userID);
                 intent.putExtra("email", email);
                 startActivity(intent);
                 finish();
             }
         });
-
-        if (postRecView != null) {
-            adapter = new PostListViewAdapter(this);
-            postRecView.setAdapter(adapter);
-            postRecView.setLayoutManager(new LinearLayoutManager(this));
-
-            // Fetch data from Firestore
-            getData1();
-        } else {
-            Log.e("PostActivity", "RecyclerView is null");
-        }
     }
 
     private void getData() {
@@ -154,7 +155,8 @@ public class PostActivity extends AppCompatActivity {
                         // Parse Firestore document data into a Post object
                         Post post = new Post();
                         post.setId((String) dataMap.get("id"));
-                        post.setUserEmail((String) dataMap.get("username"));
+//                        post.setUserEmail((String) dataMap.get("username"));
+                        post.setUserEmail((String) dataMap.get("userEmail"));
                         post.setMajorTag((String) dataMap.get("majorTag"));
                         post.setContent((String) dataMap.get("content"));
                         post.setImages((ArrayList<String>) dataMap.get("images"));

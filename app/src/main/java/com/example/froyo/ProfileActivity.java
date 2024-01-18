@@ -1,12 +1,17 @@
 package com.example.froyo;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -19,17 +24,25 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class ProfileActivity extends AppCompatActivity {
 
@@ -45,6 +58,11 @@ public class ProfileActivity extends AppCompatActivity {
     private Uri selectedImageUri;
     private LinearLayout editLinear;
     private ImageButton goToPost, goToPosting, goToChat;
+    private RecyclerView postRecView;
+    private PostListViewAdapter adapter;
+    private ArrayList<Post> postsArrayList = new ArrayList<>();
+    String username;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +86,19 @@ public class ProfileActivity extends AppCompatActivity {
 
         // Fetch user data from Firestore
         fetchUserData(email);
+
+        // Initialize RecyclerView and Adapter
+        postRecView = findViewById(R.id.profile_posts_recyclerview);
+        if (postRecView != null) {
+            adapter = new PostListViewAdapter(this);
+            postRecView.setAdapter(adapter);
+            postRecView.setLayoutManager(new LinearLayoutManager(this));
+
+            // Fetch data from Firestore
+            getDataForUser(email);
+        } else {
+            Log.e("PostActivity", "RecyclerView is null");
+        }
 
         logout = (Button) findViewById(R.id.logout);
         logout.setOnClickListener(new View.OnClickListener() {
@@ -94,6 +125,7 @@ public class ProfileActivity extends AppCompatActivity {
         posts.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                postRecView.setVisibility(View.VISIBLE);
                 editLinear.setVisibility(View.GONE);
                 posts.setTextColor(getResources().getColor(R.color.blue));
                 posts.setBackgroundResource(R.drawable.blue_underline);
@@ -107,6 +139,7 @@ public class ProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 editLinear.setVisibility(View.VISIBLE);
+                postRecView.setVisibility(View.GONE);
                 editProfile.setTextColor(getResources().getColor(R.color.blue));
                 editProfile.setBackgroundResource(R.drawable.blue_underline);
 
@@ -143,6 +176,8 @@ public class ProfileActivity extends AppCompatActivity {
                 finish();
             }
         });
+
+
         goToChat = findViewById(R.id.goToChat);
         goToChat.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -230,6 +265,50 @@ public class ProfileActivity extends AppCompatActivity {
             Glide.with(this).load(selectedImageUri).into(editImage);
         }
     }
+
+
+    private void getDataForUser(String userEmail) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        // Query the 'posts' collection where 'userEmail' field equals the provided userEmail
+        db.collection("posts")
+                .whereEqualTo("userEmail", userEmail)
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                        if (error != null) {
+                            Log.e("FirestoreError", "Error getting documents", error);
+                            return;
+                        }
+
+                        postsArrayList.clear();
+
+                        for (QueryDocumentSnapshot document : value) {
+                            Map<String, Object> dataMap = document.getData();
+                            if (dataMap != null) {
+                                // Parse Firestore document data into a Post object
+                                Post post = new Post();
+                                post.setId(userEmail); // Assuming 'id' is the document ID
+                                post.setUserEmail(userEmail);
+                                post.setMajorTag((String) dataMap.get("majorTag"));
+                                post.setContent((String) dataMap.get("content"));
+                                post.setImages((ArrayList<String>) dataMap.get("images"));
+                                post.setHashTag((ArrayList<String>) dataMap.get("hashTag"));
+                                post.setLikes(((Long) dataMap.get("likes")).intValue());
+                                post.setComments((ArrayList<String>) dataMap.get("comments"));
+
+                                // Add the Post object to the list
+                                postsArrayList.add(post);
+                            }
+                        }
+
+                        // After populating postsArrayList, set it to the adapter
+                        adapter.setPosts(postsArrayList);
+                        adapter.notifyDataSetChanged(); // Notify the adapter to refresh the list
+                    }
+                });
+    }
+
 
     private void uploadImageToStorage(Uri imageUri, String userEmail) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -328,7 +407,7 @@ public class ProfileActivity extends AppCompatActivity {
                             DocumentSnapshot documentSnapshot = queryDocumentSnapshots.getDocuments().get(0);
 
                             // Parse data and set to views
-                            String username = documentSnapshot.getString("username");
+                            username = documentSnapshot.getString("username");
                             String description = documentSnapshot.getString("description");
                             String imageUrl = documentSnapshot.getString("imageUrl");
                             long posts = documentSnapshot.getLong("posts");
