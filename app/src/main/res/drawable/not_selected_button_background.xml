@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Outer Circle -->
+    <item android:top="4dp" android:left="4dp" android:right="4dp" android:bottom="4dp">
+        <shape android:shape="oval">
+            <solid android:color="@color/nonColor" />
+            <stroke
+                android:width="1dp"
+                android:color="@color/mainColor" />
+            <size android:width="40dp" android:height="40dp" />
+        </shape>
+    </item>
+
+    <!-- Inner Circle -->
+    <item android:top="5dp" android:left="5dp" android:right="5dp" android:bottom="5dp">
+        <shape android:shape="oval">
+            <solid android:color="@color/nonColor" />
+            <stroke
+                android:width="2dp"
+                android:color="@color/nonColor" />
+            <size android:width="40dp" android:height="40dp" />
+        </shape>
+    </item>
+
+</layer-list>
