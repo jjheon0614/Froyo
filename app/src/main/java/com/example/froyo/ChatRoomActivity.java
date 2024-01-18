@@ -231,9 +231,7 @@ public class ChatRoomActivity extends AppCompatActivity {
         newMessageContent.add(message);
         newMessageContent.add(getTime());
         newMessage.put(userID, newMessageContent);
-
         currentMessageList.add(newMessage);
-
         dataMap.put(chatID, currentMessageList);
 
         db.collection("chats").document(chatID).set(dataMap)
@@ -288,13 +286,11 @@ public class ChatRoomActivity extends AppCompatActivity {
         mDate = new Date(mNow);
         return mFormat.format(mDate);
     }
-
     private void scrollToItem(int position) {
         if (position > 0) {
             messageList.scrollToPosition(position);
         }
     }
-
     public void showSearchBar(View view) {
         LinearLayout searchBar = findViewById(R.id.searchBar);
         LinearLayout top_bar = findViewById(R.id.top_bar);
@@ -303,7 +299,6 @@ public class ChatRoomActivity extends AppCompatActivity {
         top_bar.setVisibility(View.GONE);
         isSearch = true;
     }
-
     public void cancelSearch(View view) {
         LinearLayout searchBar = findViewById(R.id.searchBar);
         LinearLayout top_bar = findViewById(R.id.top_bar);
@@ -320,7 +315,6 @@ public class ChatRoomActivity extends AppCompatActivity {
         getData();
 
     }
-
     public void search(View view) {
         messageArrayList.clear();
         adapter.notifyDataSetChanged();
@@ -328,7 +322,6 @@ public class ChatRoomActivity extends AppCompatActivity {
         LinearLayout messageFinder = findViewById(R.id.messageFinder);
         messageFinder.setVisibility(View.VISIBLE);
     }
-
     public void moveUp(View view) {
         if (iterator > 0) {
             iterator--;
@@ -338,7 +331,6 @@ public class ChatRoomActivity extends AppCompatActivity {
                     Toast.LENGTH_SHORT).show();
         }
     }
-
     public void moveDown(View view) {
         if (iterator < foundIdx.size() - 1) {
             iterator++;
@@ -348,7 +340,6 @@ public class ChatRoomActivity extends AppCompatActivity {
                     Toast.LENGTH_SHORT).show();
         }
     }
-
     public void showEmoji(View view) {
         final Dialog emojiDialog = new Dialog(this);
         emojiDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -429,12 +420,10 @@ public class ChatRoomActivity extends AppCompatActivity {
         });
         emojiDialog.show();
     }
-
     public void openGallery(View view) {
         Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         startActivityForResult(galleryIntent, PICK_IMAGE_REQUEST);
     }
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

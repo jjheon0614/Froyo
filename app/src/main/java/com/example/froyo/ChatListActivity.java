@@ -42,7 +42,7 @@ public class ChatListActivity extends AppCompatActivity {
     private RecyclerView.LayoutManager layoutManager;
     private ArrayList<ChatRoom> chatRoomArrayList;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
-    private ImageButton goToPost, goToPosting, goToProfile;
+    private ImageButton goToPost, goToPosting, goToProfile, add_chat_button;
 
 
     @Override
@@ -61,7 +61,15 @@ public class ChatListActivity extends AppCompatActivity {
         email = i.getStringExtra("email");
         getData();
 
-
+        add_chat_button = findViewById(R.id.add_chat_button);
+        add_chat_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ChatListActivity.this, AddChatActivity.class);
+                intent.putExtra("userID", userID);
+                startActivity(intent);
+            }
+        });
 
         goToProfile = findViewById(R.id.goToProfile);
         goToProfile.setOnClickListener(new View.OnClickListener() {

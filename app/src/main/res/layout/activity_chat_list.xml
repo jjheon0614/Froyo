@@ -20,7 +20,7 @@
             android:id="@+id/textView"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_marginLeft="40dp"
+            android:layout_marginLeft="20dp"
             android:gravity="center"
             android:text="Messages"
             android:textColor="@color/white"
@@ -31,10 +31,20 @@
             android:layout_width="40dp"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:layout_marginLeft="110dp"
+            android:layout_marginLeft="100dp"
             android:src="@drawable/search_icon"
             android:background="@color/mainColor"
             android:onClick="showSearchBar"
+            />
+
+        <ImageButton
+            android:id="@+id/add_chat_button"
+            android:layout_width="60dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:background="@drawable/circle_background"
+            android:backgroundTint="@color/nonColor"
+            android:src="@drawable/add_chat"
             />
 
     </LinearLayout>
