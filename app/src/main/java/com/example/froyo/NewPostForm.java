@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -50,7 +51,7 @@ public class NewPostForm extends AppCompatActivity {
     private static final int REQUEST_CODE_PICK_IMAGE = 1;
     private TextView tvUsername;
     private String userID, email;
-    private EditText editTextPostContent;
+    private EditText editTextPostContent, editTextHashtag;
     private ImageView imageViewPostPreview;
     private ImageButton buttonAddImage, buttonAddHashtag;
     private Button buttonSubmitPost;
@@ -73,6 +74,7 @@ public class NewPostForm extends AppCompatActivity {
         // Initialize components
         tvUsername = findViewById(R.id.tvUsername);
         editTextPostContent = findViewById(R.id.etContent);
+        editTextHashtag = findViewById(R.id.etHashtag);
         imageViewPostPreview = findViewById(R.id.ivPreview);
         buttonAddImage = findViewById(R.id.ibUploadImages);
         buttonAddHashtag = findViewById(R.id.btAddHashtag);
@@ -183,16 +185,23 @@ public class NewPostForm extends AppCompatActivity {
                     // and the Uri of the selected image:
                     String postContent = editTextPostContent.getText().toString();
                     String majorTag = selectedMajorTag;
+                    Date currentDate = new Date();
 
                     // Iterate through the hashtagContainer to get hashtag values
                     ArrayList<String> hashtags = new ArrayList<>();
+
+                    // Get the first hashtag if any
+                    if(editTextHashtag.getText().toString().trim().length() > 0){
+                        hashtags.add(editTextHashtag.getText().toString().trim());
+                    }
+
                     int childCount = hashtagContainer.getChildCount();
                     for (int i = 0; i < childCount; i++) {
                         View childView = hashtagContainer.getChildAt(i);
                         if (childView instanceof LinearLayout) {
                             LinearLayout hashtagLayout = (LinearLayout) childView;
-                            if (hashtagLayout.getChildCount() == 2) {
-                                View hashtagChildView = hashtagLayout.getChildAt(0);
+                            if (hashtagLayout.getChildCount() == 3) {
+                                View hashtagChildView = hashtagLayout.getChildAt(1);
                                 if (hashtagChildView instanceof EditText) {
                                     String hashtag = ((EditText) hashtagChildView).getText().toString().trim();
                                     if (!hashtag.isEmpty()) {
@@ -213,12 +222,13 @@ public class NewPostForm extends AppCompatActivity {
                             // You need to provide appropriate values for these parameters
                             "postId",
                             email,
-                            new ArrayList<>(),  // Placeholder for imagesUrl, modify as needed
+                            new ArrayList<>(),
                             majorTag,
                             hashtags,
                             postContent,
-                            0,  // Placeholder for likes, modify as needed
-                            new ArrayList<>()  // Placeholder for comments, modify as needed
+                            0,
+                            new ArrayList<>(),
+                            new Timestamp(currentDate)
                     );
 
                     FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -298,30 +308,49 @@ public class NewPostForm extends AppCompatActivity {
     }
 
     private void addHashtagField() {
+        // Create generic values for padding in dp units
+        int dp10 = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 10, getResources().getDisplayMetrics());
+
         // Create a new LinearLayout to hold the EditText and delete button
         LinearLayout hashtagLayout = new LinearLayout(this);
-        hashtagLayout.setLayoutParams(new LinearLayout.LayoutParams(
+        LinearLayout.LayoutParams llParams = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT,
-                LinearLayout.VERTICAL
-        ));
+                LinearLayout.LayoutParams.WRAP_CONTENT
+        );
+        llParams.bottomMargin = dp10;
+
+        // Set the layout params of the LinearLayout
+        hashtagLayout.setLayoutParams(llParams);
+        hashtagLayout.setOrientation(LinearLayout.HORIZONTAL);
         hashtagLayout.setGravity(Gravity.CENTER);
 
+        // Create a new ImageView for the hashtag icon
         ImageView ivHashtag = new ImageView(this);
+
+        //Create a new LayoutParams for the ImageView in dp units
+        int width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 40, getResources().getDisplayMetrics());
+        int height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 40, getResources().getDisplayMetrics());
+
+
+        // Set the width, height, marginEnd of the ImageView
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(width, height);
+        params.setMarginEnd(dp10);
+
+        ivHashtag.setLayoutParams(params);
         ivHashtag.setImageResource(R.drawable.hashtag);
-        ivHashtag.setLayoutParams(new LinearLayout.LayoutParams(40, 40));
-        ivHashtag.setRight(10);
 
         // Create a new EditText for the hashtag
         EditText hashtagEditText = new EditText(this);
         hashtagEditText.setLayoutParams(new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT,
                 4.0f // Set weight to 1 to take available space
         ));
         hashtagEditText.setHint("Hashtag");
         hashtagEditText.setBackgroundResource(R.drawable.rounded_rectangle);
-        hashtagEditText.setPadding(10,10,10,10);
+
+        int padding = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 10, getResources().getDisplayMetrics());
+        hashtagEditText.setPadding(padding,padding,padding,padding);
         hashtagEditText.setEms(12);
 
         // Create a new delete button (ImageButton with "X" icon)

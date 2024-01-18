@@ -1,23 +1,64 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:padding="16dp">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/dialogTitle"
+    <!-- NestedScrollView for the entire layout -->
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Comments"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        android:gravity="center"/>
+        android:layout_height="match_parent">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/commentsRecyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"/>
+        <!-- RelativeLayout to contain the RecyclerView and comment input -->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp">
 
+            <!-- TextView for dialogTitle -->
+            <TextView
+                android:id="@+id/dialogTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Comments"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:gravity="center"/>
+
+            <!-- LinearLayout for comment input and button -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_below="@id/dialogTitle"
+                android:id="@+id/commentSection">
+
+                <!-- EditText for entering comments -->
+                <EditText
+                    android:id="@+id/commentInput"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:hint="Enter your comment"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp"/>
+
+                <!-- ImageButton for posting the comment -->
+                <ImageButton
+                    android:id="@+id/postCommentButton"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:src="@drawable/ic_send_comment"
+                    android:layout_gravity="end"/>
+            </LinearLayout>
+
+            <!-- RecyclerView for comments -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/commentsRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_below="@id/commentSection"/>
+        </RelativeLayout>
+    </androidx.core.widget.NestedScrollView>
 </LinearLayout>
