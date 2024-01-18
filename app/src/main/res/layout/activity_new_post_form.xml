@@ -232,7 +232,7 @@
                 android:id="@+id/goToPosting"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/navigation_add"
+                android:src="@drawable/navgation_blue_add"
                 android:layout_weight="1"
                 android:background="@color/white"/>
 
@@ -241,7 +241,7 @@
                 android:id="@+id/goToChat"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/navigation_blue_chat"
+                android:src="@drawable/navigation_chat"
                 android:layout_weight="1"
                 android:background="@color/white"/>
 

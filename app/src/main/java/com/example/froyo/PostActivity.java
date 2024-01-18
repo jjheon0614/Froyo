@@ -6,8 +6,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.ImageButton;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -23,16 +26,62 @@ import java.util.Map;
 public class PostActivity extends AppCompatActivity {
 
     private RecyclerView postRecView;
+    private String userID, email;
     private ArrayList<Post> postsArrayList = new ArrayList<>();
     private PostListViewAdapter adapter;
+    private ImageButton goToProfile, goToPosting, goToChat;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post);
+        // get intent
+        Intent i = getIntent();
+        userID = i.getStringExtra("userId");
+        email = i.getStringExtra("email");
 
         // Initialize RecyclerView and Adapter
         postRecView = findViewById(R.id.postRecView);
+
+        goToProfile = findViewById(R.id.goToProfile);
+        goToProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(PostActivity.this, ProfileActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent.putExtra("email", email);
+                startActivity(intent);
+                finish();
+            }
+        });
+
+        goToChat = findViewById(R.id.goToChat);
+        goToChat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(PostActivity.this, ChatListActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                String username = userID;
+                intent.putExtra("userId", username);
+                intent.putExtra("email", email);
+                startActivity(intent);
+                finish();
+            }
+        });
+
+        goToPosting = findViewById(R.id.goToPosting);
+        goToPosting.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(PostActivity.this, NewPostForm.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                String username = userID;
+                intent.putExtra("userId", username);
+                intent.putExtra("email", email);
+                startActivity(intent);
+                finish();
+            }
+        });
 
         if (postRecView != null) {
             adapter = new PostListViewAdapter(this);

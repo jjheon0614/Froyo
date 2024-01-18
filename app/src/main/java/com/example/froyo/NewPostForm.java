@@ -105,6 +105,20 @@ public class NewPostForm extends AppCompatActivity {
             }
         });
 
+        goToPost = findViewById(R.id.goToPost);
+        goToPost.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(NewPostForm.this, PostActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                String username = userID;
+                intent.putExtra("userId", username);
+                intent.putExtra("email", email);
+                startActivity(intent);
+                finish();
+            }
+        });
+
         // Create an ArrayAdapter using a predefined array and a default spinner layout
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
                 this,

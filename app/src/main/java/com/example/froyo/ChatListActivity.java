@@ -87,6 +87,20 @@ public class ChatListActivity extends AppCompatActivity {
                 finish();
             }
         });
+
+        goToPost = findViewById(R.id.goToPost);
+        goToPost.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ChatListActivity.this, PostActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                String username = userID;
+                intent.putExtra("userId", username);
+                intent.putExtra("email", email);
+                startActivity(intent);
+                finish();
+            }
+        });
     }
 
     private void getData(){
