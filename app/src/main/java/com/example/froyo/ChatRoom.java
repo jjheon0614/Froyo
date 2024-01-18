@@ -1,5 +1,5 @@
 package com.example.froyo;
-
+// ha
 public class ChatRoom{
     public String profile = "https://images.pexels.com/photos/416160/pexels-photo-416160.jpeg?auto=compress&cs=tinysrgb&w=1200";
     public String title;
