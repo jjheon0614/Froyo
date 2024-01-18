@@ -48,7 +48,6 @@ import java.util.Map;
 public class AddChatActivity extends AppCompatActivity {
     private String userID;
     private Boolean isSearch = false;
-    SimpleDateFormat mFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
     private RecyclerView userList;
     private RecyclerView.Adapter adapter;
     private RecyclerView.LayoutManager layoutManager;
@@ -85,7 +84,7 @@ public class AddChatActivity extends AppCompatActivity {
         create_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(people.size() > 2){
+                if(people.size() > 1){
                     showFormat();
                 }
                 else{
