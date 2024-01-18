@@ -1,5 +1,6 @@
 package com.example.froyo;
 
+import android.media.Image;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -12,11 +13,15 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -29,6 +34,8 @@ public class CommentDialogFragment extends DialogFragment {
 
     private RecyclerView commentsRecyclerView;
     private CommentAdapter commentAdapter;
+    private EditText commentInput;
+    private ImageButton postCommentButton;
     private String postId;
 
     @Override
@@ -50,14 +57,24 @@ public class CommentDialogFragment extends DialogFragment {
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL);
         commentsRecyclerView.addItemDecoration(dividerItemDecoration);
 
-
-
         commentAdapter = new CommentAdapter(getCommentsDataFromFirestore(postId)); // Implement getCommentsData() to fetch your comments
         commentsRecyclerView.setAdapter(commentAdapter);
 
         // Set the title if needed
         TextView dialogTitle = view.findViewById(R.id.dialogTitle);
         dialogTitle.setText("Comments");
+
+
+        commentInput = view.findViewById(R.id.commentInput);
+        postCommentButton = view.findViewById(R.id.postCommentButton);
+        postCommentButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                postCommentToFirestore(postId, commentInput.getText().toString());
+                commentInput.setText("");
+                Toast.makeText(getContext(), "Comment posted" , Toast.LENGTH_SHORT).show();
+            }
+        });
 
         return view;
     }
@@ -70,6 +87,27 @@ public class CommentDialogFragment extends DialogFragment {
         comments.add("Comment 2");
         comments.add("Comment 3");
         return comments;
+    }
+
+    private void postCommentToFirestore(String postId, String newComment) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        // Assuming your comments are stored as a field in each post document
+        db.collection("posts")
+                .document(postId)
+                .update("comments", FieldValue.arrayUnion(newComment))
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            // Comment posted successfully
+                            // Fetch updated comments and update RecyclerView
+                            getCommentsDataFromFirestore(postId);
+                        } else {
+                            // Handle failure to post comment
+                        }
+                    }
+                });
     }
 
     private List<String> getCommentsDataFromFirestore(String postId) {
