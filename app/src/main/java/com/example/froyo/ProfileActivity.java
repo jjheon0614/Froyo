@@ -37,6 +37,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -62,6 +63,10 @@ public class ProfileActivity extends AppCompatActivity {
     private PostListViewAdapter adapter;
     private ArrayList<Post> postsArrayList = new ArrayList<>();
     String username;
+
+    List<String> followersArr = new ArrayList<>();
+    List<String> followingArr = new ArrayList<>();
+
 
 
     @Override
@@ -100,6 +105,33 @@ public class ProfileActivity extends AppCompatActivity {
             Log.e("PostActivity", "RecyclerView is null");
         }
 
+
+        userFollowers.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ProfileActivity.this, UserList.class);
+                intent.putExtra("email", email);
+                intent.putExtra("type", "followers");
+                intent.putExtra("followingArr", (Serializable) followingArr);
+                intent.putExtra("followersArr", (Serializable) followersArr);
+                startActivity(intent);
+            }
+        });
+
+        userFollowing.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ProfileActivity.this, UserList.class);
+                intent.putExtra("email", email);
+                intent.putExtra("type", "following");
+                intent.putExtra("followingArr", (Serializable) followingArr);
+                intent.putExtra("followersArr", (Serializable) followersArr);
+                startActivity(intent);
+            }
+        });
+
+
+
         logout = (Button) findViewById(R.id.logout);
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -131,7 +163,8 @@ public class ProfileActivity extends AppCompatActivity {
                 posts.setBackgroundResource(R.drawable.blue_underline);
 
                 editProfile.setTextColor(getResources().getColor(R.color.black));
-                editProfile.setBackgroundColor(getResources().getColor(android.R.color.white));            }
+                editProfile.setBackgroundColor(getResources().getColor(android.R.color.white));
+            }
         });
 
         editProfile = findViewById(R.id.buttonEditProfile);
@@ -413,6 +446,9 @@ public class ProfileActivity extends AppCompatActivity {
                             long posts = documentSnapshot.getLong("posts");
                             long followers = documentSnapshot.getLong("followers");
                             long following = documentSnapshot.getLong("following");
+
+                            followersArr = (List<String>) documentSnapshot.get("followersArr");
+                            followingArr = (List<String>) documentSnapshot.get("followingArr");
 
                             userId.setText(username);
                             userDescription.setText(description);
