@@ -29,7 +29,7 @@ public class PostActivity extends AppCompatActivity {
     private String userID, email;
     private ArrayList<Post> postsArrayList = new ArrayList<>();
     private PostListViewAdapter adapter;
-    private ImageButton goToProfile, goToPosting, goToChat;
+    private ImageButton goToProfile, goToPosting, goToChat, goToSearch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +74,21 @@ public class PostActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(PostActivity.this, NewPostForm.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                String username = userID;
+                intent.putExtra("userId", username);
+                intent.putExtra("email", email);
+                startActivity(intent);
+                finish();
+            }
+        });
+
+        goToSearch = findViewById(R.id.goToSearch);
+
+        goToSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(PostActivity.this, SearchActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 String username = userID;
                 intent.putExtra("userId", username);

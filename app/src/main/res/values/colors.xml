@@ -11,4 +11,5 @@
     <color name="pMessageBoxColor">#fcd6d5</color>
     <color name="pIdColor">#b75700</color>
     <color name="chatRoomColor">#d7e3ff</color>
+    <color name="titleBarColor">#2C4575</color>
 </resources>
