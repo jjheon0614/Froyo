@@ -30,7 +30,7 @@ public class PostActivity extends AppCompatActivity {
     private RecyclerView postRecView;
     private ArrayList<Post> postsArrayList = new ArrayList<>();
     private PostListViewAdapter adapter;
-    private ImageButton goToPosting, goToChat, goToProfile;
+    private ImageButton goToPosting, goToChat, goToProfile, goToSearch;
     private String userID, email;
 
     @Override
@@ -98,6 +98,21 @@ public class PostActivity extends AppCompatActivity {
                 finish();
             }
         });
+
+        goToSearch = findViewById(R.id.goToSearch);
+        goToSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(PostActivity.this, SearchActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                String username = userID;
+                intent.putExtra("userId", username);
+                intent.putExtra("email", email);
+                startActivity(intent);
+                finish();
+            }
+        });
+
     }
 
     private void getData() {
