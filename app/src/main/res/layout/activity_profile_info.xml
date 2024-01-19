@@ -32,7 +32,7 @@
         android:layout_alignParentTop="true"
         android:layout_marginTop="50dp">
 
-        <ImageView
+        <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/userImageInfo"
             android:layout_width="80dp"
             android:layout_height="80dp"
@@ -40,7 +40,10 @@
             android:layout_alignParentTop="true"
             android:layout_marginTop="20dp"
             android:layout_marginLeft="20dp"
+            android:layout_gravity="center"
+            android:scaleType="centerCrop"
             android:src="@drawable/person"/>
+
 
         <TextView
             android:id="@+id/userIdInfo"
