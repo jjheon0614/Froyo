@@ -23,7 +23,6 @@
             android:layout_marginLeft="10dp"/>
 
 
-
     </LinearLayout>
 
     <LinearLayout
@@ -41,14 +40,16 @@
             android:layout_marginTop="5dp">
 
             <EditText
-                android:layout_width="350dp"
+                android:id="@+id/searchUser"
+                android:layout_width="330dp"
                 android:layout_height="match_parent"
                 android:hint="Search User..."
                 android:background="@drawable/search_bar"/>
 
             <ImageButton
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:id="@+id/searchUserBtn"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:src="@drawable/search_icon"
                 android:background="@color/black"/>
 
