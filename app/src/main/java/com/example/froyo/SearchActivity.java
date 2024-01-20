@@ -22,6 +22,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
@@ -182,8 +183,8 @@ public class SearchActivity extends AppCompatActivity {
                         filterDateRange();
                     }
                 }
-                else if(selectedFilter.equals("Posts")){
-                    if(searchText.isEmpty()){
+                else { // If SelectedFilter is Posts or by default Posts
+                    if(etSearchText.getText().toString().isEmpty()){
                         Toast.makeText(SearchActivity.this, "Please enter a search text", Toast.LENGTH_SHORT).show();
                     }
                     else{
@@ -246,6 +247,12 @@ public class SearchActivity extends AppCompatActivity {
                         post.setHashTag((ArrayList<String>) dataMap.get("hashTag"));
                         post.setLikes(((Long) dataMap.get("likes")).intValue());
                         post.setComments((ArrayList<String>) dataMap.get("comments"));
+
+                        // Retrieve and set the date field
+                        Timestamp timestamp = (Timestamp) dataMap.get("date");
+                        if (timestamp != null) {
+                            post.setDate(timestamp);
+                        }
 
                         // Add the Post object to the list
                         allPosts.add(post);
