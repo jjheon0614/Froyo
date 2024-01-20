@@ -28,10 +28,12 @@ import java.util.ArrayList;
 public class PostListViewAdapter extends RecyclerView.Adapter<PostListViewAdapter.ViewHolder> {
 
     private ArrayList<Post> posts = new ArrayList<>();
+    private String userEmail;
 
     private Context context;
-    public PostListViewAdapter(Context context) {
+    public PostListViewAdapter(Context context, String userEmail) {
         this.context = context;
+        this.userEmail = userEmail;
     }
 
     @NonNull
@@ -110,6 +112,7 @@ public class PostListViewAdapter extends RecyclerView.Adapter<PostListViewAdapte
             public void onClick(View v) {
                 // Show the comment dialog fragment
                 showCommentDialogFragment(posts.get(holder.getAdapterPosition()).getId());
+                Toast.makeText(v.getContext(), "Comment posted:" + userEmail , Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -129,6 +132,7 @@ public class PostListViewAdapter extends RecyclerView.Adapter<PostListViewAdapte
         // Pass the postId to the CommentDialogFragment using arguments
         Bundle args = new Bundle();
         args.putString("postId", postId);
+        args.putString("userEmail", userEmail);
         commentDialogFragment.setArguments(args);
 
         // Use the FragmentManager from the context (activity)

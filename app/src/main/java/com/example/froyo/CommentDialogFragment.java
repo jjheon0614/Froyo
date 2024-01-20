@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,8 +19,13 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -27,7 +33,9 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 public class CommentDialogFragment extends DialogFragment {
@@ -36,7 +44,7 @@ public class CommentDialogFragment extends DialogFragment {
     private CommentAdapter commentAdapter;
     private EditText commentInput;
     private ImageButton postCommentButton;
-    private String postId;
+    private String postId, currentUserEmail, currentUsername, currentUserImg;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -45,9 +53,14 @@ public class CommentDialogFragment extends DialogFragment {
         // Retrieve postId from arguments
         Bundle args = getArguments();
 
+
         if (args != null) {
             postId = args.getString("postId", "");
+            currentUserEmail = args.getString("userEmail", "");
         }
+
+
+        fetchUserData();
 
         // Initialize RecyclerView and adapter
         commentsRecyclerView = view.findViewById(R.id.commentsRecyclerView);
@@ -89,13 +102,20 @@ public class CommentDialogFragment extends DialogFragment {
         return comments;
     }
 
+
     private void postCommentToFirestore(String postId, String newComment) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        // Create a map for the new comment including user information
+        Map<String, Object> commentMap = new HashMap<>();
+        commentMap.put("commentContent", newComment);
+        commentMap.put("profileImage", currentUserImg);
+        commentMap.put("user", currentUsername);
 
         // Assuming your comments are stored as a field in each post document
         db.collection("posts")
                 .document(postId)
-                .update("comments", FieldValue.arrayUnion(newComment))
+                .update("comments", FieldValue.arrayUnion(commentMap))
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
@@ -105,14 +125,17 @@ public class CommentDialogFragment extends DialogFragment {
                             getCommentsDataFromFirestore(postId);
                         } else {
                             // Handle failure to post comment
+                            Toast.makeText(getContext(), "Failed to post comment", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
     }
 
-    private List<String> getCommentsDataFromFirestore(String postId) {
+
+
+    private List<Map<String, String>> getCommentsDataFromFirestore(String postId) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        List<String> comments = new ArrayList<>();
+        List<Map<String, String>> comments = new ArrayList<>();
 
         // Assuming your comments are stored as a field in each post document
         db.collection("posts")
@@ -125,11 +148,11 @@ public class CommentDialogFragment extends DialogFragment {
                             DocumentSnapshot document = task.getResult();
                             if (document.exists()) {
                                 // Retrieve comments field from the post document
-                                List<String> comments = (List<String>) document.get("comments");
+                                List<Map<String, String>> commentsFromFirestore = (List<Map<String, String>>) document.get("comments");
 
-                                if (comments != null) {
+                                if (commentsFromFirestore != null) {
                                     // Update RecyclerView with fetched comments
-                                    updateCommentsRecyclerView(comments);
+                                    updateCommentsRecyclerView(commentsFromFirestore);
                                 }
                             } else {
                                 // Document does not exist
@@ -142,9 +165,46 @@ public class CommentDialogFragment extends DialogFragment {
         return comments;
     }
 
-    private void updateCommentsRecyclerView(List<String> comments) {
+
+    private void updateCommentsRecyclerView(List<Map<String, String>>comments) {
         commentAdapter.setComments(comments);
         commentAdapter.notifyDataSetChanged();
     }
 
+    private void fetchUserData() {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("users")
+                .whereEqualTo("email", currentUserEmail)
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                        if (!queryDocumentSnapshots.isEmpty()) {
+                            // Assuming email is unique and only one document is returned
+                            DocumentSnapshot documentSnapshot = queryDocumentSnapshots.getDocuments().get(0);
+
+                            currentUserImg = documentSnapshot.getString("imageUrl");
+                            currentUsername = documentSnapshot.getString("username");
+
+                            // Log the retrieved data for debugging
+                            Log.d("UserData", "User data retrieved successfully");
+                            Log.d("UserData", "User Image URL: " + currentUserImg);
+                            Log.d("UserData", "Username: " + currentUsername);
+
+                            // Now, you have the username and imageUrl, you can use them as needed
+                            // For example, you can pass them to another function or update UI
+                        } else {
+                            // Handle case where user data does not exist
+                            Log.d("UserData", "No user data found for email: " + currentUserEmail);
+                        }
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        // Handle failure
+                        Log.e("UserData", "Error fetching user data", e);
+                    }
+                });
+    }
 }
