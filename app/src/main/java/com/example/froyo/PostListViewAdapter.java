@@ -93,6 +93,17 @@ public class PostListViewAdapter extends RecyclerView.Adapter<PostListViewAdapte
                     handleEditButtonClick(currentPost, position);
                 }
             });
+        } else if (user != null && user.getEmail() != null && user.getEmail().equals("admin@gmail.com")) {
+            // User email matches post's userEmail, show the edit button
+            holder.editButton.setVisibility(View.VISIBLE);
+
+            holder.editButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // Handle edit button click
+                    handleEditButtonClick(currentPost, position);
+                }
+            });
         } else {
             // User email doesn't match post's userEmail, hide the edit button
             holder.editButton.setVisibility(View.GONE);

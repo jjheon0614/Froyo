@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    tools:context=".AllUserActivity">
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/black"
+        android:orientation="horizontal"
+        android:layout_alignParentTop="true"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="All Users"
+            android:textStyle="bold"
+            android:textSize="35dp"
+            android:paddingLeft="10dp"
+            android:layout_weight="1"
+            android:textColor="@color/white"
+            android:background="@color/black"
+            android:gravity="start"/>
+
+        <Button
+            android:id="@+id/logout"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="Log out"
+            android:textColor="@color/blue"
+            android:backgroundTint="@color/black"
+            android:gravity="end"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="50dp"
+        android:orientation="vertical"
+        android:gravity="center_horizontal">
+
+        <LinearLayout
+            android:layout_width="380dp"
+            android:layout_height="50dp"
+            android:orientation="horizontal"
+            android:layout_marginTop="5dp">
+
+            <EditText
+                android:id="@+id/searchAllUser"
+                android:layout_width="330dp"
+                android:layout_height="match_parent"
+                android:hint="Search User..."
+                android:background="@drawable/search_bar"/>
+
+            <ImageButton
+                android:id="@+id/searchAllUserBtn"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/search_icon"
+                android:background="@color/black"/>
+
+
+        </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/allUserList"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="-2dp"
+            android:background="@color/listColor"
+            android:paddingVertical="10dp"/>
+
+
+    </LinearLayout>
+
+
+
+
+    <LinearLayout
+        android:id="@+id/navigationBar"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal"
+        android:background="@color/white"
+        android:weightSum="4"
+        android:gravity="center">
+
+        <ImageButton
+            android:id="@+id/goToPost"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/navigation_home"
+            android:layout_weight="1"
+            android:background="@color/white"/>
+
+
+        <ImageButton
+            android:id="@+id/goToPosting"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/navigation_add"
+            android:layout_weight="1"
+            android:background="@color/white"/>
+
+
+        <ImageButton
+            android:id="@+id/goToChat"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/navigation_chat"
+            android:layout_weight="1"
+            android:background="@color/white"/>
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/blue_person"
+            android:layout_weight="1"
+            android:background="@color/white"/>
+
+    </LinearLayout>
+
+</RelativeLayout>

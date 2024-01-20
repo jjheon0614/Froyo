@@ -83,7 +83,14 @@ public class PostActivity extends AppCompatActivity {
         goToProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(PostActivity.this, ProfileActivity.class);
+                Intent intent;
+
+                if (email.equals("admin@gmail.com")) {
+                    intent = new Intent(PostActivity.this, AllUserActivity.class);
+                } else {
+                    intent = new Intent(PostActivity.this, ProfileActivity.class);
+                }
+
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 intent.putExtra("userId", userID);
                 intent.putExtra("email", email);

@@ -90,7 +90,14 @@ public class NewPostForm extends AppCompatActivity {
         goToProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(NewPostForm.this, ProfileActivity.class);
+                Intent intent;
+
+                if (email.equals("admin@gmail.com")) {
+                    intent = new Intent(NewPostForm.this, AllUserActivity.class);
+                } else {
+                    intent = new Intent(NewPostForm.this, ProfileActivity.class);
+                }
+
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 intent.putExtra("email", email);
                 intent.putExtra("imageUrl", userImageUrl);

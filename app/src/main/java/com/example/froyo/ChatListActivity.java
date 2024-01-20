@@ -76,7 +76,15 @@ public class ChatListActivity extends AppCompatActivity {
         goToProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(ChatListActivity.this, ProfileActivity.class);
+                Intent intent;
+
+                if (email.equals("admin@gmail.com")) {
+                    intent = new Intent(ChatListActivity.this, AllUserActivity.class);
+                } else {
+                    intent = new Intent(ChatListActivity.this, ProfileActivity.class);
+                }
+
+
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 intent.putExtra("email", email);
                 intent.putExtra("imageUrl", imageUrl);
