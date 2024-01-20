@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".EditPostActivity"
+    android:background="@color/background">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/black"
+        android:layout_alignParentTop="true">
+
+        <ImageButton
+            android:id="@+id/backFromEditPost"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/chevron_left_white"
+            android:background="@color/black"
+            android:layout_marginLeft="13dp"
+            android:layout_marginTop="13dp"/>
+
+
+        <android.widget.Button
+            android:id="@+id/deletePostBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="@color/black"
+            android:text="Delete"
+            android:textAllCaps="false"
+            android:textColor="@color/red"
+            android:layout_alignParentRight="true"/>
+
+    </RelativeLayout>
+
+    <ImageView
+        android:id="@+id/editImage"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:onClick="onProfileImageClick"
+        android:layout_marginTop="80dp"
+        android:layout_centerHorizontal="true"/>
+
+    <LinearLayout
+        android:layout_width="380dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="400dp"
+        android:layout_centerHorizontal="true"
+        android:gravity="center_horizontal">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Caption"
+                android:textStyle="bold"
+                android:textSize="25dp"/>
+
+            <EditText
+                android:id="@+id/editPostDescription"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:paddingLeft="15dp"
+                android:hint="Edit Description"
+                android:background="@drawable/button_stroke"/>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="MajorTag"
+                android:textStyle="bold"
+                android:textSize="25dp"/>
+
+            <Spinner
+                android:id="@+id/editMajorTag"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:background="@drawable/button_stroke"
+                android:padding="10dp"/>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="HashTag(s)"
+                android:textStyle="bold"
+                android:textSize="25dp"/>
+
+
+            <LinearLayout
+                android:id="@+id/hashTagContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <!-- EditTexts will be added here programmatically -->
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+
+
+        <android.widget.Button
+            android:id="@+id/updateBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Save"
+            android:textColor="@color/white"
+            android:textAllCaps="false"
+            android:background="@drawable/blue_round_button"/>
+
+
+    </LinearLayout>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</RelativeLayout>

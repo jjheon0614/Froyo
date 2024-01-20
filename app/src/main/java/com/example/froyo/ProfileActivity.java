@@ -37,6 +37,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -62,6 +63,11 @@ public class ProfileActivity extends AppCompatActivity {
     private PostListViewAdapter adapter;
     private ArrayList<Post> postsArrayList = new ArrayList<>();
     String username;
+    private String email;
+
+    List<String> followersArr = new ArrayList<>();
+    List<String> followingArr = new ArrayList<>();
+
 
 
     @Override
@@ -82,7 +88,7 @@ public class ProfileActivity extends AppCompatActivity {
 
         // Get email from intent
         Intent i = getIntent();
-        String email = i.getStringExtra("email");
+        email = i.getStringExtra("email");
 
         // Fetch user data from Firestore
         fetchUserData(email);
@@ -99,6 +105,33 @@ public class ProfileActivity extends AppCompatActivity {
         } else {
             Log.e("PostActivity", "RecyclerView is null");
         }
+
+
+        userFollowers.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ProfileActivity.this, UserList.class);
+                intent.putExtra("email", email);
+                intent.putExtra("type", "followers");
+                intent.putExtra("followingArr", (Serializable) followingArr);
+                intent.putExtra("followersArr", (Serializable) followersArr);
+                startActivity(intent);
+            }
+        });
+
+        userFollowing.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ProfileActivity.this, UserList.class);
+                intent.putExtra("email", email);
+                intent.putExtra("type", "following");
+                intent.putExtra("followingArr", (Serializable) followingArr);
+                intent.putExtra("followersArr", (Serializable) followersArr);
+                startActivity(intent);
+            }
+        });
+
+
 
         logout = (Button) findViewById(R.id.logout);
         logout.setOnClickListener(new View.OnClickListener() {
@@ -131,7 +164,8 @@ public class ProfileActivity extends AppCompatActivity {
                 posts.setBackgroundResource(R.drawable.blue_underline);
 
                 editProfile.setTextColor(getResources().getColor(R.color.black));
-                editProfile.setBackgroundColor(getResources().getColor(android.R.color.white));            }
+                editProfile.setBackgroundColor(getResources().getColor(android.R.color.white));
+            }
         });
 
         editProfile = findViewById(R.id.buttonEditProfile);
@@ -208,6 +242,9 @@ public class ProfileActivity extends AppCompatActivity {
 
 
 
+
+
+
         saveBtn = (Button) findViewById(R.id.saveBtn);
         saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -254,6 +291,13 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        // Call your method here to refresh data
+        getDataForUser(email); // make sure 'email' is the correct variable you want to pass
+    }
+
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
@@ -288,11 +332,21 @@ public class ProfileActivity extends AppCompatActivity {
                             if (dataMap != null) {
                                 // Parse Firestore document data into a Post object
                                 Post post = new Post();
-                                post.setId(userEmail); // Assuming 'id' is the document ID
+                                post.setId((String) dataMap.get("id")); // Assuming 'id' is the document ID
                                 post.setUserEmail(userEmail);
                                 post.setMajorTag((String) dataMap.get("majorTag"));
                                 post.setContent((String) dataMap.get("content"));
-                                post.setImages((ArrayList<String>) dataMap.get("images"));
+                                Object imagesObject = dataMap.get("images");
+                                if (imagesObject instanceof List<?>) {
+                                    List<String> imagesList = (List<String>) imagesObject;
+                                    post.setImages(new ArrayList<>(imagesList));  // Set images as an ArrayList
+                                } else if (imagesObject instanceof String) {
+                                    String singleImageUrl = (String) imagesObject;
+                                    ArrayList<String> imagesList = new ArrayList<>();
+                                    imagesList.add(singleImageUrl);  // Add single image URL to the list
+                                    post.setImages(imagesList);  // Set images as an ArrayList with a single item
+                                }
+//                                post.setImages((ArrayList<String>) dataMap.get("images"));
                                 post.setHashTag((ArrayList<String>) dataMap.get("hashTag"));
                                 post.setLikes(((Long) dataMap.get("likes")).intValue());
                                 post.setComments((ArrayList<String>) dataMap.get("comments"));
@@ -413,6 +467,9 @@ public class ProfileActivity extends AppCompatActivity {
                             long posts = documentSnapshot.getLong("posts");
                             long followers = documentSnapshot.getLong("followers");
                             long following = documentSnapshot.getLong("following");
+
+                            followersArr = (List<String>) documentSnapshot.get("followersArr");
+                            followingArr = (List<String>) documentSnapshot.get("followingArr");
 
                             userId.setText(username);
                             userDescription.setText(description);

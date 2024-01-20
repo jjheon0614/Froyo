@@ -18,6 +18,12 @@
             android:name=".SearchActivity"
             android:exported="false" />
         <activity
+            android:name=".EditPostActivity"
+            android:exported="false" />
+        <activity
+            android:name=".UserList"
+            android:exported="false" />
+        <activity
             android:name=".NewPostForm"
             android:exported="false"
             android:label="@string/title_activity_new_post_form"

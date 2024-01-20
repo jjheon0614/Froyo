@@ -23,6 +23,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 public class PostActivity extends AppCompatActivity {
@@ -178,7 +179,23 @@ public class PostActivity extends AppCompatActivity {
                         post.setUserEmail((String) dataMap.get("userEmail"));
                         post.setMajorTag((String) dataMap.get("majorTag"));
                         post.setContent((String) dataMap.get("content"));
-                        post.setImages((ArrayList<String>) dataMap.get("images"));
+
+
+                        Object imagesObject = dataMap.get("images");
+                        if (imagesObject instanceof List<?>) {
+                            List<String> imagesList = (List<String>) imagesObject;
+                            post.setImages(new ArrayList<>(imagesList));  // Set images as an ArrayList
+                        } else if (imagesObject instanceof String) {
+                            String singleImageUrl = (String) imagesObject;
+                            ArrayList<String> imagesList = new ArrayList<>();
+                            imagesList.add(singleImageUrl);  // Add single image URL to the list
+                            post.setImages(imagesList);  // Set images as an ArrayList with a single item
+                        }
+
+
+
+
+                        //post.setImages((ArrayList<String>) dataMap.get("images"));
                         post.setHashTag((ArrayList<String>) dataMap.get("hashTag"));
                         post.setLikes(((Long) dataMap.get("likes")).intValue());
                         post.setComments((ArrayList<String>) dataMap.get("comments"));
