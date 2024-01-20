@@ -60,5 +60,16 @@
             android:background="@color/white"/>
 
     </LinearLayout>
-
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabEmojiPurchase"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="26dp"
+        android:layout_marginBottom="62dp"
+        android:onClick="openCart"
+        android:backgroundTint="@color/background"
+        app:elevation="6dp"
+        app:srcCompat="@drawable/ic_cart1" />
 </RelativeLayout>

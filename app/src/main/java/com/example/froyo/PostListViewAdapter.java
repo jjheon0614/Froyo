@@ -3,6 +3,7 @@ package com.example.froyo;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +22,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
@@ -28,7 +30,7 @@ import java.util.ArrayList;
 public class PostListViewAdapter extends RecyclerView.Adapter<PostListViewAdapter.ViewHolder> {
 
     private ArrayList<Post> posts = new ArrayList<>();
-    private String userEmail;
+    private String userEmail, username, imageUrl;
 
     private Context context;
     public PostListViewAdapter(Context context, String userEmail) {
@@ -63,9 +65,17 @@ public class PostListViewAdapter extends RecyclerView.Adapter<PostListViewAdapte
         }
 
         holder.majorTag.setText(posts.get(position).getMajorTag());
-        //holder.profileName.setText(posts.get(position).getId());
-        //holder.profileName.setText(posts.get(position).getId());
-        holder.profileName.setText(posts.get(position).getUserEmail());
+
+        fetchUsername(posts.get(position).getUserEmail(), holder, new UsernameFetchCallback() {
+            @Override
+            public void onUsernameFetched(String username, String imageUrl) {
+                // Now you have the username and imageUrl, you can use them as needed
+                // For example, update the UI in this callback
+                holder.profileName.setText(username);
+                Glide.with(context).asBitmap().load(imageUrl).into(holder.profileImage);
+            }
+        });
+
         holder.postContent.setText(posts.get(position).getContent());
         ArrayList<String> images = posts.get(position).getImages();
         Glide.with(context).asBitmap().load(images.get(0)).into(holder.postImage);
@@ -116,9 +126,6 @@ public class PostListViewAdapter extends RecyclerView.Adapter<PostListViewAdapte
             }
         });
 
-
-
-
     }
 
     @Override
@@ -154,6 +161,55 @@ public class PostListViewAdapter extends RecyclerView.Adapter<PostListViewAdapte
         updateLikesInFirestore(currentPost.getId(), currentPost.getLikes());
     }
 
+    private void fetchUsername(String userEmail, ViewHolder holder, UsernameFetchCallback callback) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        // Fetch the username from the "users" collection where email matches
+        db.collection("users")
+                .whereEqualTo("email", userEmail)
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    if (!queryDocumentSnapshots.isEmpty()) {
+                        // Assuming email is unique and only one document is returned
+                        DocumentSnapshot documentSnapshot = queryDocumentSnapshots.getDocuments().get(0);
+
+                        // Check if the "username" field exists in the document
+                        if (documentSnapshot.contains("username")) {
+                            username = documentSnapshot.getString("username");
+
+                            // Now you have the username, you can use it as needed
+                            // For example, you can pass it to another function or update UI
+                            Log.d("UsernameFetch", "Username retrieved successfully: " + username);
+                        } else {
+                            // Handle case where "username" field does not exist
+                            Log.d("UsernameFetch", "No 'username' field found for email: " + userEmail);
+                        }
+                        if (documentSnapshot.contains("imageUrl")) {
+                            imageUrl = documentSnapshot.getString("imageUrl");
+
+                            // Notify the callback with the fetched data
+                            callback.onUsernameFetched(username, imageUrl);
+                        } else {
+                            // Handle case where "imageUrl" field does not exist
+                            Log.d("UsernameFetch", "No 'imageUrl' field found for email: " + userEmail);
+                        }
+                    } else {
+                        // Handle case where user data does not exist
+                        Log.d("UsernameFetch", "No user data found for email: " + userEmail);
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    // Handle failure
+                    Log.e("UsernameFetch", "Error fetching username", e);
+                });
+    }
+
+
+    public interface UsernameFetchCallback {
+        void onUsernameFetched(String username, String imageUrl);
+    }
+
+
     private void updateLikesInFirestore(String postId, int likesCount) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         // Assuming you have a "posts" collection in Firestore
@@ -181,7 +237,7 @@ public class PostListViewAdapter extends RecyclerView.Adapter<PostListViewAdapte
     public class ViewHolder extends RecyclerView.ViewHolder{
         private TextView profileName, postContent, likeCount, commentCount, hashtags, majorTag;
         // private ImageView profileImage;
-        private ImageView postImage, likeButton, commentButton;
+        private ImageView postImage, likeButton, commentButton, profileImage;
         private CardView postsParent;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -189,7 +245,7 @@ public class PostListViewAdapter extends RecyclerView.Adapter<PostListViewAdapte
             postContent = itemView.findViewById(R.id.postContent);
             likeCount = itemView.findViewById(R.id.likeCount);
             commentCount = itemView.findViewById(R.id.commentCount);
-            // profilpostContenteImage = itemView.findViewById(R.id.profileImage);
+            profileImage = itemView.findViewById(R.id.profileImage);
             postImage = itemView.findViewById((R.id.postImage));
             postsParent = itemView.findViewById(R.id.postsParent);
             likeButton = itemView.findViewById(R.id.likeButton);

@@ -17,6 +17,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
@@ -37,6 +38,7 @@ public class PostActivity extends AppCompatActivity {
     private PostListViewAdapter adapter;
     private ImageButton goToPosting, goToChat, goToProfile;
     private String userID, email, username;
+    private FloatingActionButton fabEmojiPurchase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,6 +103,19 @@ public class PostActivity extends AppCompatActivity {
                 intent.putExtra("email", email);
                 startActivity(intent);
                 finish();
+            }
+        });
+
+        fabEmojiPurchase = findViewById(R.id.fabEmojiPurchase);
+        fabEmojiPurchase.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(PostActivity.this, PurchaseEmojiActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                String username = userID;
+                intent.putExtra("userId", username);
+                intent.putExtra("email", email);
+                startActivity(intent);
             }
         });
     }
