@@ -11,6 +11,7 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
@@ -59,7 +60,6 @@ public class EditPostActivity extends AppCompatActivity {
     private LinearLayout hashTagContainer;
     private Uri selectedImageUri = null;
     private static final int REQUEST_CODE_PROFILE_IMAGE = 1;
-    private ImageButton addHashTag;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,7 +81,6 @@ public class EditPostActivity extends AppCompatActivity {
         update = findViewById(R.id.updateBtn);
         delete = findViewById(R.id.deletePostBtn);
         hashTagContainer = findViewById(R.id.hashTagContainer);
-        addHashTag = findViewById(R.id.addHashTagBtn);
 
 
         loadPostData(postId);
@@ -94,12 +93,6 @@ public class EditPostActivity extends AppCompatActivity {
             }
         });
 
-        addHashTag.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                addHashtagField();
-            }
-        });
 
         update = findViewById(R.id.updateBtn);
         update.setOnClickListener(new View.OnClickListener() {
@@ -147,7 +140,11 @@ public class EditPostActivity extends AppCompatActivity {
                         @Override
                         public void onImageUploaded(String imageUrl) {
                             // Once the image is uploaded and you have the URL, update the imageUrl field
-                            updatedPostData.put("images", imageUrl);
+
+                            ArrayList<String> imageUrls = new ArrayList<>();
+                            imageUrls.add(imageUrl); // Add the imageUrl to the list
+
+                            updatedPostData.put("images", imageUrls);
 
                             // Finally, update the document
                             updatePostDocument(postRef, updatedPostData);
@@ -277,82 +274,6 @@ public class EditPostActivity extends AppCompatActivity {
     }
 
 
-
-
-    private void addHashtagField() {
-        // Create generic values for padding in dp units
-        int dp10 = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 10, getResources().getDisplayMetrics());
-
-        // Create a new LinearLayout to hold the EditText and delete button
-        LinearLayout hashtagLayout = new LinearLayout(this);
-        LinearLayout.LayoutParams llParams = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT
-        );
-        llParams.bottomMargin = dp10;
-
-        // Set the layout params of the LinearLayout
-        hashtagLayout.setLayoutParams(llParams);
-        hashtagLayout.setOrientation(LinearLayout.HORIZONTAL);
-        hashtagLayout.setGravity(Gravity.CENTER);
-
-        // Create a new ImageView for the hashtag icon
-        ImageView ivHashtag = new ImageView(this);
-
-        //Create a new LayoutParams for the ImageView in dp units
-        int width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 40, getResources().getDisplayMetrics());
-        int height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 40, getResources().getDisplayMetrics());
-
-
-        // Set the width, height, marginEnd of the ImageView
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(width, height);
-        params.setMarginEnd(dp10);
-
-        ivHashtag.setLayoutParams(params);
-        ivHashtag.setImageResource(R.drawable.hashtag);
-
-        // Create a new EditText for the hashtag
-        EditText hashtagEditText = new EditText(this);
-        hashtagEditText.setLayoutParams(new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.WRAP_CONTENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT,
-                4.0f // Set weight to 1 to take available space
-        ));
-        hashtagEditText.setHint("Hashtag");
-        hashtagEditText.setBackgroundResource(R.drawable.rounded_rectangle);
-
-        int padding = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 10, getResources().getDisplayMetrics());
-        hashtagEditText.setPadding(padding,padding,padding,padding);
-        hashtagEditText.setEms(12);
-
-        // Create a new delete button (ImageButton with "X" icon)
-        ImageButton deleteButton = new ImageButton(this);
-        deleteButton.setLayoutParams(new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.WRAP_CONTENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT
-        ));
-        deleteButton.setImageResource(android.R.drawable.ic_delete); // Use the built-in "X" icon
-        deleteButton.setBackgroundColor(Color.TRANSPARENT); // Make the background transparent
-        deleteButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // Remove the hashtagLayout when the delete button is clicked
-                hashTagContainer.removeView(hashtagLayout);
-            }
-        });
-
-        // Add the EditText and delete button to the LinearLayout
-        hashtagLayout.addView(ivHashtag);
-        hashtagLayout.addView(hashtagEditText);
-        hashtagLayout.addView(deleteButton);
-
-        // Add the LinearLayout to the hashtagContainer
-        hashTagContainer.addView(hashtagLayout);
-    }
-
-
-
-
     private void updateUserPostsInfo() {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
@@ -438,18 +359,26 @@ public class EditPostActivity extends AppCompatActivity {
         hashTagContainer.removeAllViews(); // Clear previous views if any
         for (String hashTag : hashTags) {
             EditText hashTagEditText = new EditText(this);
-            hashTagEditText.setLayoutParams(new LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
                     ViewGroup.LayoutParams.MATCH_PARENT,
-                    ViewGroup.LayoutParams.WRAP_CONTENT));
-            hashTagEditText.setText(hashTag);
+                    dpToPx(40));
+            layoutParams.setMargins(0, 0, 0, dpToPx(10)); // Set bottom margin here
+            hashTagEditText.setLayoutParams(layoutParams);
 
-            // Customize your EditText appearance/style if needed
-            hashTagEditText.setHint("Hashtag");
+
+            hashTagEditText.setText(hashTag);
             hashTagEditText.setPadding(20, 20, 20, 20); // Example padding, adjust as needed
+            hashTagEditText.setBackgroundResource(R.drawable.button_stroke);
 
             hashTagContainer.addView(hashTagEditText);
         }
     }
+
+    public int dpToPx(int dp) {
+        DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
+        return Math.round(dp * (displayMetrics.xdpi / DisplayMetrics.DENSITY_DEFAULT));
+    }
+
 
     private void setSpinnerToValue(Spinner spinner, ArrayAdapter<CharSequence> adapter, String value) {
         int spinnerPosition = adapter.getPosition(value);
