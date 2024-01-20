@@ -2,8 +2,11 @@ package com.example.froyo;
 
 import com.google.firebase.Timestamp;
 
+import java.lang.ref.Reference;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 public class Post {
     private String id;
@@ -13,10 +16,11 @@ public class Post {
     private ArrayList<String> hashTag;
     private String content;
     private int likes;
-    private ArrayList<String> comments;
+    // private ArrayList<String> comments;
+    private List<Map<String, String>> comments;
     private Timestamp date;
 
-    public Post(String id, String userEmail, ArrayList<String> imagesUrl, String majorTag, ArrayList<String> hashTag, String content, int likes, ArrayList<String> comments,  Timestamp date) {
+    public Post(String id, String userEmail, ArrayList<String> imagesUrl, String majorTag, ArrayList<String> hashTag, String content, int likes, List<Map<String, String>> comments,  Timestamp date) {
         this.id = id;
         this.userEmail = userEmail;
         this.images = imagesUrl;
@@ -98,11 +102,11 @@ public class Post {
         this.likes = likes;
     }
 
-    public ArrayList<String> getComments() {
+    public List<Map<String, String>> getComments() {
         return comments;
     }
 
-    public void setComments(ArrayList<String> comments) {
+    public void setComments(List<Map<String, String>> comments) {
         this.comments = comments;
     }
 

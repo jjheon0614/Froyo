@@ -96,7 +96,7 @@ public class ProfileActivity extends AppCompatActivity {
         // Initialize RecyclerView and Adapter
         postRecView = findViewById(R.id.profile_posts_recyclerview);
         if (postRecView != null) {
-            adapter = new PostListViewAdapter(this);
+            adapter = new PostListViewAdapter(this, email);
             postRecView.setAdapter(adapter);
             postRecView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -349,7 +349,8 @@ public class ProfileActivity extends AppCompatActivity {
 //                                post.setImages((ArrayList<String>) dataMap.get("images"));
                                 post.setHashTag((ArrayList<String>) dataMap.get("hashTag"));
                                 post.setLikes(((Long) dataMap.get("likes")).intValue());
-                                post.setComments((ArrayList<String>) dataMap.get("comments"));
+                                //post.setComments((ArrayList<String>) dataMap.get("comments"));
+                                post.setComments((List<Map<String, String>>) dataMap.get("comments"));
 
                                 // Add the Post object to the list
                                 postsArrayList.add(post);

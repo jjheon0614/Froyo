@@ -12,9 +12,14 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 
+import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.Timestamp;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
@@ -32,7 +37,8 @@ public class PostActivity extends AppCompatActivity {
     private ArrayList<Post> postsArrayList = new ArrayList<>();
     private PostListViewAdapter adapter;
     private ImageButton goToPosting, goToChat, goToProfile, goToSearch;
-    private String userID, email;
+    private String userID, email, username;
+    private FloatingActionButton fabEmojiPurchase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,12 +53,12 @@ public class PostActivity extends AppCompatActivity {
         email = i.getStringExtra("email");
 
         if (postRecView != null) {
-            adapter = new PostListViewAdapter(this);
+            adapter = new PostListViewAdapter(this, email);
             postRecView.setAdapter(adapter);
             postRecView.setLayoutManager(new LinearLayoutManager(this));
 
             // Fetch data from Firestore
-            getData1();
+            getPostData1();
         } else {
             Log.e("PostActivity", "RecyclerView is null");
         }
@@ -100,63 +106,70 @@ public class PostActivity extends AppCompatActivity {
             }
         });
 
-        goToSearch = findViewById(R.id.goToSearch);
-        goToSearch.setOnClickListener(new View.OnClickListener() {
+        fabEmojiPurchase = findViewById(R.id.fabEmojiPurchase);
+        fabEmojiPurchase.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(PostActivity.this, SearchActivity.class);
+                Intent intent = new Intent(PostActivity.this, PurchaseEmojiActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 String username = userID;
                 intent.putExtra("userId", username);
                 intent.putExtra("email", email);
                 startActivity(intent);
-                finish();
             }
         });
-
     }
 
-    private void getData() {
+    private void getPostData() {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-        db.collection("posts").get()
-                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                    @Override
-                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                        postsArrayList.clear();
+        // Specify the document ID you want to retrieve
+        String documentId = "IKFpcb0LpJhX4ZmqhenD";
 
-                        for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
-                            Map<String, Object> dataMap = document.getData();
-                            if (dataMap != null) {
-                                // Parse Firestore document data into a Post object
-                                Post post = new Post();
-                                post.setId((String) dataMap.get("id"));
-                                post.setUserEmail((String) dataMap.get("username"));
-                                post.setMajorTag((String) dataMap.get("majorTag"));
-                                post.setContent((String) dataMap.get("content"));
-                                post.setImages((ArrayList<String>) dataMap.get("images"));
-                                post.setHashTag((ArrayList<String>) dataMap.get("hashTag"));
-                                post.setLikes(((Long) dataMap.get("likes")).intValue());
-                                post.setComments((ArrayList<String>) dataMap.get("comments"));
+        db.collection("posts").document(documentId).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        // Parse Firestore document data into a Post object
+                        Map<String, Object> dataMap = document.getData();
+                        Post post = new Post();
+                        post.setId(document.getId());
+                        post.setUserEmail((String) document.get("userEmail"));
+                        post.setMajorTag((String) document.get("majorTag"));
+                        post.setContent((String) document.get("content"));
+                        post.setImages((ArrayList<String>) document.get("images"));
+                        post.setHashTag((ArrayList<String>) document.get("hashTag"));
+                        post.setLikes(((Long) document.get("likes")).intValue());
+                        post.setComments((List<Map<String, String>>) dataMap.get("comments"));
 
-                                // Add the Post object to the list
-                                postsArrayList.add(post);
-                            }
+                        //post.setComments((ArrayList<String>) document.get("comments"));
+
+                        // Retrieve and set the date field
+                        Timestamp timestamp = (Timestamp) document.get("date");
+                        if (timestamp != null) {
+                            post.setDate(timestamp);
                         }
 
-                        // After populating postsArrayList, set it to the adapter
+                        // Add the Post object to the list
+                        postsArrayList.clear(); // Clear the list if needed
+                        postsArrayList.add(post);
+
+                        // Set the list to the adapter
                         adapter.setPosts(postsArrayList);
+                    } else {
+                        Log.d("FirestoreError", "No such document");
                     }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.e("FirestoreError", "Error getting documents", e);
-                    }
-                });
+                } else {
+                    Log.e("FirestoreError", "Error getting document", task.getException());
+                }
+            }
+        });
     }
 
-    private void getData1() {
+
+    private void getPostData1() {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
         db.collection("posts").addSnapshotListener(new EventListener<QuerySnapshot>() {
@@ -198,7 +211,8 @@ public class PostActivity extends AppCompatActivity {
                         //post.setImages((ArrayList<String>) dataMap.get("images"));
                         post.setHashTag((ArrayList<String>) dataMap.get("hashTag"));
                         post.setLikes(((Long) dataMap.get("likes")).intValue());
-                        post.setComments((ArrayList<String>) dataMap.get("comments"));
+                        // post.setComments((ArrayList<String>) dataMap.get("comments"));
+                        post.setComments((List<Map<String, String>>) dataMap.get("comments"));
 
                         // Retrieve and set the date field
                         Timestamp timestamp = (Timestamp) dataMap.get("date");
@@ -217,4 +231,5 @@ public class PostActivity extends AppCompatActivity {
             }
         });
     }
+
 }
