@@ -50,7 +50,7 @@ import java.util.UUID;
 public class NewPostForm extends AppCompatActivity {
     private static final int REQUEST_CODE_PICK_IMAGE = 1;
     private TextView tvUsername;
-    private String userID, email;
+    private String userID, email, userImageUrl;
     private EditText editTextPostContent, editTextHashtag;
     private ImageView imageViewPostPreview;
     private ImageButton buttonAddImage, buttonAddHashtag;
@@ -70,6 +70,7 @@ public class NewPostForm extends AppCompatActivity {
         Intent i = getIntent();
         userID = i.getStringExtra("userId");
         email = i.getStringExtra("email");
+        userImageUrl = i.getStringExtra("imageUrl");
 
         // Initialize components
         tvUsername = findViewById(R.id.tvUsername);
@@ -92,6 +93,7 @@ public class NewPostForm extends AppCompatActivity {
                 Intent intent = new Intent(NewPostForm.this, ProfileActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 intent.putExtra("email", email);
+                intent.putExtra("imageUrl", userImageUrl);
                 startActivity(intent);
                 finish();
             }
@@ -106,6 +108,7 @@ public class NewPostForm extends AppCompatActivity {
                 String username = userID;
                 intent.putExtra("userId", username);
                 intent.putExtra("email", email);
+                intent.putExtra("imageUrl", userImageUrl);
                 startActivity(intent);
                 finish();
             }
@@ -120,6 +123,7 @@ public class NewPostForm extends AppCompatActivity {
                 String username = userID;
                 intent.putExtra("userId", username);
                 intent.putExtra("email", email);
+                intent.putExtra("imageUrl", userImageUrl);
                 startActivity(intent);
                 finish();
             }

@@ -136,11 +136,9 @@
 
     </RelativeLayout>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/profile_posts_recyclerview"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="300dp" />
+
+
+
 
 
 
@@ -227,48 +225,80 @@
 
     </LinearLayout>
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_alignParentBottom="true"
-        android:orientation="horizontal"
-        android:background="@color/white"
-        android:weightSum="4"
-        android:gravity="center">
-
-        <ImageButton
-            android:id="@+id/goToPost"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/navigation_home"
-            android:layout_weight="1"
-            android:background="@color/white"/>
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="300dp"
+        android:orientation="vertical"
+        android:gravity="bottom">
 
 
-        <ImageButton
-            android:id="@+id/goToPosting"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/navigation_add"
-            android:layout_weight="1"
-            android:background="@color/white"/>
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentTop="true"
+            android:layout_above="@+id/navigationBar">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/profile_posts_recyclerview"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+        </ScrollView>
+
+        <LinearLayout
+            android:id="@+id/navigationBar"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_alignParentBottom="true"
+            android:orientation="horizontal"
+            android:background="@color/white"
+            android:weightSum="4"
+            android:gravity="center">
+
+            <ImageButton
+                android:id="@+id/goToPost"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/navigation_home"
+                android:layout_weight="1"
+                android:background="@color/white"/>
 
 
-        <ImageButton
-            android:id="@+id/goToChat"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/navigation_chat"
-            android:layout_weight="1"
-            android:background="@color/white"/>
+            <ImageButton
+                android:id="@+id/goToPosting"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/navigation_add"
+                android:layout_weight="1"
+                android:background="@color/white"/>
 
-        <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/blue_person"
-            android:layout_weight="1"
-            android:background="@color/white"/>
 
-    </LinearLayout>
+            <ImageButton
+                android:id="@+id/goToChat"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/navigation_chat"
+                android:layout_weight="1"
+                android:background="@color/white"/>
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/blue_person"
+                android:layout_weight="1"
+                android:background="@color/white"/>
+
+        </LinearLayout>
+
+
+
+
+
+
+    </RelativeLayout>
+
+
 
 </RelativeLayout>
