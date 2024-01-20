@@ -63,6 +63,7 @@ public class ProfileActivity extends AppCompatActivity {
     private PostListViewAdapter adapter;
     private ArrayList<Post> postsArrayList = new ArrayList<>();
     String username;
+    private String email;
 
     List<String> followersArr = new ArrayList<>();
     List<String> followingArr = new ArrayList<>();
@@ -87,7 +88,7 @@ public class ProfileActivity extends AppCompatActivity {
 
         // Get email from intent
         Intent i = getIntent();
-        String email = i.getStringExtra("email");
+        email = i.getStringExtra("email");
 
         // Fetch user data from Firestore
         fetchUserData(email);
@@ -241,6 +242,9 @@ public class ProfileActivity extends AppCompatActivity {
 
 
 
+
+
+
         saveBtn = (Button) findViewById(R.id.saveBtn);
         saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -287,6 +291,13 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        // Call your method here to refresh data
+        getDataForUser(email); // make sure 'email' is the correct variable you want to pass
+    }
+
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
@@ -321,11 +332,21 @@ public class ProfileActivity extends AppCompatActivity {
                             if (dataMap != null) {
                                 // Parse Firestore document data into a Post object
                                 Post post = new Post();
-                                post.setId(userEmail); // Assuming 'id' is the document ID
+                                post.setId((String) dataMap.get("id")); // Assuming 'id' is the document ID
                                 post.setUserEmail(userEmail);
                                 post.setMajorTag((String) dataMap.get("majorTag"));
                                 post.setContent((String) dataMap.get("content"));
-                                post.setImages((ArrayList<String>) dataMap.get("images"));
+                                Object imagesObject = dataMap.get("images");
+                                if (imagesObject instanceof List<?>) {
+                                    List<String> imagesList = (List<String>) imagesObject;
+                                    post.setImages(new ArrayList<>(imagesList));  // Set images as an ArrayList
+                                } else if (imagesObject instanceof String) {
+                                    String singleImageUrl = (String) imagesObject;
+                                    ArrayList<String> imagesList = new ArrayList<>();
+                                    imagesList.add(singleImageUrl);  // Add single image URL to the list
+                                    post.setImages(imagesList);  // Set images as an ArrayList with a single item
+                                }
+//                                post.setImages((ArrayList<String>) dataMap.get("images"));
                                 post.setHashTag((ArrayList<String>) dataMap.get("hashTag"));
                                 post.setLikes(((Long) dataMap.get("likes")).intValue());
                                 post.setComments((ArrayList<String>) dataMap.get("comments"));

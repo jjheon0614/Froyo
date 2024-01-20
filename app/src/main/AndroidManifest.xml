@@ -15,6 +15,9 @@
         android:theme="@style/Theme.Froyo"
         tools:targetApi="31">
         <activity
+            android:name=".EditPostActivity"
+            android:exported="false" />
+        <activity
             android:name=".UserList"
             android:exported="false" />
         <activity

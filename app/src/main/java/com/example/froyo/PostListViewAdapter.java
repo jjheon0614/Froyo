@@ -65,10 +65,38 @@ public class PostListViewAdapter extends RecyclerView.Adapter<PostListViewAdapte
         //holder.profileName.setText(posts.get(position).getId());
         holder.profileName.setText(posts.get(position).getUserEmail());
         holder.postContent.setText(posts.get(position).getContent());
+//        ArrayList<String> images = posts.get(position).getImages();
+//        Glide.with(context).asBitmap().load(images.get(0)).into(holder.postImage);
+
         ArrayList<String> images = posts.get(position).getImages();
-        Glide.with(context).asBitmap().load(images.get(0)).into(holder.postImage);
+        if (!images.isEmpty()) {
+            Glide.with(context).asBitmap().load(images.get(0)).into(holder.postImage);
+        } else {
+            // Handle the case where there are no images. Perhaps set a default image.
+            Glide.with(context).load(R.drawable.person).into(holder.postImage);
+        }
         holder.likeCount.setText(String.valueOf(posts.get(position).getLikes()));
         holder.commentCount.setText(String.valueOf(posts.get(position).getComments().size()));
+
+        Post currentPost = posts.get(position);
+        // ... other bindings ...
+
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null && user.getEmail() != null && user.getEmail().equals(currentPost.getUserEmail())) {
+            // User email matches post's userEmail, show the edit button
+            holder.editButton.setVisibility(View.VISIBLE);
+
+            holder.editButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // Handle edit button click
+                    handleEditButtonClick(currentPost, position);
+                }
+            });
+        } else {
+            // User email doesn't match post's userEmail, hide the edit button
+            holder.editButton.setVisibility(View.GONE);
+        }
 
 
         holder.postsParent.setOnClickListener(new View.OnClickListener() {
@@ -117,6 +145,16 @@ public class PostListViewAdapter extends RecyclerView.Adapter<PostListViewAdapte
 
 
     }
+
+    private void handleEditButtonClick(Post post, int position) {
+        Post currentPost = posts.get(position);
+        Intent intent = new Intent(context, EditPostActivity.class);
+        intent.putExtra("postId", currentPost.getId()); // Pass post ID or other necessary data
+        // You can add more data to intent if required
+
+        context.startActivity(intent);
+    }
+
 
     @Override
     public int getItemCount() {
@@ -179,6 +217,7 @@ public class PostListViewAdapter extends RecyclerView.Adapter<PostListViewAdapte
         // private ImageView profileImage;
         private ImageView postImage, likeButton, commentButton;
         private CardView postsParent;
+        private android.widget.Button editButton;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             profileName = itemView.findViewById(R.id.profileName);
@@ -192,6 +231,8 @@ public class PostListViewAdapter extends RecyclerView.Adapter<PostListViewAdapte
             commentButton = itemView.findViewById(R.id.commentButton);
             hashtags = itemView.findViewById(R.id.hashtags);
             majorTag = itemView.findViewById(R.id.majorTag);
+            editButton = itemView.findViewById(R.id.editPostBtn); // Initialize edit button
+
         }
     }
 }
