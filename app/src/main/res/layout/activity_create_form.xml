@@ -45,7 +45,7 @@
             android:layout_width="350dp"
             android:layout_height="wrap_content"
             android:hint="Email address"
-            android:background="@color/white"
+            android:background="@drawable/button_stroke"
             android:padding="10sp"
             android:layout_marginBottom="10dp"/>
 
@@ -54,7 +54,7 @@
             android:layout_width="350dp"
             android:layout_height="wrap_content"
             android:hint="Password"
-            android:background="@color/white"
+            android:background="@drawable/button_stroke"
             android:padding="10sp"
             android:layout_marginBottom="10dp"/>
 
@@ -63,7 +63,7 @@
             android:layout_width="350dp"
             android:layout_height="wrap_content"
             android:hint="Confirm Password"
-            android:background="@color/white"
+            android:background="@drawable/button_stroke"
             android:padding="10sp"
             android:layout_marginBottom="30dp"/>
 

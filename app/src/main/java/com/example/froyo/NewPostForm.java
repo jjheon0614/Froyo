@@ -52,7 +52,7 @@ public class NewPostForm extends AppCompatActivity {
     private TextView tvUsername;
     private String userID, email, userImageUrl;
     private EditText editTextPostContent, editTextHashtag;
-    private ImageView imageViewPostPreview;
+    private ImageView imageViewPostPreview, profileImage;
     private ImageButton buttonAddImage, buttonAddHashtag;
     private android.widget.Button buttonSubmitPost;
     private Spinner spinnerMajorTag;
@@ -82,6 +82,11 @@ public class NewPostForm extends AppCompatActivity {
         buttonSubmitPost = findViewById(R.id.btPost);
         spinnerMajorTag = findViewById(R.id.spinnerMajorTag);
         hashtagContainer = findViewById(R.id.llHashtagContainer);
+        profileImage = findViewById(R.id.ivProfilePic);
+
+        Glide.with(NewPostForm.this)
+                .load(userImageUrl)
+                .into(profileImage);
 
         // Set the username text
         tvUsername.setText(userID);
@@ -339,8 +344,8 @@ public class NewPostForm extends AppCompatActivity {
         ImageView ivHashtag = new ImageView(this);
 
         //Create a new LayoutParams for the ImageView in dp units
-        int width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 40, getResources().getDisplayMetrics());
-        int height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 40, getResources().getDisplayMetrics());
+        int width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 30, getResources().getDisplayMetrics());
+        int height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 30, getResources().getDisplayMetrics());
 
 
         // Set the width, height, marginEnd of the ImageView
@@ -358,7 +363,7 @@ public class NewPostForm extends AppCompatActivity {
                 4.0f // Set weight to 1 to take available space
         ));
         hashtagEditText.setHint("Hashtag");
-        hashtagEditText.setBackgroundResource(R.drawable.rounded_rectangle);
+        hashtagEditText.setBackgroundResource(R.drawable.list_user_stroke);
 
         int padding = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 10, getResources().getDisplayMetrics());
         hashtagEditText.setPadding(padding,padding,padding,padding);

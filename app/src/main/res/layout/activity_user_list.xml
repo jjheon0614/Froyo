@@ -44,7 +44,7 @@
                 android:layout_width="330dp"
                 android:layout_height="match_parent"
                 android:hint="Search User..."
-                android:background="@drawable/search_bar"/>
+                android:background="@drawable/search_stroke"/>
 
             <ImageButton
                 android:id="@+id/searchUserBtn"
