@@ -13,6 +13,7 @@ After creating the account, user can log in with their own email account or goog
 
 ### 4.	Log out 
 User can click log out by clicking the button in the profile view. it will return to Welcome Page.
+
 ### 5.	Profile View
 By clicking the person icon in the navigation bar, it will shows the user info with the user profile and number of following and followers. Below the user info, it has 2 buttons that can display user’s own posts or edit the user information. The default is displaying the user’s own posts.
 
@@ -63,6 +64,9 @@ Users can click the New Post Tab to create a new post. Each post requires post c
 
 ### 21.	Purchase Emoji and Payment
 Users can Purchase emojis from the Emoji Store by clicking the “Purchase” button in the Emoji Window. The Emoji Window can be found from the input field of any Chat Rooms. Currently, the Emoji store sells 4 new Emojis and users can purchase each emoji for the price of $1. The payment is processed using Stripe. If the user hasn’t purchased any emoji before, the application will create a new customer id for that user and store it in Firestore. The purchased emoji is then added into the emoji list of the user.  
+
+### 22. Message notification
+When the user did not check the message from the other user, it will show the number of messages that user did not check in each chatting list.
 
 
 ## Technology Use
