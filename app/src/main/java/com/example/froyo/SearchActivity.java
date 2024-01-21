@@ -32,6 +32,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 public class SearchActivity extends AppCompatActivity {
@@ -63,6 +64,7 @@ public class SearchActivity extends AppCompatActivity {
     // Filtered post display
     private RecyclerView searchRecyclerView;
     private PostListViewAdapter postListViewAdapter;
+    private String email;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,7 +98,7 @@ public class SearchActivity extends AppCompatActivity {
         // Get intent
         Intent intent = getIntent();
         String userId = intent.getStringExtra("userId");
-        String email = intent.getStringExtra("email");
+        email = intent.getStringExtra("email");
 
         // Retrieve data from Firestore
         getData();
@@ -147,7 +149,7 @@ public class SearchActivity extends AppCompatActivity {
         });
 
         // Setup RecyclerView
-        postListViewAdapter = new PostListViewAdapter(this);
+        postListViewAdapter = new PostListViewAdapter(this, email);
         searchRecyclerView.setAdapter(postListViewAdapter);
         searchRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
@@ -246,8 +248,8 @@ public class SearchActivity extends AppCompatActivity {
                         post.setImages((ArrayList<String>) dataMap.get("images"));
                         post.setHashTag((ArrayList<String>) dataMap.get("hashTag"));
                         post.setLikes(((Long) dataMap.get("likes")).intValue());
-                        post.setComments((ArrayList<String>) dataMap.get("comments"));
-
+                        // post.setComments((ArrayList<String>) dataMap.get("comments"));
+                        post.setComments((List<Map<String, String>>) dataMap.get("comments"));
                         // Retrieve and set the date field
                         Timestamp timestamp = (Timestamp) dataMap.get("date");
                         if (timestamp != null) {
@@ -275,7 +277,7 @@ public class SearchActivity extends AppCompatActivity {
         }
 
         // Update the adapter with the filtered data
-        postListViewAdapter = new PostListViewAdapter(this);
+        postListViewAdapter = new PostListViewAdapter(this, email);
         postListViewAdapter.setPosts(filteredPosts);
         searchRecyclerView.setAdapter(postListViewAdapter);
 

@@ -150,7 +150,7 @@ public class PostListViewAdapter extends RecyclerView.Adapter<PostListViewAdapte
             public void onClick(View v) {
                 // Show the comment dialog fragment
                 showCommentDialogFragment(posts.get(holder.getAdapterPosition()).getId());
-                Toast.makeText(v.getContext(), "Comment posted:" + userEmail , Toast.LENGTH_SHORT).show();
+                // Toast.makeText(v.getContext(), "Comment posted:" + userEmail , Toast.LENGTH_SHORT).show();
             }
         });
 

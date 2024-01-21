@@ -85,7 +85,7 @@ public class CommentDialogFragment extends DialogFragment {
             public void onClick(View v) {
                 postCommentToFirestore(postId, commentInput.getText().toString());
                 commentInput.setText("");
-                Toast.makeText(getContext(), "Comment posted" , Toast.LENGTH_SHORT).show();
+                // Toast.makeText(getContext(), "Current User: " , Toast.LENGTH_SHORT).show();
             }
         });
 
