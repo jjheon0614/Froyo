@@ -36,7 +36,7 @@
 
         <LinearLayout
             android:id="@+id/information"
-            android:layout_width="210dp"
+            android:layout_width="190dp"
             android:layout_height="match_parent"
             android:orientation="vertical">
 
@@ -60,6 +60,16 @@
                 android:textSize="13sp" />
 
         </LinearLayout>
+
+        <ImageButton
+            android:id="@+id/leave_chatRoom_button"
+            android:layout_width="40dp"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:src="@drawable/leave_chatroom"
+            android:background="@color/mainColor"
+            android:onClick="leaveChatRoom"
+            />
 
         <ImageButton
             android:id="@+id/showSearchBar_button"

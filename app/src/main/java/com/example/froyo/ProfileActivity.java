@@ -246,9 +246,6 @@ public class ProfileActivity extends AppCompatActivity {
 
 
 
-
-
-
         saveBtn = (Button) findViewById(R.id.saveBtn);
         saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
