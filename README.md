@@ -96,3 +96,6 @@ After the user successfully delete the post, it should directly decrease number 
 
 ### 3.	Admin user delete alert dialog does not work
 When admin delete the user, it should show the alert to check again. However, for some reason, by making an alert dialog, the app just shut down.
+
+### 4.	Sort by content/major tag/tags/date feed gets reset if the user interacts with any post
+When the user filters the post and interacts with any post (like, or comment) the filter will be removed, and all posts will be on display
