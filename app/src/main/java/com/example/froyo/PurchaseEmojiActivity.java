@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -45,6 +46,7 @@ import java.util.Map;
 
 public class PurchaseEmojiActivity extends AppCompatActivity {
 
+    private ImageButton back;
     private Button purchaseButton7, purchaseButton8, purchaseButton9, purchaseButton10;
     private ImageView emoji7, emoji8, emoji9, emoji10;
     private PaymentSheet paymentSheet;
@@ -61,6 +63,14 @@ public class PurchaseEmojiActivity extends AppCompatActivity {
         Intent i = getIntent();
         userID = i.getStringExtra("userId");
         email = i.getStringExtra("email");
+
+        back = findViewById(R.id.backFromPurchase);
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
 
 
         fetchUserData();
