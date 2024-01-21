@@ -133,6 +133,11 @@ public class DetailForm extends AppCompatActivity {
                                             user.put("followersArr", new ArrayList<String>());   // Empty list for follower IDs
 
 
+                                            if (selectedImageUri == null) {
+                                                // If selectedImageUri is null, set the imageUrl to a default or existing URL
+                                                user.put("imageUrl", "https://firebasestorage.googleapis.com/v0/b/assignment3-login-e1207.appspot.com/o/profiles%2Fuser.png?alt=media&token=5fded011-d56b-464a-9cb1-f9d81e21c09a"); // 'url' should be the URL you want to set when there's no image selected
+                                            }
+
 
                                             // Add a new document with a generated ID
                                             FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -144,7 +149,9 @@ public class DetailForm extends AppCompatActivity {
                                                             Toast.makeText(DetailForm.this, "User data saved.",
                                                                     Toast.LENGTH_SHORT).show();
 
-                                                            uploadImageToStorage(email, selectedImageUri);
+                                                            if (selectedImageUri != null) {
+                                                                uploadImageToStorage(email, selectedImageUri);
+                                                            }
 
                                                             Intent intent = new Intent(DetailForm.this, CreateForm.class);
                                                             intent.putExtra("detailSuccess", "true");
@@ -190,6 +197,10 @@ public class DetailForm extends AppCompatActivity {
                         user.put("followingArr", new ArrayList<String>());   // Empty list for following user IDs
                         user.put("followersArr", new ArrayList<String>());   // Empty list for follower IDs
 
+                        if (selectedImageUri == null) {
+                            // If selectedImageUri is null, set the imageUrl to a default or existing URL
+                            user.put("imageUrl", "https://firebasestorage.googleapis.com/v0/b/assignment3-login-e1207.appspot.com/o/profiles%2Fuser.png?alt=media&token=5fded011-d56b-464a-9cb1-f9d81e21c09a"); // 'url' should be the URL you want to set when there's no image selected
+                        }
 
                         // Update the Firestore document with a merge option
                         db.collection("users").document(firebaseUser.getUid())
@@ -199,7 +210,9 @@ public class DetailForm extends AppCompatActivity {
                                     public void onSuccess(Void aVoid) {
                                         // Document updated successfully
                                         // Proceed with any other operations or navigation
-                                        uploadImageToStorage(email, selectedImageUri);
+                                        if (selectedImageUri != null) {
+                                            uploadImageToStorage(email, selectedImageUri);
+                                        }
 
                                         Intent intent = new Intent(DetailForm.this, CreateForm.class);
                                         intent.putExtra("detailSuccess", "true");
@@ -221,25 +234,25 @@ public class DetailForm extends AppCompatActivity {
 
     }
 
-    // Method to save or update user data and image
-    private void saveUserDataAndImage(DocumentReference docRef, Map<String, Object> userData, Uri imageUri) {
-        docRef.set(userData, SetOptions.merge())
-                .addOnSuccessListener(aVoid -> {
-                    Toast.makeText(DetailForm.this, "User data saved.", Toast.LENGTH_SHORT).show();
-                    if (imageUri != null) {
-                        uploadImageToStorage(email, imageUri);
-                    }
-
-                    // After saving data and image, navigate to the next activity
-                    Intent intent = new Intent(DetailForm.this, CreateForm.class); // or any other activity
-                    intent.putExtra("email", email);
-                    startActivity(intent);
-                    finish();
-                })
-                .addOnFailureListener(e -> {
-                    Toast.makeText(DetailForm.this, "Error saving user data.", Toast.LENGTH_SHORT).show();
-                });
-    }
+//    // Method to save or update user data and image
+//    private void saveUserDataAndImage(DocumentReference docRef, Map<String, Object> userData, Uri imageUri) {
+//        docRef.set(userData, SetOptions.merge())
+//                .addOnSuccessListener(aVoid -> {
+//                    Toast.makeText(DetailForm.this, "User data saved.", Toast.LENGTH_SHORT).show();
+//                    if (imageUri != null) {
+//                        uploadImageToStorage(email, imageUri);
+//                    }
+//
+//                    // After saving data and image, navigate to the next activity
+//                    Intent intent = new Intent(DetailForm.this, CreateForm.class); // or any other activity
+//                    intent.putExtra("email", email);
+//                    startActivity(intent);
+//                    finish();
+//                })
+//                .addOnFailureListener(e -> {
+//                    Toast.makeText(DetailForm.this, "Error saving user data.", Toast.LENGTH_SHORT).show();
+//                });
+//    }
 
     private void uploadImageToStorage(String email, Uri imageUri) {
         if (imageUri != null) {

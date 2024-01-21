@@ -115,7 +115,7 @@ public class LoginForm extends AppCompatActivity {
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if(task.isSuccessful()) {
                                     // Authentication success
-                                    Intent intent = new Intent(LoginForm.this, ProfileActivity.class);
+                                    Intent intent = new Intent(LoginForm.this, PostActivity.class);
                                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                     intent.putExtra("email", email);
                                     startActivity(intent);
@@ -162,7 +162,7 @@ public class LoginForm extends AppCompatActivity {
                             if (user != null) {
                                 email = user.getEmail(); // Get email from FirebaseUser
                             }
-                            Intent intent = new Intent(LoginForm.this, ProfileActivity.class);
+                            Intent intent = new Intent(LoginForm.this, PostActivity.class);
                             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                             intent.putExtra("email", email);
                             startActivity(intent);

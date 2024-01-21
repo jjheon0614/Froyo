@@ -29,12 +29,20 @@
 
         <TextView
             android:id="@+id/userName"
-            android:layout_width="265dp"
+            android:layout_width="205dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
             android:textAlignment="viewStart"
             android:text="id"
             android:textSize="20dp"/>
+
+        <android.widget.Button
+            android:id="@+id/deleteUserBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Delete"
+            android:textColor="@color/red"
+            android:visibility="gone"/>
 
 
     </LinearLayout>

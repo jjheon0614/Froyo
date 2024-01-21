@@ -85,6 +85,17 @@
     </LinearLayout>
 
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="30dp"
+        android:text="By creating an account or signing\nyou agree to our Terms and Conditions"/>
+
+
+
 
 
 </RelativeLayout>

@@ -34,7 +34,7 @@ import java.util.Map;
 
 public class ChatListActivity extends AppCompatActivity {
 
-    private String userID, email;
+    private String userID, email, imageUrl;
     private Boolean isSearch = false;
     SimpleDateFormat mFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
     private RecyclerView chatRoomList;
@@ -59,6 +59,7 @@ public class ChatListActivity extends AppCompatActivity {
         Intent i = getIntent();
         userID = i.getStringExtra("userId");
         email = i.getStringExtra("email");
+        imageUrl = i.getStringExtra("imageUrl");
         getData();
 
         add_chat_button = findViewById(R.id.add_chat_button);
@@ -75,9 +76,18 @@ public class ChatListActivity extends AppCompatActivity {
         goToProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(ChatListActivity.this, ProfileActivity.class);
+                Intent intent;
+
+                if (email.equals("admin@gmail.com")) {
+                    intent = new Intent(ChatListActivity.this, AllUserActivity.class);
+                } else {
+                    intent = new Intent(ChatListActivity.this, ProfileActivity.class);
+                }
+
+
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 intent.putExtra("email", email);
+                intent.putExtra("imageUrl", imageUrl);
                 startActivity(intent);
                 finish();
             }
@@ -91,6 +101,7 @@ public class ChatListActivity extends AppCompatActivity {
                 String username = userID;
                 intent.putExtra("userId", username);
                 intent.putExtra("email", email);
+                intent.putExtra("imageUrl", imageUrl);
                 startActivity(intent);
                 finish();
             }
@@ -105,6 +116,7 @@ public class ChatListActivity extends AppCompatActivity {
                 String username = userID;
                 intent.putExtra("userId", username);
                 intent.putExtra("email", email);
+                intent.putExtra("imageUrl", imageUrl);
                 startActivity(intent);
                 finish();
             }

@@ -62,8 +62,9 @@ public class ProfileActivity extends AppCompatActivity {
     private RecyclerView postRecView;
     private PostListViewAdapter adapter;
     private ArrayList<Post> postsArrayList = new ArrayList<>();
-    String username;
+    private String username;
     private String email;
+    private String userImageUrl;
 
     List<String> followersArr = new ArrayList<>();
     List<String> followingArr = new ArrayList<>();
@@ -206,6 +207,7 @@ public class ProfileActivity extends AppCompatActivity {
                 String username = userId.getText().toString();
                 intent.putExtra("userId", username);
                 intent.putExtra("email", email);
+                intent.putExtra("imageUrl", userImageUrl);
                 startActivity(intent);
                 finish();
             }
@@ -221,6 +223,7 @@ public class ProfileActivity extends AppCompatActivity {
                 String username = userId.getText().toString();
                 intent.putExtra("userId", username);
                 intent.putExtra("email", email);
+                intent.putExtra("imageUrl", userImageUrl);
                 startActivity(intent);
                 finish();
             }
@@ -235,6 +238,7 @@ public class ProfileActivity extends AppCompatActivity {
                 String username = userId.getText().toString();
                 intent.putExtra("userId", username);
                 intent.putExtra("email", email);
+                intent.putExtra("imageUrl", userImageUrl);
                 startActivity(intent);
                 finish();
             }
@@ -464,7 +468,7 @@ public class ProfileActivity extends AppCompatActivity {
                             // Parse data and set to views
                             username = documentSnapshot.getString("username");
                             String description = documentSnapshot.getString("description");
-                            String imageUrl = documentSnapshot.getString("imageUrl");
+                            userImageUrl = documentSnapshot.getString("imageUrl");
                             long posts = documentSnapshot.getLong("posts");
                             long followers = documentSnapshot.getLong("followers");
                             long following = documentSnapshot.getLong("following");
@@ -482,11 +486,11 @@ public class ProfileActivity extends AppCompatActivity {
 
                             // Load image using Glide
                             Glide.with(ProfileActivity.this)
-                                    .load(imageUrl)
+                                    .load(userImageUrl)
                                     .into(userImage);
 
                             Glide.with(ProfileActivity.this)
-                                    .load(imageUrl)
+                                    .load(userImageUrl)
                                     .into(editImage);
 
 

@@ -16,6 +16,10 @@
         android:theme="@style/Theme.Froyo"
         tools:targetApi="31">
         <activity
+            android:name=".AllUserActivity"
+            android:exported="false"
+            android:theme="@style/Theme.Froyo"/>
+        <activity
             android:name=".SearchActivity"
             android:exported="false" />
         <activity

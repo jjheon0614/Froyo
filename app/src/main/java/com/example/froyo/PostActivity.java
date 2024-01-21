@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -39,6 +40,7 @@ public class PostActivity extends AppCompatActivity {
     private ImageButton goToPosting, goToChat, goToProfile, goToSearch;
     private String userID, email, username;
     private FloatingActionButton fabEmojiPurchase;
+    private String userImageUrl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,8 +51,25 @@ public class PostActivity extends AppCompatActivity {
         postRecView = findViewById(R.id.postRecView);
 
         Intent i = getIntent();
-        userID = i.getStringExtra("userId");
-        email = i.getStringExtra("email");
+
+        if (i.hasExtra("userId")) {
+            userID = i.getStringExtra("userId");
+        }
+
+
+        if (i.hasExtra("email")) {
+            email = i.getStringExtra("email");
+        }
+
+        if (i.hasExtra("imageUrl")) {
+            userImageUrl = i.getStringExtra("imageUrl");
+        }
+
+        fetchUserData(email);
+
+
+//        email = i.getStringExtra("email");
+//        userImageUrl = i.getStringExtra("imageUrl");
 
         if (postRecView != null) {
             adapter = new PostListViewAdapter(this, email);
@@ -69,10 +88,18 @@ public class PostActivity extends AppCompatActivity {
         goToProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(PostActivity.this, ProfileActivity.class);
+                Intent intent;
+
+                if (email.equals("admin@gmail.com")) {
+                    intent = new Intent(PostActivity.this, AllUserActivity.class);
+                } else {
+                    intent = new Intent(PostActivity.this, ProfileActivity.class);
+                }
+
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 intent.putExtra("userId", userID);
                 intent.putExtra("email", email);
+                intent.putExtra("imageUrl", userImageUrl);
                 startActivity(intent);
                 finish();
             }
@@ -88,6 +115,7 @@ public class PostActivity extends AppCompatActivity {
                 String username = userID;
                 intent.putExtra("userId", username);
                 intent.putExtra("email", email);
+                intent.putExtra("imageUrl", userImageUrl);
                 startActivity(intent);
                 finish();
             }
@@ -101,6 +129,7 @@ public class PostActivity extends AppCompatActivity {
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 intent.putExtra("userId", userID);
                 intent.putExtra("email", email);
+                intent.putExtra("imageUrl", userImageUrl);
                 startActivity(intent);
                 finish();
             }
@@ -115,9 +144,41 @@ public class PostActivity extends AppCompatActivity {
                 String username = userID;
                 intent.putExtra("userId", username);
                 intent.putExtra("email", email);
+                intent.putExtra("imageUrl", userImageUrl);
                 startActivity(intent);
+                finish();
             }
         });
+
+    }
+
+    private void fetchUserData(String email) {
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection("users")
+                .whereEqualTo("email", email)
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                        if (!queryDocumentSnapshots.isEmpty()) {
+                            // Assuming email is unique and only one document is returned
+                            DocumentSnapshot documentSnapshot = queryDocumentSnapshots.getDocuments().get(0);
+
+                            // Parse data and set to views
+                            userID = documentSnapshot.getString("username");
+                            userImageUrl = documentSnapshot.getString("imageUrl");
+                        } else {
+                            // Handle case where user data does not exist
+                            Toast.makeText(PostActivity.this, "cannot bring the user data", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        // Handle failure
+                    }
+                });
     }
 
     private void getPostData() {
