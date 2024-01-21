@@ -135,20 +135,20 @@ public class PostActivity extends AppCompatActivity {
             }
         });
 
-        fabEmojiPurchase = findViewById(R.id.fabEmojiPurchase);
-        fabEmojiPurchase.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(PostActivity.this, PurchaseEmojiActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                String username = userID;
-                intent.putExtra("userId", username);
-                intent.putExtra("email", email);
-                intent.putExtra("imageUrl", userImageUrl);
-                startActivity(intent);
-                finish();
-            }
-        });
+//        fabEmojiPurchase = findViewById(R.id.fabEmojiPurchase);
+//        fabEmojiPurchase.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent(PostActivity.this, PurchaseEmojiActivity.class);
+//                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//                String username = userID;
+//                intent.putExtra("userId", username);
+//                intent.putExtra("email", email);
+//                intent.putExtra("imageUrl", userImageUrl);
+//                startActivity(intent);
+//                finish();
+//            }
+//        });
 
         goToSearch = findViewById(R.id.goToSearch);
         goToSearch.setOnClickListener(new View.OnClickListener() {

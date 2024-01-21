@@ -47,7 +47,6 @@ public class PurchaseEmojiActivity extends AppCompatActivity {
 
     private Button purchaseButton7, purchaseButton8, purchaseButton9, purchaseButton10;
     private ImageView emoji7, emoji8, emoji9, emoji10;
-    private CardInputWidget cardInputWidget;
     private PaymentSheet paymentSheet;
     private ArrayList<String> purchasedEmoji;
     private String customerID, EphericalKey, ClientSecret, userID, email, selectedEmoji;

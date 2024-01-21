@@ -161,7 +161,7 @@ public class ChatListActivity extends AppCompatActivity {
                             }
                             else{
                                 // Get the users list
-                                List<Map<String, Number>> usersList = (List<Map<String, Number>>) dataMap.get("users");
+//                                List<Map<String, Number>> usersList = (List<Map<String, Number>>) dataMap.get("users");
                                 // Get the chat room ID
                                 String chatID = (String) dataMap.get("chatID");
                                 // Get the users list
@@ -273,6 +273,7 @@ public class ChatListActivity extends AppCompatActivity {
                         i_chatRoom.putExtra("chatID", clickedItem.chatId);
                         i_chatRoom.putExtra("peopleNum", clickedItem.numPeople);
                         i_chatRoom.putExtra("userID", userID);
+                        i_chatRoom.putExtra("email", email);
                         i_chatRoom.putExtra("imageUrl", imageUrl);
                         chatRoomArrayList.clear();
                         adapter.notifyDataSetChanged();

@@ -22,7 +22,7 @@
             android:background="@drawable/close_button_background" />
 
         <TextView
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="center"
             android:textAlignment="center"
@@ -31,6 +31,25 @@
             android:text="Emoji"
             android:textColor="@color/white"
             android:textSize="35sp"/>
+
+        <android.widget.Button
+            android:id="@+id/fabEmojiPurchase"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Purchase"/>
+
+<!--        <com.google.android.material.floatingactionbutton.FloatingActionButton-->
+<!--            android:id="@+id/fabEmojiPurchase"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_alignParentEnd="true"-->
+<!--            android:layout_alignParentBottom="true"-->
+<!--            android:layout_marginEnd="26dp"-->
+<!--            android:layout_marginBottom="62dp"-->
+<!--            android:onClick="openCart"-->
+<!--            android:backgroundTint="@color/background"-->
+<!--            app:elevation="6dp"-->
+<!--            app:srcCompat="@drawable/ic_cart1" />-->
 
     </LinearLayout>
 

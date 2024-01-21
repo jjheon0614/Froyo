@@ -25,6 +25,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -36,6 +37,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.DrawableImageViewTarget;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
@@ -79,6 +81,8 @@ public class ChatRoomActivity extends AppCompatActivity {
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private FirebaseStorage storage;
     private StorageReference storageReference;
+    private Button fabEmojiPurchase;
+    private String email;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,6 +103,7 @@ public class ChatRoomActivity extends AppCompatActivity {
         // Get intent from chat list
         Intent i_get = getIntent(); // Getting intent from ChatListActivity
         chatID = i_get.getStringExtra("chatID"); // Getting chatID
+        email = i_get.getStringExtra("email");
 
         // Set up the title of the chat room
         title.setText(i_get.getStringExtra("title")); // Getting the title of chatroom
@@ -422,6 +427,21 @@ public class ChatRoomActivity extends AppCompatActivity {
         WindowManager.LayoutParams params = window.getAttributes();
         params.y = 280;
         window.setAttributes(params);
+
+        fabEmojiPurchase = emojiDialog.findViewById(R.id.fabEmojiPurchase);
+        fabEmojiPurchase.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ChatRoomActivity.this, PurchaseEmojiActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                String username = userID;
+                intent.putExtra("userId", username);
+                intent.putExtra("email", email);
+                intent.putExtra("imageUrl", userImage);
+                startActivity(intent);
+                finish();
+            }
+        });
 
         ImageView emoji1 = emojiDialog.findViewById(R.id.emoji1);
         ImageView emoji2 = emojiDialog.findViewById(R.id.emoji2);
