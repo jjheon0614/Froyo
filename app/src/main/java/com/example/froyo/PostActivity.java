@@ -150,6 +150,20 @@ public class PostActivity extends AppCompatActivity {
             }
         });
 
+        goToSearch = findViewById(R.id.goToSearch);
+        goToSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(PostActivity.this, SearchActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                String username = userID;
+                intent.putExtra("userId", username);
+                intent.putExtra("email", email);
+                startActivity(intent);
+                finish();
+            }
+        });
+
     }
 
     private void fetchUserData(String email) {
