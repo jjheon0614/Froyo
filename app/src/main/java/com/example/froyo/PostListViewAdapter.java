@@ -125,7 +125,7 @@ public class PostListViewAdapter extends RecyclerView.Adapter<PostListViewAdapte
         holder.postsParent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(context, posts.get(holder.getAdapterPosition()).getId() , Toast.LENGTH_SHORT).show();
+                //Toast.makeText(context, posts.get(holder.getAdapterPosition()).getId() , Toast.LENGTH_SHORT).show();
             }
         });
 
