@@ -18,6 +18,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -65,6 +66,7 @@ public class ProfileActivity extends AppCompatActivity {
     private String username;
     private String email;
     private String userImageUrl;
+    private ScrollView scrollView;
 
     List<String> followersArr = new ArrayList<>();
     List<String> followingArr = new ArrayList<>();
@@ -86,6 +88,7 @@ public class ProfileActivity extends AppCompatActivity {
         userFollowing = findViewById(R.id.userFollowing);
         editId = findViewById(R.id.editId);
         editDescription = findViewById(R.id.editDescription);
+        scrollView = findViewById(R.id.scrollView);
 
         // Get email from intent
         Intent i = getIntent();
@@ -160,6 +163,7 @@ public class ProfileActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 postRecView.setVisibility(View.VISIBLE);
+                scrollView.setVisibility(View.VISIBLE);
                 editLinear.setVisibility(View.GONE);
                 posts.setTextColor(getResources().getColor(R.color.mainColor));
                 posts.setBackgroundResource(R.drawable.blue_underline);
@@ -175,6 +179,7 @@ public class ProfileActivity extends AppCompatActivity {
             public void onClick(View v) {
                 editLinear.setVisibility(View.VISIBLE);
                 postRecView.setVisibility(View.GONE);
+                scrollView.setVisibility(View.GONE);
                 editProfile.setTextColor(getResources().getColor(R.color.mainColor));
                 editProfile.setBackgroundResource(R.drawable.blue_underline);
 
