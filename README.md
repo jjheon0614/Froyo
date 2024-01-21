@@ -1,6 +1,6 @@
 # Froyo
 
-##Functionalities
+## Functionalities
 
 ### 1.	Create Account
 User can create the account by their own email old sign up by their google account. it will check the user is already created or not in Firebase Authentication. If the user is new, it will move to Detail form to set up the information. It will give an alert if user makes the blank in the text field.
