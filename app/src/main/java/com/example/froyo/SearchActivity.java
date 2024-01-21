@@ -322,30 +322,58 @@ public class SearchActivity extends AppCompatActivity {
     private void filterTags() {
         // Filter the data based on the search text
         filteredPosts.clear();
-        String [] tags = tagText.split(",");
+        if (tagText.contains(",")){
+            String [] tags = tagText.split(",");
 
-        // Filter the data based on the search text and tags
-        if(!searchText.isEmpty() && tags.length > 0) { // If search text is not empty and tags is not empty, filter by both search text and tags
-            for (Post post : allPosts) {
-                if (post.getContent().toLowerCase().contains(searchText.toLowerCase())) {
+            for(int i = 0; i < tags.length; i++){
+                tags[i] = tags[i].trim();
+                tags[i].replace(" ", "");
+            }
+
+            // Filter the data based on the search text and tags
+            if(!searchText.isEmpty() && tags.length > 0) { // If search text is not empty and tags is not empty, filter by both search text and tags
+                for (Post post : allPosts) {
+                    if (post.getContent().toLowerCase().contains(searchText.toLowerCase())) {
+                        checkTagInPost(tags, post);
+                    }
+                }
+            }
+            // Filter the data based on the tags
+            else if (searchText.isEmpty() && tags.length > 0) { // If search text is empty and tags is not empty, filter by tags
+                for (Post post : allPosts) {
                     checkTagInPost(tags, post);
                 }
             }
         }
-        // Filter the data based on the tags
-        else if (searchText.isEmpty() && tags.length > 0) { // If search text is empty and tags is not empty, filter by tags
-            for (Post post : allPosts) {
-                checkTagInPost(tags, post);
+        else {
+            if(!searchText.isEmpty() && !tagText.isEmpty()) { // If search text is not empty and tags is not empty, filter by both search text and tags
+                for (Post post : allPosts) {
+                    if (post.getContent().toLowerCase().contains(searchText.toLowerCase())) {
+                        checkTagInPost(new String[]{tagText}, post);
+                    }
+                }
+            } else if (searchText.isEmpty() && !tagText.isEmpty()) { // If search text is empty and tags is not empty, filter by tags
+                for (Post post : allPosts) {
+                    checkTagInPost(new String[]{tagText}, post);
+                }
             }
         }
+
+
+
         updateFilteredPosts();
     }
 
     private void checkTagInPost(String[] tags, Post post) {
         for (String aTag : tags) {
-            if (post.getHashTag().contains(aTag.toLowerCase())) {
-                filteredPosts.add(post);
-                break;
+            for(String hashTag : post.getHashTag()){
+                String tmpHashTag = hashTag.trim();
+                tmpHashTag.replace(" ", "");
+
+                if(tmpHashTag.toLowerCase().equals(aTag.toLowerCase())){
+                    filteredPosts.add(post);
+                    return;
+                }
             }
         }
     }
