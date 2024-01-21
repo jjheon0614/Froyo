@@ -67,17 +67,19 @@ public class ListUserAdapter extends RecyclerView.Adapter<ListUserAdapter.ViewHo
                 public void onClick(View v) {
                     // Handle the delete user action
 
-                    AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.Theme_Froyo);
-                    builder.setTitle("Confirm Deletion")
-                            .setMessage("Are you sure you want to delete this user and all their posts?")
-                            .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int whichButton) {
-                                    // If yes, proceed with deletion
-                                    Toast.makeText(context, "yes", Toast.LENGTH_SHORT).show();
-//                                    deleteUserAndPosts(holder.userEmail);
-                                }
-                            })
-                            .setNegativeButton("No", null).show();
+                    deleteUserAndPosts(holder.userEmail, holder.getAdapterPosition());
+
+//                    AlertDialog.Builder builder = new AlertDialog.Builder(context, R.style.Theme_Froyo);
+//                    builder.setTitle("Confirm Deletion")
+//                            .setMessage("Are you sure you want to delete this user and all their posts?")
+//                            .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+//                                public void onClick(DialogInterface dialog, int whichButton) {
+//                                    // If yes, proceed with deletion
+//                                    Toast.makeText(context, "yes", Toast.LENGTH_SHORT).show();
+////                                    deleteUserAndPosts(holder.userEmail);
+//                                }
+//                            })
+//                            .setNegativeButton("No", null).show();
 
                 }
             });
@@ -86,7 +88,7 @@ public class ListUserAdapter extends RecyclerView.Adapter<ListUserAdapter.ViewHo
         }
     }
 
-    private void deleteUserAndPosts(String userEmail) {
+    private void deleteUserAndPosts(String userEmail, int position) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
         // First, get the user document
@@ -121,6 +123,15 @@ public class ListUserAdapter extends RecyclerView.Adapter<ListUserAdapter.ViewHo
                                     .addOnSuccessListener(aVoid -> {
                                         Toast.makeText(context, "User and posts deleted successfully!", Toast.LENGTH_SHORT).show();
                                         // Update UI or notify adapter if necessary
+
+                                        // Remove the user from the local data source
+                                        userList.remove(position);
+                                        userListFull.remove(position);
+                                        // Notify the adapter of the item removal
+                                        notifyItemRemoved(position);
+                                        notifyItemRangeChanged(position, userList.size());
+
+
                                     })
                                     .addOnFailureListener(e -> {
                                         Toast.makeText(context, "Error deleting user.", Toast.LENGTH_SHORT).show();

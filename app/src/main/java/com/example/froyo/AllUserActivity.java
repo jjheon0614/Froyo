@@ -11,7 +11,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -25,6 +27,8 @@ public class AllUserActivity extends AppCompatActivity {
     private String email, userID, userImageUrl;
     private ListUserAdapter adapter;
     private Button logout;
+    private EditText searchEt;
+    private ImageButton searchBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,7 +74,8 @@ public class AllUserActivity extends AppCompatActivity {
                             String imageUrl = document.getString("imageUrl");
                             users.add(new ListUser(email, username, imageUrl));
                         }
-                        ListUserAdapter adapter = new ListUserAdapter(getApplicationContext(), users);
+
+                        adapter = new ListUserAdapter(getApplicationContext(), users);
                         recyclerView.setAdapter(adapter);
                     } else {
                         Log.d(TAG, "Error getting documents: ", task.getException());
@@ -120,6 +125,20 @@ public class AllUserActivity extends AppCompatActivity {
                 intent.putExtra("imageUrl", userImageUrl);
                 startActivity(intent);
                 finish();
+            }
+        });
+
+        searchBtn = findViewById(R.id.searchAllUserBtn);
+        searchEt = (EditText) findViewById(R.id.searchAllUser);
+
+        searchBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String searchUser = searchEt.getText().toString();
+
+                if (adapter != null) { // Ensure adapter is not null
+                    adapter.filter(searchUser); // Call the filter method in your adapter
+                }
             }
         });
     }
