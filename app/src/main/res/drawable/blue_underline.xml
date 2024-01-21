@@ -3,7 +3,7 @@
     <!-- This is the main white background of your shape -->
     <item>
         <shape android:shape="rectangle">
-            <solid android:color="@color/blue"/>
+            <solid android:color="@color/mainColor"/>
         </shape>
     </item>
 

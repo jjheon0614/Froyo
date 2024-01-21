@@ -5,6 +5,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -110,12 +111,16 @@ public class DetailForm extends AppCompatActivity {
                                             String description = descriptionEt.getText().toString().trim();
 
                                             if(username.isEmpty()) {
-                                                Toast.makeText(DetailForm.this, "id cannot be blank", Toast.LENGTH_SHORT).show();
+                                                idEt.setHint("Please enter your username");
+                                                idEt.setHintTextColor(Color.RED);
+                                                idEt.setText("");
                                                 return;
                                             }
 
                                             if(description.isEmpty()) {
-                                                Toast.makeText(DetailForm.this, "Description cannot be blank", Toast.LENGTH_SHORT).show();
+                                                descriptionEt.setHint("Please enter description");
+                                                descriptionEt.setHintTextColor(Color.RED);
+                                                descriptionEt.setText("");
                                                 return;
                                             }
 
@@ -185,6 +190,20 @@ public class DetailForm extends AppCompatActivity {
                         String username = idEt.getText().toString().trim();
                         String description = descriptionEt.getText().toString().trim();
 
+                        if(username.isEmpty()) {
+                            idEt.setHint("Please enter your username");
+                            idEt.setHintTextColor(Color.RED);
+                            idEt.setText("");
+                            return;
+                        }
+
+                        if(description.isEmpty()) {
+                            descriptionEt.setHint("Please enter description");
+                            descriptionEt.setHintTextColor(Color.RED);
+                            descriptionEt.setText("");
+                            return;
+                        }
+
                         // Construct the user data map
                         Map<String, Object> user = new HashMap<>();
                         user.put("username", username); // Assuming you want to use the display name as the username
@@ -234,25 +253,6 @@ public class DetailForm extends AppCompatActivity {
 
     }
 
-//    // Method to save or update user data and image
-//    private void saveUserDataAndImage(DocumentReference docRef, Map<String, Object> userData, Uri imageUri) {
-//        docRef.set(userData, SetOptions.merge())
-//                .addOnSuccessListener(aVoid -> {
-//                    Toast.makeText(DetailForm.this, "User data saved.", Toast.LENGTH_SHORT).show();
-//                    if (imageUri != null) {
-//                        uploadImageToStorage(email, imageUri);
-//                    }
-//
-//                    // After saving data and image, navigate to the next activity
-//                    Intent intent = new Intent(DetailForm.this, CreateForm.class); // or any other activity
-//                    intent.putExtra("email", email);
-//                    startActivity(intent);
-//                    finish();
-//                })
-//                .addOnFailureListener(e -> {
-//                    Toast.makeText(DetailForm.this, "Error saving user data.", Toast.LENGTH_SHORT).show();
-//                });
-//    }
 
     private void uploadImageToStorage(String email, Uri imageUri) {
         if (imageUri != null) {
@@ -269,8 +269,8 @@ public class DetailForm extends AppCompatActivity {
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                            Toast.makeText(DetailForm.this, "Image uploaded successfully.",
-                                    Toast.LENGTH_SHORT).show();
+//                            Toast.makeText(DetailForm.this, "Image uploaded successfully.",
+//                                    Toast.LENGTH_SHORT).show();
 
                             // If you need the URL of the uploaded image
                             profileImageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {

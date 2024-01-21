@@ -130,7 +130,7 @@
             android:text="Save"
             android:textColor="@color/white"
             android:textAllCaps="false"
-            android:background="@drawable/blue_round_button"/>
+            android:background="@drawable/round_main_color_button"/>
 
 
     </LinearLayout>

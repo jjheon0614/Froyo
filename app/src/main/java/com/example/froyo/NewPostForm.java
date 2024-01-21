@@ -54,7 +54,7 @@ public class NewPostForm extends AppCompatActivity {
     private EditText editTextPostContent, editTextHashtag;
     private ImageView imageViewPostPreview;
     private ImageButton buttonAddImage, buttonAddHashtag;
-    private Button buttonSubmitPost;
+    private android.widget.Button buttonSubmitPost;
     private Spinner spinnerMajorTag;
     private LinearLayout hashtagContainer;
     private Uri selectedImageUri;
@@ -157,7 +157,7 @@ public class NewPostForm extends AppCompatActivity {
                 selectedMajorTag = parentView.getItemAtPosition(position).toString();
 
                 // Do something with the selected major tag (e.g., display it or store it)
-                Toast.makeText(getApplicationContext(),"Selected Major Tag: " + selectedMajorTag, Toast.LENGTH_SHORT ).show();
+                //Toast.makeText(getApplicationContext(),"Selected Major Tag: " + selectedMajorTag, Toast.LENGTH_SHORT ).show();
             }
 
             @Override
@@ -263,7 +263,7 @@ public class NewPostForm extends AppCompatActivity {
                                                     @Override
                                                     public void onSuccess(Void aVoid) {
                                                         // Handle success
-                                                        Toast.makeText(getApplicationContext(), "Post added with ID: " + currentPostDocument, Toast.LENGTH_SHORT).show();
+                                                        //Toast.makeText(getApplicationContext(), "Post added with ID: " + currentPostDocument, Toast.LENGTH_SHORT).show();
 
 
                                                         DocumentReference userDocRef = db.collection("users").document(user.getUid());

@@ -161,7 +161,7 @@ public class ProfileActivity extends AppCompatActivity {
             public void onClick(View v) {
                 postRecView.setVisibility(View.VISIBLE);
                 editLinear.setVisibility(View.GONE);
-                posts.setTextColor(getResources().getColor(R.color.blue));
+                posts.setTextColor(getResources().getColor(R.color.mainColor));
                 posts.setBackgroundResource(R.drawable.blue_underline);
 
                 editProfile.setTextColor(getResources().getColor(R.color.black));
@@ -175,7 +175,7 @@ public class ProfileActivity extends AppCompatActivity {
             public void onClick(View v) {
                 editLinear.setVisibility(View.VISIBLE);
                 postRecView.setVisibility(View.GONE);
-                editProfile.setTextColor(getResources().getColor(R.color.blue));
+                editProfile.setTextColor(getResources().getColor(R.color.mainColor));
                 editProfile.setBackgroundResource(R.drawable.blue_underline);
 
                 posts.setTextColor(getResources().getColor(R.color.black));

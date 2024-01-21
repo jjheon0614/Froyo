@@ -12,7 +12,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:background="@color/black"
+        android:background="@color/mainColor"
         android:orientation="horizontal"
         android:layout_alignParentTop="true"
         android:gravity="center_vertical">
@@ -26,7 +26,7 @@
             android:paddingLeft="10dp"
             android:layout_weight="1"
             android:textColor="@color/white"
-            android:background="@color/black"
+            android:background="@color/mainColor"
             android:gravity="start"/>
 
         <Button
@@ -34,9 +34,8 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:text="Log out"
-            android:textColor="@color/blue"
-            android:backgroundTint="@color/black"
-            android:gravity="end"/>
+            android:textColor="@color/white"
+            android:backgroundTint="@color/mainColor"/>
 
     </LinearLayout>
 
@@ -58,15 +57,16 @@
                 android:id="@+id/searchAllUser"
                 android:layout_width="330dp"
                 android:layout_height="match_parent"
+                android:paddingLeft="10dp"
                 android:hint="Search User..."
-                android:background="@drawable/search_bar"/>
+                android:background="@drawable/search_stroke"/>
 
             <ImageButton
                 android:id="@+id/searchAllUserBtn"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:src="@drawable/search_icon"
-                android:background="@color/black"/>
+                android:background="@color/mainColor"/>
 
 
         </LinearLayout>

@@ -49,17 +49,17 @@ public class MainActivity extends AppCompatActivity {
         if (requestCode == 100) {
             if (resultCode == RESULT_OK) {
                 if (data.getExtras().get("createSuccess").toString().equals("false")) {
-                    Toast.makeText(this, "Back from create form fail", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(this, "Back from create form fail", Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(this, "Back from create form", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(this, "Back from create form", Toast.LENGTH_SHORT).show();
                 }
             }
         } else if (requestCode == 200) {
             if (resultCode == RESULT_OK) {
                 if (data.getExtras().get("loginSuccess").toString().equals("false")) {
-                    Toast.makeText(this, "Back from login form fail", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(this, "Back from login form fail", Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(this, "Back from login form", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(this, "Back from login form", Toast.LENGTH_SHORT).show();
                 }
             }
         }

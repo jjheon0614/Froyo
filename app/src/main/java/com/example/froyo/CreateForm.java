@@ -99,66 +99,44 @@ public class CreateForm extends AppCompatActivity {
                 String password = passwordEt.getText().toString().trim();
                 String passwordConfirm = passwordConfirmEt.getText().toString().trim();
 
-//                if (!password.equals(passwordConfirm)) {
-//                    // Handle password confirmation failure
-//                    passwordConfirmEt.setHint("Passwords do not match"); // Set hint
-//                    passwordConfirmEt.setHintTextColor(Color.RED); // Set hint text color to red
-//                    passwordConfirmEt.setText(""); // Clear the text
-//                    return;
-//                } else if (password.length() < 6) {
-//                    passwordEt.setHint("Passwords should have at least 6 characters"); // Set hint
-//                    passwordEt.setHintTextColor(Color.RED); // Set hint text color to red
-//                    passwordEt.setText(""); // Clear the text
-//                    return;
-//                } else if (email.isEmpty()) {
-//                    emailEt.setHint("Please fill out email"); // Set hint
-//                    emailEt.setHintTextColor(Color.RED); // Set hint text color to red
-//                    emailEt.setText(""); // Clear the text
-//                    return;
-//                } else if (password.isEmpty()) {
-//                    passwordEt.setHint("Please fill out password"); // Set hint
-//                    passwordEt.setHintTextColor(Color.RED); // Set hint text color to red
-//                    passwordEt.setText(""); // Clear the text
-//                    return;
-//                } else if (passwordConfirm.isEmpty()) {
-//                    passwordConfirmEt.setHint("Please fill out password confirmation"); // Set hint
-//                    passwordConfirmEt.setHintTextColor(Color.RED); // Set hint text color to red
-//                    passwordConfirmEt.setText(""); // Clear the text
-//                    return;
-//                } else if (!email.contains("@")) {
-//                    emailEt.setHint("Wrong email format"); // Set hint
-//                    emailEt.setHintTextColor(Color.RED); // Set hint text color to red
-//                    emailEt.setText(""); // Clear the text
-//                    return;
-//                }
+                // Check if email is empty
+                if(email.isEmpty()) {
+                    emailEt.setHint("Please enter your email");
+                    emailEt.setHintTextColor(Color.RED);
+                    emailEt.setText("");
+                    return;
+                } else if (!email.contains("@")) {
+                    emailEt.setHint("Email format is wrong");
+                    emailEt.setHintTextColor(Color.RED);
+                    emailEt.setText("");
+                    return;
+                }
 
-//                mAuth.createUserWithEmailAndPassword(email, password)
-//                        .addOnCompleteListener(CreateForm.this, new OnCompleteListener<AuthResult>() {
-//                            @Override
-//                            public void onComplete(@NonNull Task<AuthResult> task) {
-//                                if (task.isSuccessful()) {
-//                                    // Sign in success, update UI with the signed-in user's information
-//                                    FirebaseUser user = mAuth.getCurrentUser();
-//                                    // Redirect to another activity or show success message
-//                                    Toast.makeText(CreateForm.this, "Authentication success.",
-//                                            Toast.LENGTH_SHORT).show();
-//                                } else {
-//                                    // If sign in fails, display a message to the user.
-//                                    // User creation failed
-//                                    try {
-//                                        throw task.getException();
-//                                    } catch(FirebaseAuthUserCollisionException e) {
-//                                        // Email already exists
-//                                        Toast.makeText(CreateForm.this, "Already in use",
-//                                                Toast.LENGTH_SHORT).show();
-//                                    } catch(Exception e) {
-//                                        // Other errors
-//                                        Toast.makeText(CreateForm.this, "Authentication fail.",
-//                                                Toast.LENGTH_SHORT).show();
-//                                    }
-//                                }
-//                            }
-//                        });
+                // Check if password is empty
+                if(password.isEmpty()) {
+                    passwordEt.setHint("Please enter your password");
+                    passwordEt.setHintTextColor(Color.RED);
+                    passwordEt.setText("");
+                    return;
+                } else if (password.length() < 6) {
+                    passwordEt.setHint("Enter at least 6 characters");
+                    passwordEt.setHintTextColor(Color.RED);
+                    passwordEt.setText("");
+                    return;
+                }
+
+                if(passwordConfirm.isEmpty()) {
+                    passwordConfirmEt.setHint("Please enter your password");
+                    passwordConfirmEt.setHintTextColor(Color.RED);
+                    passwordConfirmEt.setText("");
+                    return;
+                } else if (!password.equals(passwordConfirm)) {
+                    passwordConfirmEt.setHint("Please enter your password");
+                    passwordConfirmEt.setHintTextColor(Color.RED);
+                    passwordConfirmEt.setText("");
+                    return;
+                }
+
 
                 mAuth.fetchSignInMethodsForEmail(email)
                         .addOnCompleteListener(new OnCompleteListener<SignInMethodQueryResult>() {
@@ -252,9 +230,9 @@ public class CreateForm extends AppCompatActivity {
         if (requestCode == 300) {
             if (resultCode == RESULT_OK) {
                 if (data.getExtras().get("detailSuccess").toString().equals("false")) {
-                    Toast.makeText(this, "Back from detail form fail", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(this, "Back from detail form fail", Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(this, "Back from detail form", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(this, "Back from detail form", Toast.LENGTH_SHORT).show();
 
                     Intent intent = new Intent(CreateForm.this, MainActivity.class);
                     intent.putExtra("createSuccess", "true");

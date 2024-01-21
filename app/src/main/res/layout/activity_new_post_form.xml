@@ -129,7 +129,7 @@
                         <EditText
                             android:id="@+id/etHashtag"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_height="match_parent"
                             android:layout_weight="4"
                             android:background="@drawable/rounded_rectangle"
                             android:ems="12"
@@ -198,13 +198,17 @@
                     android:gravity="right"
                     android:orientation="horizontal">
 
-                    <Button
+
+                    <android.widget.Button
                         android:id="@+id/btPost"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Post"
                         android:textSize="16sp"
-                        app:cornerRadius="0dp" />
+                        android:textColor="@color/white"
+                        android:background="@drawable/round_main_color_button"
+                        android:textAllCaps="false"/>
+
                 </LinearLayout>
             </LinearLayout>
         </ScrollView>
