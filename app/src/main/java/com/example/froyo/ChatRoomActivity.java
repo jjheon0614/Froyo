@@ -5,6 +5,8 @@ import static android.view.View.GONE;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Lifecycle;
+import androidx.lifecycle.OnLifecycleEvent;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -35,6 +37,8 @@ import com.bumptech.glide.request.target.DrawableImageViewTarget;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.FirebaseApp;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FieldPath;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -46,6 +50,7 @@ import com.google.firebase.storage.StorageReference;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
@@ -54,22 +59,23 @@ import java.util.Map;
 import java.util.UUID;
 
 public class ChatRoomActivity extends AppCompatActivity {
-    String chatID;
-    String userID;
-    String searchStr = "";
-    List<Map<String, List<String>>> currentMessageList;
-    List<Integer> foundIdx = new ArrayList();
-    int iterator = 0;
+    private String chatID, userID, userImage; // Storing ChatID, UserID
+    String searchStr = ""; // String for searching
+    List<Map<String, List<String>>> currentMessageList; // For getting message List
+    List<Map<String, Object>> usersList; // For getting the information of chat room members
+    List<String> users = new ArrayList<>(); // user name List
+    List<Integer> foundIdx = new ArrayList(); // For storing found message index
+    private int iterator = 0; // For traveling found messages
     private static final int PICK_IMAGE_REQUEST = 1;
-    Map<String, Object> dataMap;
-    long mNow;
-    Date mDate;
-    SimpleDateFormat mFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-    Boolean isSearch = false;
-    private RecyclerView messageList;
-    private RecyclerView.Adapter adapter;
+    private Map<String, Object> dataMap; // For getting message List (all information i.g., time, user)
+    private long mNow; // For getting time
+    private Date mDate; // For converting mNow to Date into format
+    private SimpleDateFormat mFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss"); // Date format
+    private Boolean isSearch = false; // For configuring state of searching activity
+    private RecyclerView messageList; // RecyclerView to show messages
+    private RecyclerView.Adapter adapter; // Adapter for message
     private RecyclerView.LayoutManager layoutManager;
-    private ArrayList<Message> messageArrayList;
+    private ArrayList<Message> messageArrayList; // To store Message(s)
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private FirebaseStorage storage;
     private StorageReference storageReference;
@@ -83,27 +89,30 @@ public class ChatRoomActivity extends AppCompatActivity {
         storage = FirebaseStorage.getInstance();
         storageReference = storage.getReference();
 
-        TextView title = findViewById(R.id.title);
-        TextView peopleNum = findViewById(R.id.peopleNum);
-        ImageButton back_button = findViewById(R.id.back_button);
-        EditText message = findViewById(R.id.message);
-        LinearLayout messageFinder = findViewById(R.id.messageFinder);
+        TextView title = findViewById(R.id.title); // Title (Usually being chatting partner's user name)
+        TextView peopleNum = findViewById(R.id.peopleNum); // Number of people in chat room
+        ImageButton back_button = findViewById(R.id.back_button); // Button for going back to the privious activity
+        EditText message = findViewById(R.id.message); // Edittext to enter message
+        LinearLayout messageFinder = findViewById(R.id.messageFinder); // Kind of remote controller to travel found messages
 
-        messageFinder.setVisibility(View.GONE);
+        messageFinder.setVisibility(View.GONE); // Hide controller
         // Get intent from chat list
-        Intent i_get = getIntent();
-        chatID = i_get.getStringExtra("chatID");
+        Intent i_get = getIntent(); // Getting intent from ChatListActivity
+        chatID = i_get.getStringExtra("chatID"); // Getting chatID
+
         // Set up the title of the chat room
-        title.setText(i_get.getStringExtra("title"));
-        if (i_get.getIntExtra("peopleNum", 0) == 2) {
-            ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams) title.getLayoutParams();
-            layoutParams.setMargins(80, 65, 0, 0);
-            peopleNum.setVisibility(GONE);
+        title.setText(i_get.getStringExtra("title")); // Getting the title of chatroom
+        if (i_get.getIntExtra("peopleNum", 0) == 2) { // Check whether this chat room is group chat or not
+            ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams) title.getLayoutParams(); // Setting layoutParas
+            layoutParams.setMargins(80, 65, 0, 0); // Setting margin
+            peopleNum.setVisibility(GONE); // If this chat is not group chat, hide this view
         } else {
-            peopleNum.setText(i_get.getIntExtra("peopleNum", 0) + " people");
+            peopleNum.setText(i_get.getIntExtra("peopleNum", 0) + " people"); // Getting the number of chat room member
         }
         // Get userID
         userID = i_get.getStringExtra("userID");
+        // get userImage
+        userImage = i_get.getStringExtra("imageUrl");
 
         // Add OnClickListener for back_button to go back to the chat list.
         back_button.setOnClickListener(new View.OnClickListener() {
@@ -112,7 +121,6 @@ public class ChatRoomActivity extends AppCompatActivity {
                 finish();
             }
         });
-
         message.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
@@ -124,15 +132,13 @@ public class ChatRoomActivity extends AppCompatActivity {
                 return false;
             }
         });
-
-        messageList = findViewById(R.id.messageList);
-        messageList.setHasFixedSize(true);
+        messageList = findViewById(R.id.messageList); // configuring messageList(RecyclerView)
+        messageList.setHasFixedSize(true); // Fix the size of List when the keyboard is appeared
         layoutManager = new LinearLayoutManager(this);
         messageList.setLayoutManager(layoutManager);
-        messageArrayList = new ArrayList();
-        getData();
+        messageArrayList = new ArrayList(); // Creating messageArrayList
+        getData(); // Getting data from firebase
     }
-
     private void getData() {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         // Read Document
@@ -148,11 +154,28 @@ public class ChatRoomActivity extends AppCompatActivity {
                         messageArrayList.clear();
                         foundIdx.clear();
                         for (QueryDocumentSnapshot document : value) {
-                            dataMap = document.getData();
-                            currentMessageList = (List<Map<String, List<String>>>) dataMap.get(chatID);
+                            dataMap = document.getData(); // Getting data from 1 document
+                            currentMessageList = (List<Map<String, List<String>>>) dataMap.get(chatID); // Getting  message list
                             // Message check
-                            List<Map<String, Integer>> users = (List<Map<String, Integer>>) dataMap.get("users");
-                            messageCheck(users, currentMessageList.size());
+                            usersList = (List<Map<String, Object>>) dataMap.get("users"); // Getting users List
+
+                            List<Number> checks = new ArrayList<>(); // message check List
+                            List<String> images = new ArrayList<>(); // profile List
+
+                            for(Map<String, Object> user : usersList){ // Separate user name, message check value and profile Url from "users"
+                                Collection<String> keys = user.keySet();
+                                users.addAll(new ArrayList<>(keys));
+                                for (Map.Entry<String, Object> entry : user.entrySet()) {
+                                    List<Object> userInfo = (List<Object>) entry.getValue();
+                                    if (userInfo.size() >= 2) {
+                                        checks.add((Number) userInfo.get(0));
+                                        images.add((String) userInfo.get(1));
+                                    }
+                                }
+                            }
+                            if(currentMessageList.size() != 0){
+                                messageCheck(usersList, users, images, currentMessageList.size()); // Update message check value
+                            }
                             if (isSearch) {
                                 EditText search_edit = findViewById(R.id.search_edit);
                                 searchStr = search_edit.getText().toString();
@@ -191,27 +214,30 @@ public class ChatRoomActivity extends AppCompatActivity {
                                     Toast.makeText(ChatRoomActivity.this, "No messages are founded",
                                             Toast.LENGTH_SHORT).show();
                                 }
-                            } else {
-                                for (Map<String, List<String>> message : currentMessageList) {
-                                    String content = "", time = "";
-                                    Collection<List<String>> values = message.values();
-                                    for (List<String> valueList : values) {
-                                        String[] array = valueList.toArray(new String[0]);
-                                        content = array[0];
-                                        time = array[1];
-                                    }
-                                    Collection<String> keys = message.keySet();
-                                    String[] keysArray = keys.toArray(new String[0]);
+                            }
+                            else {
+                                if (currentMessageList.size() != 0){
+                                    for (Map<String, List<String>> message : currentMessageList) {
+                                        String content = "", time = "";
+                                        Collection<List<String>> values = message.values();
+                                        for (List<String> valueList : values) {
+                                            String[] array = valueList.toArray(new String[0]);
+                                            content = array[0];
+                                            time = array[1];
+                                        }
+                                        Collection<String> keys = message.keySet();
+                                        String[] keysArray = keys.toArray(new String[0]);
 
-                                    String user = keysArray[0];
-                                    Boolean isMine;
-                                    if (user.equals(userID)) {
-                                        isMine = true;
-                                    } else {
-                                        isMine = false;
+                                        String user = keysArray[0];
+                                        Boolean isMine;
+                                        if (user.equals(userID)) {
+                                            isMine = true;
+                                        } else {
+                                            isMine = false;
+                                        }
+                                        // Adding chat room to array list
+                                        messageArrayList.add(new Message(isMine, false, content, null, time.substring(11, 16), user));
                                     }
-                                    // Adding chat room to array list
-                                    messageArrayList.add(new Message(isMine, false, content, null, time.substring(11, 16), user));
                                 }
                             }
                         }
@@ -224,7 +250,6 @@ public class ChatRoomActivity extends AppCompatActivity {
         adapter = new MessageAdapter(messageArrayList, this); // Create adapter
         messageList.setAdapter(adapter); // connect adapter to list
     }
-
     private void sendMessage(String message) {
         List<String> newMessageContent = new ArrayList<>();
         Map<String, List<String>> newMessage = new HashMap<>();
@@ -248,23 +273,11 @@ public class ChatRoomActivity extends AppCompatActivity {
                     }
                 });
     }
+    private void messageCheck(List<Map<String, Object>> usersList, List<String> users, List<String> images, int currentMessageNum) {
+        int myIdx = users.indexOf(userID);
+        usersList.get(myIdx).put(userID, Arrays.asList(currentMessageNum, images.get(myIdx)));
 
-    private void messageCheck(List<Map<String, Integer>> users, int currentMessageNum) {
-        List<String> usersList = new ArrayList<>();
-        List<Number> checks = new ArrayList<>();
-
-        for (Map<String, Integer> user : users) {
-            Collection<String> keys = user.keySet();
-            usersList.addAll(new ArrayList<>(keys));
-
-            Collection<Integer> values = user.values();
-            checks.addAll(new ArrayList<>(values));
-        }
-
-        int myIdx = usersList.indexOf(userID);
-        users.get(myIdx).put(userID, currentMessageNum);
-
-        dataMap.put("users", users);
+        dataMap.put("users", usersList);
 
         db.collection("chats").document(chatID).set(dataMap)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -280,7 +293,59 @@ public class ChatRoomActivity extends AppCompatActivity {
                     }
                 });
     }
+    public void leaveChatRoom(View view) {
+        int myIdx = users.indexOf(userID);
+        usersList.remove(myIdx);
+        if(usersList.size() == 0){
+            FirebaseFirestore db = FirebaseFirestore.getInstance();
+            // Getting collection Reference
+            CollectionReference collectionRef = db.collection("chats");
+            // Getting document reference
+            DocumentReference documentRef = collectionRef.document(chatID);
 
+            // Delete document
+            documentRef.delete().addOnSuccessListener(aVoid -> {
+                System.out.println("DocumentSnapshot successfully deleted!");
+            }).addOnFailureListener(e -> {
+                System.out.println("Error deleting document: " + e.getMessage());
+            });
+        }
+        else if (usersList.size() == 1 && dataMap.size() == 3) {
+            dataMap.put("title", userID);
+            dataMap.put("chatRoomImage", userImage);
+            dataMap.put("users", usersList);
+            db.collection("chats").document(chatID).set(dataMap)
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            Log.d("ChatRoomActivity", "DocumentSnapshot successfully updated!");
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Log.w("ChatRoomActivity", "Error updating document", e);
+                        }
+                    });
+        }
+        else{
+            dataMap.put("users", usersList);
+            db.collection("chats").document(chatID).set(dataMap)
+                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void aVoid) {
+                            Log.d("ChatRoomActivity", "DocumentSnapshot successfully updated!");
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Log.w("ChatRoomActivity", "Error updating document", e);
+                        }
+                    });
+        }
+        finish();
+    }
     private String getTime() {
         mNow = System.currentTimeMillis();
         mDate = new Date(mNow);
@@ -433,7 +498,6 @@ public class ChatRoomActivity extends AppCompatActivity {
             uploadImage(selectedImageUri);
         }
     }
-
     private void uploadImage(Uri imageUri) {
         if (imageUri != null) {
             String imageName = UUID.randomUUID().toString();

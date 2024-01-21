@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="350dp"
     android:layout_height="550dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_marginTop="100dp"
     android:background="@drawable/emoji_background">
@@ -45,26 +46,50 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:layout_gravity="center"
-        android:text="Choose the profile picture of you group chat"
-        android:textSize="17dp"/>
+        android:gravity="center"
+        android:text="Choose the profile picture"
+        android:textSize="23dp"/>
 
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/profile"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_marginTop="30dp"
-        android:layout_gravity="center"
-        android:background="@android:color/transparent"
-        android:src="@drawable/ic_launcher_background"
-        />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="190dp"
+        android:layout_marginTop="15dp">
+
+        <TextView
+            android:layout_width="190dp"
+            android:layout_height="190dp"
+            android:layout_centerInParent="true"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/circle_background_with_stroke"/>
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/profile"
+            android:layout_width="180dp"
+            android:layout_height="180dp"
+            android:layout_centerInParent="true"
+            android:background="@android:color/transparent"
+            android:src="@drawable/ic_launcher_background" />
+
+        <ImageButton
+            android:layout_width="180dp"
+            android:layout_height="90dp"
+            android:layout_alignParentTop="true"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="95dp"
+            android:background="@drawable/half_circle_background"
+            android:backgroundTint="#4D000000"
+            android:onClick="openGallery"
+            android:padding="3dp"
+            android:src="@drawable/add_photo" />
+    </RelativeLayout>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="10dp"
         android:gravity="center"
         android:layout_gravity="center"
-        android:text="Enter the name of your group chat."
+        android:text="Enter the name of your group chat"
         android:textSize="17dp"/>
 
     <EditText
@@ -81,7 +106,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="15dp"
         android:paddingVertical="10dp"
         android:paddingHorizontal="20dp"
         android:text="Create"
@@ -89,5 +114,6 @@
         android:textColor="@color/white"
         android:textStyle="bold"
         android:background="@drawable/message_my_background"
+        android:backgroundTint="@color/mainColor"
         />
 </LinearLayout>

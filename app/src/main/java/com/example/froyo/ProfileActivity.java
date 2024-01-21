@@ -62,6 +62,7 @@ public class ProfileActivity extends AppCompatActivity {
     private PostListViewAdapter adapter;
     private ArrayList<Post> postsArrayList = new ArrayList<>();
     String username;
+    String imageUrl;
 
 
     @Override
@@ -187,6 +188,7 @@ public class ProfileActivity extends AppCompatActivity {
                 String username = userId.getText().toString();
                 intent.putExtra("userId", username);
                 intent.putExtra("email", email);
+                intent.putExtra("imageUrl", imageUrl);
                 startActivity(intent);
                 finish();
             }
@@ -248,7 +250,6 @@ public class ProfileActivity extends AppCompatActivity {
                                 }
                             });
                 }
-
             }
         });
     }
@@ -409,7 +410,7 @@ public class ProfileActivity extends AppCompatActivity {
                             // Parse data and set to views
                             username = documentSnapshot.getString("username");
                             String description = documentSnapshot.getString("description");
-                            String imageUrl = documentSnapshot.getString("imageUrl");
+                            imageUrl = documentSnapshot.getString("imageUrl");
                             long posts = documentSnapshot.getLong("posts");
                             long followers = documentSnapshot.getLong("followers");
                             long following = documentSnapshot.getLong("following");
