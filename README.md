@@ -1,15 +1,5 @@
 # Froyo
 
-## Team information and contribution
-
-Jaeheon Jeong(s3821004) – 30%
-
-Nguyen Gia Khanh(s3927238) - 25%
-
-Vo Hoang Tuan(s3868189) - 25%
-
-Hanjun Lee(s3732878) – 20%
-
 
 ## Functionalities
 
