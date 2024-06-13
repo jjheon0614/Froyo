@@ -2,15 +2,15 @@
 It is an android application to share the information by uploading a feed and make a comment in a feed. It is for RMIT university student who can filter the feed with majors. It can send a message to others by making a group or individually.
 
 <p align="center">
-  <img src="https://github.com/jjheon0614/Froyo/blob/main/images/Landing_Page.png" width="250" />
-  <img src="https://github.com/jjheon0614/Froyo/blob/main/images/Login_Page.png" width="250" />
-  <img src="https://github.com/jjheon0614/Froyo/blob/main/images/Main_Page.png" width="250" />
-  <img src="https://github.com/jjheon0614/Froyo/blob/main/images/NewPost_Page.png" width="250" />
+  <img src="https://github.com/jjheon0614/Froyo/blob/main/images/Landing_Page.png" width="150" />
+  <img src="https://github.com/jjheon0614/Froyo/blob/main/images/Login_Page.png" width="150" />
+  <img src="https://github.com/jjheon0614/Froyo/blob/main/images/Main_Page.png" width="150" />
+  <img src="https://github.com/jjheon0614/Froyo/blob/main/images/NewPost_Page.png" width="150" />
 </p>
 <p align="center">
-  <img src="https://github.com/jjheon0614/Froyo/blob/main/images/ChattingList_Page.png" width="250" />
-  <img src="https://github.com/jjheon0614/Froyo/blob/main/images/ChattingRoom_Page.png" width="250" />
-  <img src="https://github.com/jjheon0614/Froyo/blob/main/images/Profile_Page.png" width="250" />
+  <img src="https://github.com/jjheon0614/Froyo/blob/main/images/ChattingList_Page.png" width="150" />
+  <img src="https://github.com/jjheon0614/Froyo/blob/main/images/ChattingRoom_Page.png" width="150" />
+  <img src="https://github.com/jjheon0614/Froyo/blob/main/images/Profile_Page.png" width="150" />
 </p>
 
 ## Functionalities
