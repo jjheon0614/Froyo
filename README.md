@@ -1,6 +1,17 @@
 # Froyo
 It is an android application to share the information by uploading a feed and make a comment in a feed. It is for RMIT university student who can filter the feed with majors. It can send a message to others by making a group or individually.
 
+<p align="center">
+  <img src="" width="250" />
+  <img src="path/to/your/image2.png" width="250" />
+  <img src="path/to/your/image3.png" width="250" />
+</p>
+<p align="center">
+  <img src="path/to/your/image4.png" width="250" />
+  <img src="path/to/your/image5.png" width="250" />
+  <img src="path/to/your/image6.png" width="250" />
+</p>
+
 ## Functionalities
 
 ### 1.	Create Account
